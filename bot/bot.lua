@@ -1,5 +1,5 @@
 dofile('./bot/utils.lua')
-my = 'SudoID'
+my = '443636125'
 URL = require('socket.url')
 http = require('socket.http')
 https = require('ssl.https')
