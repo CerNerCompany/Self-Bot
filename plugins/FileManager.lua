@@ -14,7 +14,6 @@ patterns_ = {
 }
 is_have = function(name,type_)
   local var = false
-print(name , type_)
   if Get("FileManager:"..type_..":"..name) then
   var = Get("FileManager:"..type_..":"..name) 
 end
@@ -53,20 +52,19 @@ FileManager = function(msg,crco)
                is_saved = 1
                
            elseif co.content['@type'] == 'messagePhoto' then
-            is_saved = 1
-
-            if co.content.photo.sizes[3] then
-savePre(crco[2],co.content.photo.sizes[3].size,'Photo')
+                       if co.content.photo.sizes[3] then
+savePre(crco[2],co.content.photo.sizes[3].photo.size,'Photo')
 save("FileManager:Photo:"..crco[2],co.content.photo.sizes[3].photo.remote.id)
-
+is_saved = 1
 
             elseif co.content.photo.sizes[2] then
-              savePre(crco[2],co.content.photo.sizes[2].size,'Photo')
+              savePre(crco[2],co.content.photo.sizes[2].photo.size,'Photo')
 save("FileManager:Photo:"..crco[2],co.content.photo.sizes[2].photo.remote.id)
-
+is_saved = 1
             elseif co.content.photo.sizes[1] then
-              savePre(crco[2],co.content.photo.sizes[1].size,'Photo')
+              savePre(crco[2],co.content.photo.sizes[1].photo.size,'Photo')
 save("FileManager:Photo:"..crco[2],co.content.photo.sizes[1].photo.remote.id)
+is_saved = 1
             end
                 elseif co.content['@type'] == 'messageVideoNote' then
                   savePre(crco[2],tonumber(co.content.video_note.video.size),'VideoNote')
@@ -132,7 +130,6 @@ is_saved = 1
 
       elseif is_have(crco[2],'Audio') then
         Del = true
-        print(is_have(crco[2],'Audio'))
          tdbot.sendAudio(msg.chat_id, 0, is_have(crco[2],'Audio'), caption, 'md','CRCO', 'CRCO',  true, true, nil, nil, nil)
       elseif is_have(crco[2],'Document') then
          Del = true
