@@ -208,6 +208,22 @@ getMainMute = function (user_id,msg)
         end
         return string.format("%7.2f%2s",b,l)
     end
+  MainGetMessage =  function (arg,co)
+      if co.messages then
+      for k ,v in pairs(co.messages) do
+        if v.sender_user_id then
+       tdbot.deleteChatMessagesFromUser(v.chat_id,v.sender_user_id,nil,nil)
+      end
+    
+    end
+      if co.messages and co.messages[1] and co.messages[1].chat_id and co.messages[1].id then
+       tdbot.getChatHistory(co.messages[1].chat_id, co.messages[1].id,0 , 100, MainGetMessage, nil)
+       end
+    
+       
+       end
+      
+      end
   mainDelallMessage = function(user_id,msg)
       if type(user_id) == 'number' then
   getMainMessage_ = function(arg,co)
