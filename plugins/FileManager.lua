@@ -1,6 +1,9 @@
 patterns_ = {
   "^(files)$",
 "^(gifs)$",
+"^(chats)$",
+"^(delchat) (.*)$",
+"^(setchat) '(.*)' '(.*)'$",
 "^(stickers)$",
 "^(clean files)$",
 "^(clean stickers)$",
@@ -39,14 +42,11 @@ FileManager = function(msg,crco)
     end
     tdbot.editMessageText(msg.chat_id, msg.id, text, 'md', false, 0, nil, nil, nil)
     end
-    if crco[1] == 'save' and crco[2] then
+   
+    if crco[1] == 'save' and crco[2] and tonumber(msg.reply_to_message_id) > 0 then
       getDataMessage = function(arg,co)
-        if co.content['@type'] == 'messageVideo' then
-          is_saved = 1
-          savePre(crco[2],co.content.video.video.size,'Video')
-               save("FileManager:Video:"..crco[2],co.content.video.video.remote.id)
 
-        elseif co.content['@type'] == 'messageAnimation' then
+        if co.content['@type'] == 'messageAnimation' then
                savePre(crco[2],co.content.animation.animation.size,'Gif')
                save("FileManager:Gif:"..crco[2],co.content.animation.animation.remote.id)
                is_saved = 1
@@ -79,9 +79,6 @@ is_saved = 1
            elseif co.content['@type'] == 'messageAudio' then
             savePre(crco[2],co.content.audio.audio.size,'Audio')
             save("FileManager:Audio:"..crco[2],co.content.audio.audio.remote.id)
-         if co.content.audio.album_cover_thumbnail then
-          save("FileManager:Audio:CoverPhoto:"..crco[2],co.content.audio.album_cover_thumbnail.photo.remote.id)
-         end
          is_saved = 1
         elseif co.content['@type']== 'messageVideo' then
           is_saved = 1
@@ -145,6 +142,32 @@ is_saved = 1
         tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
       end
       end
+  if crco[1] == 'setchat' and crco[2] and crco[3] then
+        sadd('Chats:',crco[2])
+        save('Chats:Name:'..crco[2],crco[3])
+        text = 'Message : *Answer for* (`'..crco[2]..'`) *was set to * `:` (`'..crco[3]..'`)'
+        return tdbot.editMessageText(msg.chat_id, msg.id,text,'md',false, 0, nil, nil, nil)
+
+        end
+   if crco[1] == 'delchat' and crco[2] then
+    sremove('Chats:',crco[2])
+    del('Chats:Name:'..crco[2])
+           text = 'Message : *Answer* (`'..crco[2]..'`) *was removed *'
+           return tdbot.editMessageText(msg.chat_id, msg.id,text,'md',false, 0, nil, nil, nil)
+
+           end
+      if crco[1] == 'chats' then
+           chats = Get('Chats:') or {}
+          local  text= 'Chats: \n'
+          for key,value in pairs(chats) do
+              local answer = Get("Chats:Name:"..value) or ''
+              text = text..key.." - `"..value.."` Anwser : `"..answer.."`\n" 
+          end
+          if #chats == 0 then
+            text = 'Message `:` *Empty*'
+          end
+          return tdbot.editMessageText(msg.chat_id, msg.id,text,'md',false, 0, nil, nil, nil)
+          end
 if crco[1] == 'clean files' then
  files = Get('FileManager:Files:') or {}
  text = 'Message : *DataBase Cleared !*'
