@@ -4,8 +4,10 @@ pat = { "^(ping)$",
         "^(dump)$",
         "^(leave)$",
         "^(ass)$",
+        "^(clean msgs)$",
         "^(mute)$",
         "^(mute) (.*)$",
+        "^(id) (.*)$",
         "^(delall)$",
         "^(delall) (.*)$",
         "^(enemymod) (.*)$",
@@ -32,14 +34,19 @@ pat = { "^(ping)$",
        "^(self) (.*)$",
        "^(read message) (.*)$"
 }
-
 function run(msg,crco)
     if is_sudo(msg.sender_user_id) then
 if crco[1] == 'ping' then
      tdbot.editMessageText(msg.chat_id, msg.id, 'READY', 'md', false, 0, nil, nil, nil)
 
 end
+
 if crco[1] == 'whois' then
+    if crco[2] and msg.content.text.entities[1].type.user_id then
+       user_id_from =  msg.content.text.entities[1].type.user_id
+    else
+        user_id_from = crco[2]
+    end
    getMainUser =  function(arg,crco_)
   
     getMainUserFull =  function(arg,co)
@@ -72,7 +79,7 @@ lastname = '|'..crco_.last_name..'|' or ''
     private_call = 'EveryBody'
  end
  text = '☤ *User Fully info* ☤ \n☤ *First Name* `:` *'..firstname..'*\n☤ *Last Name* `:` *'..lastname..'*\n☤* Phone Number* `:` *'..number..'*\n☤* Bio* `:` *'..bio..'*\n☤ *Status* `:` *'..userstatus..'*\n☤ *Type* `:` *'..userType..'* \n☤ *Chat With Self* `:` *'..common_count..'*\n☤* Call* `:` *'..acsscall..'*\n☤* Private Call* `:` *'..private_call..'*'
-if string.len(crco_.profile_photo.big["local"].path) > 0 then
+if crco_.profile_photo and string.len(crco_.profile_photo.big["local"].path) > 0 then
     tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
  tdbot.sendPhoto(msg.chat_id,msg.id,crco_.profile_photo.big["local"].path, text, 'md',0, 0, 0, false, true, nil, nil, nil)
 elseif crco_.profile_photo and string.len(crco_.profile_photo.big["local"].path) == 0  then
@@ -80,12 +87,12 @@ elseif crco_.profile_photo and string.len(crco_.profile_photo.big["local"].path)
 elseif not crco_.profile_photo then
     tdbot.editMessageText(msg.chat_id, msg.id, text, 'md', false, 0, nil, nil, nil)
 end
-    
+
    end
 end
-   tdbot.getUserFullInfo(tonumber(crco[2]), getMainUserFull, nil)
+   tdbot.getUserFullInfo(tonumber(user_id_from), getMainUserFull, nil)
 end
-   tdbot.getUser(tonumber(crco[2]), getMainUser, nil)
+   tdbot.getUser(tonumber(user_id_from), getMainUser, nil)
 end
 
 if crco[1] == 'leave' then
@@ -101,12 +108,17 @@ if crco[1] == 'leave' then
 end
 if crco[1] == 'mute' and tonumber(msg.reply_to_message_id) > 0  then
     GetMainMessage=   function(arg,CR)
+        
       getMainMute(CR.sender_user_id,msg)
       end
         tdbot.getMessage(msg.chat_id, tonumber(msg.reply_to_message_id),GetMainMessage,nil)
     end
     if crco[1] == 'mute' and crco[2] and crco[2]:match('^%d+$')then
         getMainMute(crco[2],msg)
+    end
+    if crco[1] == 'clean msgs' then
+        tdbot.getChatHistory(msg.chat_id,msg.id,0 , 100000, MainGetMessage, nil)
+
     end
     if crco[1] == 'mute'  and crco[2] and not crco[2]:match('^%d+$') then
         getMainUsername = function(ex,CR)
@@ -254,10 +266,23 @@ end
 
                 end
             end
+            if crco[1] == 'id' and crco[2] then
+            if crco[2] and msg.content.text.entities[1].type.user_id then
+                user_id_from =  msg.content.text.entities[1].type.user_id
+             else
+                 user_id_from = crco[2]
+             end
+             tdbot.editMessageTextMention(msg.chat_id, msg.id,tostring(user_id_from),0,string.len(user_id_from),user_id_from)
+            end
     if crco[1] == 'id' and tonumber(msg.reply_to_message_id) > 0 then
         getMainMesages = function(arg,co)
-            tdbot.editMessageText(msg.chat_id, msg.id, last..'*User ID* : `'..co.sender_user_id..'`', 'md', false, 0, nil, nil, nil)
+            if co.forward_info.origin.sender_user_id then
+                tdbot.editMessageTextMention(msg.chat_id, msg.id,last..'User ID : '..co.sender_user_id..'\n'..last..'From user : '..co.forward_info.origin.sender_user_id,36,string.len(co.forward_info.origin.sender_user_id),co.forward_info.origin.sender_user_id)
 
+          --  tdbot.editMessageText(msg.chat_id, msg.id, last..'*User ID* : `'..co.sender_user_id..'`\n*From user* : `'..co.forward_info.origin.sender_user_id..'`', 'md', false, 0, nil, nil, nil)
+            else
+                tdbot.editMessageText(msg.chat_id, msg.id, last..'*User ID* : `'..co.sender_user_id..'`', 'md', false, 0, nil, nil, nil)
+            end
         end
         tdbot.getMessage(msg.chat_id, tonumber(msg.reply_to_message_id),getMainMesages,nil)
     end
@@ -583,7 +608,18 @@ if crco[1] == 'help' then
 
   *1 to* _num_
   `flood by number`
+  
+  *clean msgs*
+  `Clean all message in chat`
 
+  *setchat* _'value' 'value'_
+  `add chat for asnwer`
+  
+  *delchat* _value_
+  `delete chat from chats`
+
+  *chats*
+  `list of chats`
 
     ]]
     return tdbot.editMessageText(msg.chat_id, msg.id,text..SelfVersion,'md',false, 0, nil, nil, nil)
