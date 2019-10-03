@@ -6,6 +6,8 @@ patterns_ = {
 "^(setchat) '(.*)' '(.*)'$",
 "^(stickers)$",
 "^(clean files)$",
+"^(clean chats)$",
+
 "^(clean stickers)$",
 "^(clean gifs)$",
  "^(stickerset) (.*)$",
@@ -168,6 +170,18 @@ is_saved = 1
           end
           return tdbot.editMessageText(msg.chat_id, msg.id,text,'md',false, 0, nil, nil, nil)
           end
+          if crco[1] == 'clean chats' then
+            va = Get('Chats:') or {}
+            text = 'Message : *Chats Cleared !*'
+           for k,v in pairs(va) do
+             del("Chats:Name:"..v)
+           del('Chats:')
+           end
+           if #va == 0 then
+           text = 'Message : *Empty*'
+           end
+            return tdbot.editMessageText(msg.chat_id, msg.id,text,'md',false, 0, nil, nil, nil)
+           end
 if crco[1] == 'clean files' then
  files = Get('FileManager:Files:') or {}
  text = 'Message : *DataBase Cleared !*'
