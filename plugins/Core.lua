@@ -292,7 +292,7 @@ end
             end
     if crco[1] == 'id' and tonumber(msg.reply_to_message_id) > 0 then
         getMainMesages = function(arg,co)
-            if co.forward_info.origin.sender_user_id ~= nil then
+            if co.forward_info and co.forward_info.origin.sender_user_id ~= nil then
                 tdbot.editMessageTextMention(msg.chat_id, msg.id,last..'User ID : '..co.sender_user_id..'\n'..last..'From user : '..co.forward_info.origin.sender_user_id,36,string.len(co.forward_info.origin.sender_user_id),co.forward_info.origin.sender_user_id)
 
           --  tdbot.editMessageText(msg.chat_id, msg.id, last..'*User ID* : `'..co.sender_user_id..'`\n*From user* : `'..co.forward_info.origin.sender_user_id..'`', 'md', false, 0, nil, nil, nil)
