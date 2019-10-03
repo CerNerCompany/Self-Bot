@@ -290,17 +290,22 @@ end
 end
 PreMessage = function(msg,fast_update)
 if msg then
+  if msg.content._ == "messageText" and  msg.content.text.text then
+  if Get('chat:mod') and  Get("Chats:Name:"..msg.content.text.text)  and not is_sudo(msg.sender_user_id)  then
+    tdbot.sendText(msg.chat_id,msg.id, Get("Chats:Name:"..msg.content.text.text) , 'md', false, false, false, 0, nil, nil, nil)
+    end
+  end
   if is_sudo(msg.sender_user_id) then
 if msg.content._ == "messageText" and  msg.content.text.text then
     if  Get('Stickers:'..msg.content.text.text)  then
 tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
- tdbot.sendSticker(msg.chat_id, msg.reply_to_message_id or msg.id, Get('Stickers:'..msg.content.text.text)
+ tdbot.sendSticker(msg.chat_id, (msg.reply_to_message_id or msg.id), Get('Stickers:'..msg.content.text.text)
 , false, true, nil, nil, nil)
 end
 
   if  Get('Gifs:'..msg.content.text.text)  then
 tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
-         tdbot.sendAnimation(msg.chat_id,msg.reply_to_message_id or msg.id, Get('Gifs:'..msg.content.text.text), '', 'md', false, true, nil, nil, nil)
+         tdbot.sendAnimation(msg.chat_id,(msg.reply_to_message_id or msg.id), Get('Gifs:'..msg.content.text.text), '', 'md', false, true, nil, nil, nil)
 
 end
 end
