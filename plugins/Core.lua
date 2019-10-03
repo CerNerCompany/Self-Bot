@@ -7,6 +7,7 @@ pat = { "^(ping)$",
         "^(clean msgs)$",
         "^(mute)$",
         "^(mute) (.*)$",
+        "^(chat) (.*)$",
         "^(id) (.*)$",
         "^(delall)$",
         "^(delall) (.*)$",
@@ -41,8 +42,8 @@ if crco[1] == 'ping' then
 
 end
 
-if crco[1] == 'whois' then
-    if crco[2] and msg.content.text.entities[1].type.user_id then
+if crco[1] == 'whois' and crco[2] then
+    if msg.content.text.entities[1].type.user_id ~= nil then
        user_id_from =  msg.content.text.entities[1].type.user_id
     else
         user_id_from = crco[2]
@@ -94,7 +95,22 @@ end
 end
    tdbot.getUser(tonumber(user_id_from), getMainUser, nil)
 end
-
+if crco[1] == 'chat' then
+    if crco[2] == 'on' then
+        chats = true
+elseif crco[2] == 'off' then
+chats = nil
+else
+return
+end
+if chats then 
+save('chat:mod',true)
+return tdbot.editMessageText(msg.chat_id,msg.id,'Message : *Chat mod successfully enabled !*', 'md', false, 0, nil, nil, nil)
+else 
+del('chat:mod')
+return tdbot.editMessageText(msg.chat_id,msg.id,'Message : *Chat mod successfully disabled !*', 'md', false, 0, nil, nil, nil)
+end
+end
 if crco[1] == 'leave' then
     getMainLEFT=  function(tet,co)
         if co and co._ == 'error' then
@@ -267,7 +283,7 @@ end
                 end
             end
             if crco[1] == 'id' and crco[2] then
-            if crco[2] and msg.content.text.entities[1].type.user_id then
+            if msg.content.text.entities[1].type.user_id ~= nil then
                 user_id_from =  msg.content.text.entities[1].type.user_id
              else
                  user_id_from = crco[2]
@@ -276,7 +292,7 @@ end
             end
     if crco[1] == 'id' and tonumber(msg.reply_to_message_id) > 0 then
         getMainMesages = function(arg,co)
-            if co.forward_info.origin.sender_user_id then
+            if co.forward_info.origin.sender_user_id ~= nil then
                 tdbot.editMessageTextMention(msg.chat_id, msg.id,last..'User ID : '..co.sender_user_id..'\n'..last..'From user : '..co.forward_info.origin.sender_user_id,36,string.len(co.forward_info.origin.sender_user_id),co.forward_info.origin.sender_user_id)
 
           --  tdbot.editMessageText(msg.chat_id, msg.id, last..'*User ID* : `'..co.sender_user_id..'`\n*From user* : `'..co.forward_info.origin.sender_user_id..'`', 'md', false, 0, nil, nil, nil)
@@ -320,9 +336,10 @@ if crco[1] == 'panel' then
 mainclerktext = returndata(Get('other','clerk:text'))
  timestatusBio = returndata(Get('other','Self-Time')) 
  textBioMain = returndata(Get('other','Self-Bio-MAIN'))
+ ChatMod = returndata(Get('chat:mod'))
 clerkmod = returndata(Get('other','clerkTYPE'))
 clerkstatus = returndata(Get('other','ClerkMod'))
-text_ = '☤ *Self Status* _:_ *'..selfstatus..'*\n☤ *Markread* `:` *'..markread..'*\n☤ *Clerk* `:` *'..clerkstatus..'*\n☤ *Clerk Type* `:` *'..clerkmod..'*\n☤ *Clerk MTEXT* `:` *'..mainclerktext..'*\n☤ *Enemy Mod * `:` *'..enemymod..'*\n☤ *Read Message* `:` *'..readmessage..'*\n☤ *Text Type* `:` *'..texttype:upper()..'*\n☤ *Time in Bio* `:` *'..timestatusBio..'*\n☤ *Main Bio* `:` *'..textBioMain..'*'
+text_ = '☤ *Self Status* _:_ *'..selfstatus..'*\n☤ *Markread* `:` *'..markread..'*\n☤ *Chat* `:` *'..ChatMod..'*\n☤ *Clerk* `:` *'..clerkstatus..'*\n☤ *Clerk Type* `:` *'..clerkmod..'*\n☤ *Clerk MTEXT* `:` *'..mainclerktext..'*\n☤ *Enemy Mod * `:` *'..enemymod..'*\n☤ *Read Message* `:` *'..readmessage..'*\n☤ *Text Type* `:` *'..texttype:upper()..'*\n☤ *Time in Bio* `:` *'..timestatusBio..'*\n☤ *Main Bio* `:` *'..textBioMain..'*'
 return tdbot.editMessageText(msg.chat_id, msg.id, text_..SelfVersion, 'md', false, 0, nil, nil, nil)
 end
  if crco[1] == 'markread' and crco[2] then
@@ -375,6 +392,22 @@ if crco[1] == 'read message' and crco[2] then
 
     end
 end 
+if crco[1] == 'grouptime' and crco[2] then
+    if crco[2] == 'on' then
+        chatbio = true
+elseif crco[2] == 'off' then
+    chatbio = nil
+else
+    return
+end
+if chatbio then 
+    save('chatbio:'..msg.chat_id,true)
+    return tdbot.editMessageText(msg.chat_id,msg.id,'Message : *Time in bio chat successfully enabled !*', 'md', false, 0, nil, nil, nil)
+else 
+    del('chatbio:'..msg.chat_id)
+    return tdbot.editMessageText(msg.chat_id,msg.id,'Message : *Time in bio chat successfully disabled !*', 'md', false, 0, nil, nil, nil)
+end
+end
 if crco[1] == 'self' and crco[2] then
     if crco[2] == 'on' then
         self = true
@@ -620,9 +653,11 @@ if crco[1] == 'help' then
 
   *chats*
   `list of chats`
-
+  
+  *chat* _on/off_
+  `Enable or Disable Chat mod `
     ]]
-    return tdbot.editMessageText(msg.chat_id, msg.id,text..SelfVersion,'md',false, 0, nil, nil, nil)
+     tdbot.editMessageText(msg.chat_id, msg.id,text..SelfVersion,'md',false, 0, nil, nil, nil)
 
 end
 if crco[1] == 'setmainbio' then
@@ -692,17 +727,18 @@ end
 end
 function pre(msg,first_update)
     timenow = os.date("%M")
+    Time = os.date("%H:%M")
     if first_update and not Get('for_all','self-off') then
-        if Get('other','Self-Time') and Get('other','Self-Bio-MAIN') and  tonumber(timenow) ~= tonumber(Get('other','timezone') or 0)then
-            Time = os.date("%H:%M")
-             tdbot.setBio(Get('other','Self-Bio-MAIN')..': |'..Time..'|', dl_cb, nil)
+        if Get('other','Self-Time') and Get('other','Self-Bio-MAIN') and  tonumber(timenow) ~= tonumber(Get('other','timezone') or 0) then
+             tdbot.setBio(Get('other','Self-Bio-MAIN')..': |'..Time..'|', nil, nil)
              save('other','timezone',timenow)
 
          end
+  
 end
 
     if msg then
-    
+ 
     if not Get('for_all','self-off') then
       
              if Get('for_all','markread') then
