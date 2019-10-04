@@ -601,14 +601,14 @@ function tdbot.getGroupsInCommon(user_id, offset_chat_id, limit, callback, data)
   }, callback or dl_cb, data))
 end
 
-function tdbot.getChatHistory(chat_id, from_message_id, offset, limit, only_local, callback, data)
+function tdbot.getChatHistory(chat_id, from_message_id, offset, limit, callback, data)
   assert (tdbot_function ({
     ["@type"] = 'getChatHistory',
     chat_id = chat_id,
     from_message_id = from_message_id,
     offset = offset,
     limit = setLimit(100, limit),
-    only_local = only_local
+    only_local = false
   }, callback or dl_cb, data))
 end
 
@@ -1202,69 +1202,32 @@ function tdbot.addChatMembers(chat_id, user_ids, callback, data)
   }, callback or dl_cb, data))
 end
 
-function tdbot.setChatMemberStatus(chat_id, user_id, status, right, callback, data)
-  local chat_member_status = {}
-  local right = right and vectorize(right) or {}
-  if status == 'Creator' then
-    chat_member_status = {
-      is_member = right[0] or 1
-    }
-  elseif status == 'Administrator' then
-    chat_member_status = {
-      can_be_edited = right[0] or 1,
-      can_change_info = right[1] or 1,
-      can_post_messages = right[2] or 1,
-      can_edit_messages = right[3] or 1,
-      can_delete_messages = right[4] or 1,
-      can_invite_users = right[5] or 1,
-      can_restrict_members = right[6] or 1,
-      can_pin_messages = right[7] or 1,
-      can_promote_members = right[8] or 0
-    }
-  elseif status == 'Restricted' then
-    chat_member_status = {
-      is_member = right[0] or 1,
-      restricted_until_date = right[1] or 0,
-      can_send_messages = right[2] or 1,
-      can_send_media_messages = right[3] or 1,
-      can_send_other_messages = right[4] or 1,
-      can_add_web_page_previews = right[5] or 1
-    }
-  elseif status == 'Banned' then
-    chat_member_status = {
-      banned_until_date = right[0] or 0
-    }
-  end
-  chat_member_status["@type"] = 'chatMemberStatus' .. status
-  assert (tdbot_function ({
-    ["@type"] = 'setChatMemberStatus',
-    chat_id = chat_id,
-    user_id = user_id,
-   
-  }, callback or dl_cb, data))
-end
-function tdbot.Restrict(chat_id, user_id, right,callback, data)
-  local right =  {}
-assert (tdbot_function ({
-  ["@type"] = 'setChatMemberStatus',
-  chat_id = chat_id,
-  user_id = user_id,
-  status = {
-    ["@type"] = "chatMemberStatusRestricted",
-    is_member = right[0] or 1,
-    permissions = {
-      ["@type"] = "chatPermissions",
-      can_add_web_page_previews = right[5] or 1,
-      can_send_media_messages = right[3] or 1,
-      can_send_messages = right[2] or 1,
-      can_send_other_messages = right[4] or 1,
-      can_send_polls = right[6] or 1
-    },
-    restricted_until_date = right[1] or 1
-  },
+function tdbot.Restrict(chat_id, user_id,right,callback, data)
+    assert (tdbot_function ({
+      _ = 'setChatMemberStatus',
+      chat_id = chat_id,
+      status = {
+        ["@type"] = "chatMemberStatusRestricted",
+        is_member = right[1] or 1,
+        permissions = {
+          ["@type"] = "chatPermissions",
+          can_add_web_page_previews = right[2] or 0,
+          can_send_messages = right[3] or 0,
+          can_invite_users = right[4] or 0,
+          can_send_other_messages = right[5] or 0 ,
+          can_send_media_messages = right[6] or 0,
+          can_send_polls = right[7] or 0
+        },
+        restricted_until_date = right[8] or 0 
+      },
+      user_id = user_id,
+  
 
-}, callback or dl_cb, data))
-end
+    }, callback or dl_cb, data))
+  
+
+  end
+
 
 
 function tdbot.getChatMember(chat_id, user_id, callback, data)
@@ -2513,11 +2476,10 @@ function tdbot.sendDocument(chat_id, reply_to_message_id, document, caption, par
   sendMessage(chat_id, reply_to_message_id, input_message_content, parse_mode, disable_notification, from_background, reply_markup, callback, data)
 end
 
-function tdbot.sendPhoto(chat_id, reply_to_message_id, photo, caption, parse_mode,width, height, ttl, disable_notification, from_background, reply_markup, callback, data)
+function tdbot.sendPhoto(chat_id, reply_to_message_id, photo,caption, parse_mode,width, height, ttl, disable_notification, from_background, reply_markup, callback, data)
   local input_message_content = {
     ["@type"] = 'inputMessagePhoto',
     photo = getInputFile(photo),
-
     caption = {text = caption},
     added_sticker_file_ids = {},
     width = width,
