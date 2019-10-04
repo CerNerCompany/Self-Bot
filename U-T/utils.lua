@@ -139,15 +139,29 @@ getMainMute = function (user_id,msg)
       end
    
   mute = { 
-      0,--is member 
-      0,--2 send text 
+    --[[getMainUnMuteglobal permissions: {
+    ["@type"]: string = "chatPermissions",
+    can_add_web_page_previews: any,
+    can_invite_users: any,
+    can_send_media_messages: any,
+    can_send_messages: any,
+    can_send_other_messages: any,
+    can_send_polls: any,
+}]]
+      1,--is member 
+      0,--2  
       0,--3 send media 
-     0, --4 send other msg 
-      0,--5 send link
-      0--6 send poll 
-      
+      0 ,--4 send other msg 
+0,
+0  ,
+0,
+0
     }
-      tdbot.Restrict(msg.chat_id, user_id,mute,  getData, data)
+   
+
+    tdbot.Restrict(msg.chat_id, user_id,mute,getData,nil)
+ --   tdbot.setChatMemberStatus(msg.chat_id, user_id,'Restricted','{1,1,1,0,0,0}',  getData, nil)
+      --tdbot.Restrict(msg.chat_id, user_id,'Restricted',mute,  getData, nil)
   
       end
       end
@@ -169,10 +183,12 @@ getMainMute = function (user_id,msg)
                   1,--3 send media 
                  1, --4 send other msg 
                   1,--5 send link
-                  1--6 send poll 
+                  1,--6 send poll 
+                1,
+                1
                   
                 }
-                tdbot.Restrict(msg.chat_id, user_id,unmute,  getData, data)
+                tdbot.Restrict(msg.chat_id, user_id,unmute,  getData, nil)
   
               end
               end
@@ -188,8 +204,18 @@ getMainMute = function (user_id,msg)
       tdbot.editMessageText(msg.chat_id, msg.id, text, 'html', false, 0, nil, nil, nil)
   
   end
-  
-  tdbot.setChatMemberStatus(msg.chat_id, user_id, 'Banned',0, getData, data)
+  ban =  { 
+    0,--is member 
+    0,--2 send text 
+    0,--3 send media 
+   0, --4 send other msg 
+    0,--5 send link
+    0,--6 send poll 
+  0,
+  0}
+  tdbot.Restrict(msg.chat_id, user_id,ban,  getData, nil)
+
+--
   end
   end
   getSixe = function(b)
@@ -488,6 +514,8 @@ is_Saved = function(pth,name)
  
   
          for v,value in pairs(list) do
+          print(value)
+
           if name == value then
             print('var false for aly')
           var = false
