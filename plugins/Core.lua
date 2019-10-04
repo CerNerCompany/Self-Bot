@@ -19,6 +19,8 @@ pat = { "^(ping)$",
         "^(whois) (.*)$",
         "^(block) (.*)$",
         "^(unblock) (.*)$",
+        "^(unblock)$",
+
         "^(mydel)$",
         "^(tagall)$",
         "^(inv) (.*)$",
@@ -43,7 +45,7 @@ if crco[1] == 'ping' then
 end
 
 if crco[1] == 'whois' and crco[2] then
-    if msg.content.text.entities[1].type.user_id ~= nil then
+    if msg.content.text.entities and msg.content.text.entities[1] and msg.content.text.entities[1].type.user_id ~= nil then
        user_id_from =  msg.content.text.entities[1].type.user_id
     else
         user_id_from = crco[2]
@@ -56,7 +58,7 @@ if crco[1] == 'whois' and crco[2] then
         tdbot.editMessageText(msg.chat_id, msg.id, text, 'html', false, 0, nil, nil, nil)
     else
 firstname = ('|'..crco_.first_name..'|' or '')
-if crco_.phone_number then
+if string.len(crco_.phone_number) > 0 then
     number = '|'..string.sub(crco_.phone_number, 1, 8)..'####|'
 else
 number = '|NOT ACS|'
@@ -283,7 +285,7 @@ end
                 end
             end
             if crco[1] == 'id' and crco[2] then
-            if msg.content.text.entities[1].type.user_id ~= nil then
+                if msg.content.text.entities and msg.content.text.entities[1] and msg.content.text.entities[1].type.user_id ~= nil then
                 user_id_from =  msg.content.text.entities[1].type.user_id
              else
                  user_id_from = crco[2]
@@ -656,6 +658,12 @@ if crco[1] == 'help' then
   
   *chat* _on/off_
   `Enable or Disable Chat mod `
+
+  *id* _reply/mention_
+  `show userid ` 
+  
+  *delfile* _name_
+  `deleted file from database`
     ]]
      tdbot.editMessageText(msg.chat_id, msg.id,text..SelfVersion,'md',false, 0, nil, nil, nil)
 
