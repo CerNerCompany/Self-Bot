@@ -3,6 +3,8 @@ patterns_ = {
 "^(gifs)$",
 "^(chats)$",
 "^(delchat) (.*)$",
+"^(delfile) (.*)$",
+
 "^(setchat) '(.*)' '(.*)'$",
 "^(stickers)$",
 "^(clean files)$",
@@ -24,7 +26,6 @@ is_have = function(name,type_)
 end
 return var
 end
-
 FileManager = function(msg,crco)
   if is_sudo(msg.sender_user_id) then
   if crco[1] == 'files' then
@@ -144,6 +145,38 @@ is_saved = 1
         tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
       end
       end
+      if crco[1] == 'delfile' then
+        if CHECK('FileManager:Files:',crco[2]) then
+        del("FileManager:Gif:"..crco[2]) 
+        
+
+         Del = true
+        del("FileManager:Photo:"..crco[2]) 
+
+        del("FileManager:VideoNote:"..crco[2]) 
+
+          del("FileManager:Video:"..crco[2]) 
+
+        del("FileManager:VoiceNote:"..crco[2]) 
+
+ 
+        del("FileManager:Audio:"..crco[2]) 
+
+        del("FileManager:Document:"..crco[2]) 
+
+         
+         del("FileManager:Contact:"..crco[2])
+         del("FileManager:Contact:Name:"..crco[2])
+         
+       else
+         return tdbot.editMessageText(msg.chat_id, msg.id,'Message : *File* :`'..ec_name(crco[2])..'` * is Not Found *','md',false, 0, nil, nil, nil)
+       end
+       if Del then 
+        sremove('FileManager:Files:',crco[2])
+        return tdbot.editMessageText(msg.chat_id, msg.id,'Message : *File* :`'..ec_name(crco[2])..'` * Removed ! *','md',false, 0, nil, nil, nil)
+
+       end
+       end
   if crco[1] == 'setchat' and crco[2] and crco[3] then
         sadd('Chats:',crco[2])
         save('Chats:Name:'..crco[2],crco[3])
@@ -198,9 +231,6 @@ del("FileManager:Contact:"..v)
 del("FileManager:Audio:"..v) 
 del("FileManager:VoiceNote:"..v) 
 del("FileManager:Photo:"..v) 
-del('FileManager:Files:')
-del("FileManager:Audio:CoverPhoto:"..v) 
-del("FileManager:Contact:Name:"..v) 
 del('FileManager:Files:')
 end
 if #files == 0 then
