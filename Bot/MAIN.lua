@@ -1,4 +1,3 @@
-serpent = require 'serpent'
 tdbot_function = require('Bot.tdbot').getCallback()
  tdbot  =  require'U-T.tdbot'
 bot = {}
