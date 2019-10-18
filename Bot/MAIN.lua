@@ -1,9 +1,6 @@
 serpent = require 'serpent'
 tdbot_function = require('Bot.tdbot').getCallback()
  tdbot  =  require'U-T.tdbot'
-function vardump(w)
-   print(serpent.block(w, {comment=false}))
-end
 bot = {}
 plugin = {}
 MsgTime_ = os.time() - 5
@@ -13,7 +10,9 @@ getINFO = function(IN, WIT)
  bot.last_name = WIT.last_name or ''
  bot.username = WIT.username or ''
  bot.phone_number = WIT.phone_number
-
+end
+getInfo_ = function(INT,crco_WIT)
+  bot.bio = crco_WIT.bio
 end
 TimeNow = os.time()
 
@@ -96,7 +95,6 @@ run_BOT= function (...)
      if plugint.run  then
     msg_ = plugint.run(msg,data_)
     if msg_ then
-    print("Pre Run =>> ", name)
      end
      
    end
@@ -146,10 +144,11 @@ PluginLoad()
 
 function tdbot_update_callback (data_)
  tdbot.getMe( getINFO,nil)
+ tdbot.getUserFullInfo(bot.id,getInfo_,nil)
  getMainMessage(data_,nil,data_)
-
  if (data_._ == "updateDeleteMessages")  then
  elseif ( data_._ == "updateNewMessage" or data_._ == "updateNewChannelMessage") then
+
    if data_ and  Valid_(data_.message) or (data_.message.date and Valid_(data_.message)) then
    
    getMainMessage(data_,data_.message,data_)
