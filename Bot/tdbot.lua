@@ -53,8 +53,8 @@ elseif state["@type"] == "authorizationStateWaitTdlibParameters" then
                 api_hash = api_hash,
                 system_language_code = "en",
                 device_model = "CRCO-SELF",
-                system_version = "BETA: 2",
-                application_version = "BETA : 2",
+                system_version = "CRCO-BASE: 1.3",
+                application_version = "BETA : 2.1",
                 enable_storage_optimizer = true,
                 use_pfs = true,
                 database_directory = "./CRCO-TG"
