@@ -59,6 +59,7 @@ local function getInputFile(file, conversion_str, expected_size)
   end
 
   return infile
+ -- vardump
 end
 
 tdbot.getInputFile = getInputFile
@@ -1740,11 +1741,11 @@ function tdbot.resetAllNotificationSettings(callback, data)
   }, callback or dl_cb, data))
 end
 
-function tdbot.setProfilePhoto(photo, callback, data)
+function tdbot.setProfilePhoto(photo)
   assert (tdbot_function ({
     ["@type"] = 'setProfilePhoto',
     photo = getInputFile(photo)
-  }, callback or dl_cb, data))
+  }, dl_cb))
 end
 
 function tdbot.deleteProfilePhoto(profile_photo_id, callback, data)
