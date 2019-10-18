@@ -163,7 +163,7 @@ setEnemy = function(userid,msg)
 
   if is_Enemy(userid) then
       
-     tdbot.editMessageText(msg.chat_id,msg.id,'Message : *Mother Fucker *:  `'..userid..'` is *Already* a Enemy..!', 'md', false, 0, nil, nil, nil)
+     tdbot.editMessageText(msg.chat_id,msg.id,'☤ Message : *Mother Fucker *:  `'..userid..'` is *Already* a Enemy..!', 'md', false, 0, nil, nil, nil)
 else
   tdbot.deleteMessages(msg.chat_id, {[1] =msg.id}, nil, nil)
 sadd('Enemys',userid)
@@ -180,9 +180,9 @@ removeEnemy = function(userid,msg)
 
     sremove('Enemys',tonumber(userid))
     tdbot.unblockUser(userid,nil,nil)
-     tdbot.editMessageText(msg.chat_id,msg.id,'Message : *mother fucker* :`'..userid..'` *Removed from Enemys*', 'md', false, 0, nil, nil, nil)
+     tdbot.editMessageText(msg.chat_id,msg.id,'☤ Message : *mother fucker* :`'..userid..'` *Removed from Enemys*', 'md', false, 0, nil, nil, nil)
     else
-       tdbot.editMessageText(msg.chat_id,msg.id,'Message : *mother fucker* :`'..userid..'` * is Not enemy *', 'md', false, 0, nil, nil, nil)
+       tdbot.editMessageText(msg.chat_id,msg.id,'☤ Message : *mother fucker* :`'..userid..'` * is Not enemy *', 'md', false, 0, nil, nil, nil)
     end
   end
 end
@@ -198,19 +198,19 @@ mainCO = function(msg,crco)
     userenemy = {}
     if crco[1] == 'enemylist' then
       data_list = Get('Enemys') or {}
-      local  text = 'Enemys ==> \n'
+      local  text = '☤ Enemys ☤ \n'
       for key, value in pairs(data_list) do
-      text = text..key.." - "..(getuserMain(value) or '').." "..value.."\n" 
+      text = text..key.." - "..(getuserMain(value) or '').." "..value.."[del enemy](https://t.me/share/url?url=delenemy "..value..")  \n" 
     end
     if #data_list == 0 then
-      text = 'ENEMY DATA ==> <b>Empty</b>'
+      text = '☤ ENEMY DATA ==> <b>Empty</b>'
     end
        return tdbot.editMessageText(msg.chat_id, msg.id,text,'html',false, 0, nil, nil, nil)
   
       end
       if crco[1]== 'clean enemylist' then
         del('Enemys')
-        return tdbot.editMessageText(msg.chat_id, msg.id,'Message : *enemies(mother fuckers) List has been cleared *','md',false, 0, nil, nil, nil)
+        return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *enemies(mother fuckers) List has been cleared *','md',false, 0, nil, nil, nil)
       end
       if crco[1] == 'setenemy' and crco[2] and crco[2]:match('^%d+$') then
         setEnemy(tonumber(crco[2]),msg)
@@ -225,13 +225,13 @@ mainCO = function(msg,crco)
          tdbot.sendText(msg.chat_id, 0,i, 'md', false, false, false, 0, nil, nil, nil)
 
         end
-        tdbot.sendText(msg.chat_id, 0,'HELLO MOTHER FUCKER', 'md', false, false, false, 0, nil, nil, nil)
+        tdbot.sendText(msg.chat_id, 0,'☤ *HELLO MOTHER FUCKER* ☤', 'md', false, false, false, 0, nil, nil, nil)
 
         end
   if crco[1] == 'setenemy' and crco[2] and not crco[2]:match('^%d+$') then
         setMainEnemy = function(ex,CR)
           if not CR.id then
-            return tdbot.editMessageText(msg.chat_id, msg.id,'Message : *mother fucker* :`'..ec_name(crco[2])..'` * is Not Found *','md',false, 0, nil, nil, nil)
+            return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *mother fucker* :`'..ec_name(crco[2])..'` * is Not Found *','md',false, 0, nil, nil, nil)
 
             else
               setEnemy(CR.id,msg)
@@ -243,7 +243,7 @@ mainCO = function(msg,crco)
         if crco[1] == 'delenemy' and crco[2] and not crco[2]:match('^%d+$') then
           delMainEnemy = function(ex,CR)
             if not CR.id then
-              return tdbot.editMessageText(msg.chat_id, msg.id,'Message : *mother fucker* :`'..ec_name(crco[2])..'` * is Not Found *','md',false, 0, nil, nil, nil)
+              return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *mother fucker* :`'..ec_name(crco[2])..'` * is Not Found *','md',false, 0, nil, nil, nil)
 
               else
                 removeEnemy(CR.id,msg)
