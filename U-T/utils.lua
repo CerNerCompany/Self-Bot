@@ -2,7 +2,6 @@
 utf8 = require "U-T.utf8" 
   client = require("redis")
   socket = require('socket')
-
     redis = client.connect('127.0.0.1', 6379)
         serpent = require "serpent"
      encode_json = require("dkjson")
@@ -83,7 +82,7 @@ end
 
 end
 
-SelfVersion = '\n*Version* _:_`|BETA => 2|`'
+SelfVersion = '\n*Version* _:_`|BETA => 2.1|`'
 dofile_ = function(filename)
 if io.open("./U-T/"..filename..'.lua' or '','r') ==nil then
  text =  'No file exists on this path !\n==> CRCO PROJET <=='
@@ -296,7 +295,7 @@ getMainMute = function (user_id,msg)
   end
   invateUser = function(user_id,msg)
       if type(user_id) == 'number' then
-          print(user_id)
+      
       checkCanbeAdduser = function(arg,co) 
           if co._ == 'error' then
               text = 'Message : <b>Access Denied</b>\n\nUser : <b>'..user_id..'</b> - '..getuserMain(user_id) or ''
@@ -514,10 +513,10 @@ is_Saved = function(pth,name)
  
   
          for v,value in pairs(list) do
-          print(value)
+      
 
           if name == value then
-            print('var false for aly')
+      
           var = false
           else 
             var = true
@@ -525,10 +524,10 @@ is_Saved = function(pth,name)
         end
 
         if #list == 0 then
-          print('var true for {}')
+       
           var = true
         end    
-  print(var)
+  
       return var
     
 end
