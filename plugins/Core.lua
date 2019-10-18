@@ -687,7 +687,7 @@ if crco[1] == 'help core' then
 ☤ *getplug* _name_
 `get plug file in telegram`
     
-☤ *session*
+☤ *sessions*
 `Show active session`
     
 ☤ *deactive* _id_
@@ -861,7 +861,7 @@ end
 if crco[1] == 'bios' then
      data = Get('Self-Bio-MAIN') or {}
   
-    local text = last..' ☤ *Bios* ☤ \n'
+    local text = ' ☤ *Bios* ☤ \n'
     for key,value in pairs(data) do
     text = text..key.." - *|"..value..'|* [delete](https://t.me/share/url?url=delbio '..value..')\n'
     end
