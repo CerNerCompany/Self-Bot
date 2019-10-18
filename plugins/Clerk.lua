@@ -17,10 +17,10 @@ if crco[1] == 'clerk' then
     end
     if clerk then
         save('other','ClerkMod',true)
-        return tdbot.editMessageText(msg.chat_id, msg.id, 'Message : *Clerk has been enabled*','md',false, 0, nil, nil, nil)
+        return tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : *Clerk has been enabled*','md',false, 0, nil, nil, nil)
     else
         del('other','ClerkMod')
-        return  tdbot.editMessageText(msg.chat_id, msg.id, 'Message : *Clerk Has been Disable*','md',false, 0, nil, nil, nil)
+        return  tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : *Clerk Has been Disable*','md',false, 0, nil, nil, nil)
     end
 end
 if crco[1] == 'setclerktext' and tonumber(msg.reply_to_message_id)> 0 then
@@ -29,10 +29,10 @@ if crco[1] == 'setclerktext' and tonumber(msg.reply_to_message_id)> 0 then
         save('other','clerk:text',CR.content.text.text)
         type_ = true
     else
-        return  tdbot.editMessageText(msg.chat_id, msg.id, "Message : *You Can't set this* !",'md',false, 0, nil, nil, nil)
+        return  tdbot.editMessageText(msg.chat_id, msg.id, "☤ Message : *You Can't set this* !",'md',false, 0, nil, nil, nil)
 end
 if type_ then
-    return  tdbot.editMessageText(msg.chat_id, msg.id, 'Message : *Clerk Text Seted to* : '..CR.content.text.text,'md',false, 0, nil, nil, nil)
+    return  tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : *Clerk Text Seted to* : '..CR.content.text.text,'md',false, 0, nil, nil, nil)
 end
 end
 tdbot.getMessage(msg.chat_id, tonumber(msg.reply_to_message_id),getMessageMain,nil)
@@ -63,10 +63,10 @@ save('other','clerkTYPE','VideoNote')
 type_ = 'VideoNote'
 
 else
-        return  tdbot.editMessageText(msg.chat_id, msg.id, "Message : *You Can't Save this* !",'md',false, 0, nil, nil, nil)
+        return  tdbot.editMessageText(msg.chat_id, msg.id, "☤ Message : *You Can't Save this* !",'md',false, 0, nil, nil, nil)
 end
 if type_ then
-    return  tdbot.editMessageText(msg.chat_id, msg.id, 'Message : *Clerk Seted to* : '..type_,'md',false, 0, nil, nil, nil)
+    return  tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : *Clerk Seted to* : '..type_,'md',false, 0, nil, nil, nil)
 end
 end
 tdbot.getMessage(msg.chat_id, tonumber(msg.reply_to_message_id),getMessageMain,nil)
