@@ -32,7 +32,7 @@ FileManager = function(msg,crco)
   if crco[1] == 'files' then
     local files = Get('FileManager:Files:') or {}
   
-    local text = last..' *Files* `:` *in Database* `:` \n'
+    local text = last..' *Files in Database* ☤ \n'
     for key,value in pairs(files) do
      
     local sixe = Get("FileManager:FileSize:"..value) or 5
@@ -100,10 +100,10 @@ is_saved = 1
           save('FileManager:TypeFile:'..crco[2],'Contact')
 is_saved = 1
          else
-        return tdbot.editMessageText(msg.chat_id, msg.id,'Message : *File* :`'..ec_name(crco[2])..'` * is Not Found *','md',false, 0, nil, nil, nil)
+        return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *File* :`'..ec_name(crco[2])..'` * is Not Found *','md',false, 0, nil, nil, nil)
         end
         if is_saved then
-        return tdbot.editMessageText(msg.chat_id, msg.id,'Message : *File* :`'..ec_name(crco[2])..'` *has been saved*','md',false, 0, nil, nil, nil)
+        return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *File* :`'..ec_name(crco[2])..'` *has been saved*','md',false, 0, nil, nil, nil)
         end
         end
         tdbot.getMessage(msg.chat_id, tonumber(msg.reply_to_message_id),getDataMessage,nil)
@@ -144,7 +144,7 @@ is_saved = 1
          tdbot.sendContact(msg.chat_id, msg.id, is_have(crco[2],'Contact'), Get("FileManager:Contact:Name:"..crco[2]), 'CRCO', 0, false, true, nil, nil, nil)
 
       else
-        return tdbot.editMessageText(msg.chat_id, msg.id,'Message : *File* :`'..ec_name(crco[2])..'` * is Not Found *','md',false, 0, nil, nil, nil)
+        return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *File* :`'..ec_name(crco[2])..'` * is Not Found *','md',false, 0, nil, nil, nil)
       end
       if Del then 
         tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
