@@ -445,7 +445,11 @@ if crco[1] == 'panel' then
  self_time = returndata(Get('self:time:status'))
  timestatusBio = returndata(Get('other','Self-Time')) 
  textBioMain = returndata(Get('other','Self-Bio-MAIN'))
- ChatMod = returndata(Get('chat:mod'))
+   if Get('chat:mod'..msg.chat_id) then
+    ChatMod = '|D|'
+ else
+    ChatMod = '|E|'
+ end
  mainclerktext = returndata(Get('other','clerk:text'))
 clerkmod = returndata(Get('other','clerkTYPE'))
 clerkstatus = returndata(Get('other','ClerkMod'))
