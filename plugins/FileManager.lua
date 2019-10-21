@@ -24,8 +24,7 @@ is_have = function(name,type_)
   local var = false
   if Get("FileManager:"..type_..":"..name) then
   var = Get("FileManager:"..type_..":"..name) 
-  print(var)
-end
+  end
 return var
 end
 FileManager = function(msg,crco)
