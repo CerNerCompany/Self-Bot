@@ -24,6 +24,7 @@ is_have = function(name,type_)
   local var = false
   if Get("FileManager:"..type_..":"..name) then
   var = Get("FileManager:"..type_..":"..name) 
+  print(var)
 end
 return var
 end
@@ -32,7 +33,7 @@ FileManager = function(msg,crco)
   if crco[1] == 'files' then
     local files = Get('FileManager:Files:') or {}
   
-    local text = last..' *Files in Database* ☤ \n'
+    local text = last..' *Files* `:` *in Database* `:` \n'
     for key,value in pairs(files) do
      
     local sixe = Get("FileManager:FileSize:"..value) or 5
@@ -72,7 +73,7 @@ is_saved = 1
             end
                 elseif co.content['@type'] == 'messageVideoNote' then
                   savePre(crco[2],tonumber(co.content.video_note.video.size),'VideoNote')
-                  save("FileManager:VideoeNote:"..crco[2],co.content.video_note.video.remote.id)
+                  save("FileManager:VideoNote:"..crco[2],co.content.video_note.video.remote.id)
                   is_saved = 1
                  
       elseif co.content['@type'] == 'messageVoiceNote' then
@@ -100,10 +101,10 @@ is_saved = 1
           save('FileManager:TypeFile:'..crco[2],'Contact')
 is_saved = 1
          else
-        return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *File* :`'..ec_name(crco[2])..'` * is Not Found *','md',false, 0, nil, nil, nil)
+        return tdbot.editMessageText(msg.chat_id, msg.id,'Message : *File* :`'..ec_name(crco[2])..'` * is Not Found *','md',false, 0, nil, nil, nil)
         end
         if is_saved then
-        return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *File* :`'..ec_name(crco[2])..'` *has been saved*','md',false, 0, nil, nil, nil)
+        return tdbot.editMessageText(msg.chat_id, msg.id,'Message : *File* :`'..ec_name(crco[2])..'` *has been saved*','md',false, 0, nil, nil, nil)
         end
         end
         tdbot.getMessage(msg.chat_id, tonumber(msg.reply_to_message_id),getDataMessage,nil)
@@ -125,7 +126,7 @@ is_saved = 1
           tdbot.sendPhoto(msg.chat_id,msg.id, is_have(crco[2],'Photo'), caption, 'md',0, 0, 0, false, true, nil, nil, nil)
       elseif is_have(crco[2],'VideoNote') then
         Del = true
-         tdbot.sendVideoNote(msg.chat_id, msg.id, is_have(crco[2],'VideoNote'), 0, 0, 0, 0, 0, false, true, nil, nil, nil)
+         tdbot.sendVideoNote(msg.chat_id, (msg.id or 0),is_have(crco[2],'VideoNote'),46,480,nil,0,0,false, true, nil, nil, nil)
         elseif is_have(crco[2],'Video') then
           Del = true
        tdbot.sendVideo(msg.chat_id,0,is_have(crco[2],'Video'),caption,'md')
@@ -144,7 +145,7 @@ is_saved = 1
          tdbot.sendContact(msg.chat_id, msg.id, is_have(crco[2],'Contact'), Get("FileManager:Contact:Name:"..crco[2]), 'CRCO', 0, false, true, nil, nil, nil)
 
       else
-        return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *File* :`'..ec_name(crco[2])..'` * is Not Found *','md',false, 0, nil, nil, nil)
+        return tdbot.editMessageText(msg.chat_id, msg.id,'Message : *File* :`'..ec_name(crco[2])..'` * is Not Found *','md',false, 0, nil, nil, nil)
       end
       if Del then 
         tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
