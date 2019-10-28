@@ -8,8 +8,8 @@
 
 
 
-[![Library](https://core.telegram.org/tdlib)
-[![TDLUA](https://github.com/giuseppeM99/tdlua)
+[Library](https://core.telegram.org/tdlib)
+[TDLUA](https://github.com/giuseppeM99/tdlua)
 [![Lua](https://img.shields.io/badge/Lua-5.2-blue.svg)](https://www.lua.org/)
 
 
