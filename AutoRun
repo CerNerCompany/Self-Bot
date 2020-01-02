@@ -1,4 +1,4 @@
 while true; do
-nice -20 lua ./Bot/MAIN.lua
+nice -20 ./ZPM start
 sleep 5
 done
