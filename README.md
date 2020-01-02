@@ -14,6 +14,8 @@
 
 ./ZPM login -- Login to account 
 
+./ZPM config --Configure Self
+
 ./ZPM reset -- Reset Self
 
 ./ZPM start -- Runing 
