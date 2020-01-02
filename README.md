@@ -9,7 +9,16 @@
 
 # installing
 
-NULL
+```
+./ZPM install -- installing packages
+
+./ZPM login -- Login to account 
+
+./ZPM reset -- Reset Self
+
+./ZPM start -- Runing 
+
+```
 
 
 
