@@ -24,7 +24,8 @@ is_have = function(name,type_)
   local var = false
   if Get("FileManager:"..type_..":"..name) then
   var = Get("FileManager:"..type_..":"..name) 
-  end
+  print(var)
+end
 return var
 end
 FileManager = function(msg,crco)
@@ -39,7 +40,7 @@ FileManager = function(msg,crco)
   
     sive = getSixe(tonumber(sixe))
     local type = Get('FileManager:TypeFile:'..value) or 'UnSupported'
-    text = text..key.." - *|"..value.."|*  *Type* `|"..type.."|`*"..sive.."* [Receive in a chat](https://t.me/share/url?url=get "..value..")\n" 
+    text = text..key.." - *〘"..value.."〙*  *Type* `〘"..type.."〙`*"..sive.."* [〘Receive in a chat〙](https://t.me/share/url?url=get "..value..")\n" 
     end
     if #files == 0 then
     text = 'Message `:` *Empty*'
@@ -116,7 +117,7 @@ is_saved = 1
   end
     if crco[1] == 'get' then
        Size = Get("FileManager:FileSize:"..crco[2]) or 100
-       caption ='*File name* `:` *|'..(crco[2])..'|*\n*File Size* `:` *|'..getSixe(Size)..'|*'
+       caption ='*File name* `:` *〘'..(crco[2])..'〙*\n*File Size* `:` *〘'..getSixe(Size)..'〙*'
       if is_have(crco[2],'Gif') then 
         Del = true
          tdbot.sendAnimation(msg.chat_id, msg.id, is_have(crco[2],'Gif'), caption, 'md', false, true, nil, nil, nil)
@@ -283,7 +284,7 @@ if crco[1] == 'gifdel' then
 if CHECK('Gifs:Cloud:',crco[2]) then
 del('Gifs:'..crco[2])
 sremove('Gifs:Cloud:',crco[2])
- return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message `:` *Gif CMD* `:` |'..crco[2]..'| *Has been Deleted* !','md',false, 0, nil, nil, nil)
+ return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message `:` *Gif CMD* `:` 〘'..crco[2]..'〙 *Has been Deleted* !','md',false, 0, nil, nil, nil)
 else
  return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *Gif CMD  is not found*','md',false, 0, nil, nil, nil)
 end
@@ -292,7 +293,7 @@ if crco[1] == 'stickerdel' then
 if CHECK('Stickers:Cloud:',crco[2]) then
 del('Stickers:'..crco[2])
 sremove('Stickers:Cloud:',crco[2])
- return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message `:` *Sticker CMD* `:` |'..gif..'| *Has been Deleted* !','md',false, 0, nil, nil, nil)
+ return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message `:` *Sticker CMD* `:` 〘'..gif..'〙 *Has been Deleted* !','md',false, 0, nil, nil, nil)
 else
  return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *Sticker CMD is not found*','md',false, 0, nil, nil, nil)
 end
