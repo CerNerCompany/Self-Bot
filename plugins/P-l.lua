@@ -79,7 +79,7 @@ DIS = function(NAME)
             return  tdbot.editMessageText(msg.chat_id, msg.id,text ,'md',false, 0, nil, nil, nil)
         end
        table.remove(_EnvDB.data.plist,CHECK('plist',NAME))
-       CreateFile(_EnvDB, "./U-T/DB.lua")
+       CreateFile(_EnvDB , "./U-T/DB.lua")
 
          text= 	      '☤ Message : *Plugin Has been disabled* !'
         tdbot.editMessageText(msg.chat_id, msg.id,text ,'md',false, 0, nil, nil, nil)
@@ -90,22 +90,22 @@ DIS = function(NAME)
 	    for k_, v_ in pairs(
             PLIST_TABLE()
         ) do
-            local status = "`|D|`"
+            local status = "`〘D〙`"
 	          for k, v in pairs(_EnvDB.data.plist) do
                   if v_ == v..'.lua' then
                    
-                    status = "`|E|`"
+                    status = "`〘E〙`"
                     
 	            end
 	        end
-	                 if  status == '`|D|`'then
+	                 if  status == '`〘D〙`'then
 	                  v = v_:match("(.*)%.lua")
-	                                     text = text.. '*'..v..'* '..status..' [E](https://t.me/share/url?url=pl + '..v..') [Receive](https://t.me/share/url?url=getplug '..v..')\n'
+	                                     text = text.. '*'..v..'* '..status..' [〘E〙](https://t.me/share/url?url=pl + '..v..') [〘Receive〙](https://t.me/share/url?url=getplug '..v..')\n'
                                 print(text)
-                                        elseif  status == '`|E|`' then
+                                        elseif  status == '`〘E〙`' then
                 v = v_:match ("(.*)%.lua")
                 
-	            text = text..  '*'..v..'* '..status.." [D](https://t.me/share/url?url=pl - "..v..") [Receive](https://t.me/share/url?url=getplug "..v..")\n"
+	            text = text..  '*'..v..'* '..status.." [〘D〙](https://t.me/share/url?url=pl - "..v..") [〘Receive〙](https://t.me/share/url?url=getplug "..v..")\n"
 	        end
 	    end
 	    return text..'\n_pl + _*plugin name* `=>` *enable plugin*\n_pl -_ *plugin name* `=>` *disable plugin*'
@@ -146,7 +146,7 @@ end
         tdbot.editMessageText(msg.chat_id, msg.id,PluginsLIST(),'md',false, 0, nil, nil, nil)
 end
         if crco[1] == 'reload' then
-            tdbot.editMessageText(msg.chat_id, msg.id,'Message : *All Plugins Reloaded !* \n☤ [show plugins list](https://t.me/share/url?url=plugs)' ,'md',false, 0, nil, nil, nil)
+            tdbot.editMessageText(msg.chat_id, msg.id,'Message : *All Plugins Reloaded !* \n☤ [〘show plugins list〙](https://t.me/share/url?url=plugs)' ,'md',false, 0, nil, nil, nil)
            return PluginLoad()
 	        end
     if crco[2] == '-' then
