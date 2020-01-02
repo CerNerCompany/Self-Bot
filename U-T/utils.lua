@@ -21,7 +21,8 @@ file:write(serialized)
 file:close()
 end
 configEnv = {}
-configEnv.data = {
+DataBase = {
+
   plist = {
     "Core",
     "P-l",
@@ -85,8 +86,10 @@ end
 SelfVersion = '\n*Version* _:_`|BETA => 2.1|`'
 dofile_ = function(filename)
 if io.open("./U-T/"..filename..'.lua' or '','r') ==nil then
- text =  'No file exists on this path !\n==> CRCO PROJET <=='
+ 
  print(text)
+ CreateFile(DataBase , './U-T/DB.lua')
+
  CreateFile(configEnv , "./U-T/"..filename..'.lua')
  print ('Config DEFAULT created !')
 end
