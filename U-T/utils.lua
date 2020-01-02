@@ -567,7 +567,7 @@ end
 end
 is_sudo = function(user_id)
     local var = false
-           for v,user in pairs(_EnvDB.info.sudo_id) do
+           for v,user in pairs(config.info.sudo_id) do
                 if user == user_id then
                     var = true
 end
@@ -597,14 +597,14 @@ black = {30, 40},
 }
 ChangeToPersian = function(num)
    local NUM = {
-        ["0"] = "۰", ["1"] = "۱", ["2"] = "۲",
-           ["3"] = "۳",
-               ["4"] = "۴",
-                   ["5"] = "۵",
-                       ["6"] = "۶",
-                           ["7"] = "۷",
-                               ["8"] = "۸",
-                                       ["9"] = "۹"
+        ["0"] = "Û°", ["1"] = "Û±", ["2"] = "Û²",
+           ["3"] = "Û³",
+               ["4"] = "Û´",
+                   ["5"] = "Ûµ",
+                       ["6"] = "Û¶",
+                           ["7"] = "Û·",
+                               ["8"] = "Û¸",
+                                       ["9"] = "Û¹"
 }
     return string.gsub (num, "%d",
            function(str) 
