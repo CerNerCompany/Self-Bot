@@ -13,7 +13,7 @@ utf8 = require "U-T.utf8"
 file = io.open(file, "w+")
 local serialized
 if not uglify then
- serialized = serpent.block(data, {comment = false,name = "_Env"})
+ serialized = serpent.block(data, {comment = false,name = "_"})
 else
  serialized = serpent.dump(data)
 end
@@ -89,7 +89,7 @@ dofile_ = function(filename)
 if io.open("./U-T/"..filename..'.lua' or '','r') ==nil then
  
  print(text)
- CreateFile(_DB , './U-T/DB.lua')
+ CreateFile(DB , './U-T/DB.lua')
 
  CreateFile(configEnv , "./U-T/"..filename..'.lua')
  print ('Config DEFAULT created !')
