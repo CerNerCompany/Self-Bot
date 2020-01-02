@@ -757,8 +757,15 @@ if crco[1] == 'help core' then
 ☤ *delbio* _text_
 `delete bio from bios`
 
+☤ *addmainbio* _text_
+`add bio to bio list`
+			
 ☤ *timename* _on/off_
 `Enable or Disable time in name`
+			
+☤ *panel*
+`show status of self`
+		
     ]]
      tdbot.editMessageText(msg.chat_id, msg.id,text..SelfVersion,'md',false, 0, nil, nil, nil)
 
