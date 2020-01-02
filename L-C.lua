@@ -176,7 +176,7 @@ end
             )
         elseif state["@type"] == "authorizationStateReady" then
             ready = true
-            print("==> Login Successfully Let's rock")
+            print("==> Login Successfully Let's rock :)")
             client:close(true)
         end
       
