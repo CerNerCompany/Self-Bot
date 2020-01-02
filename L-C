@@ -1,5 +1,5 @@
 #!/usr/bin/env lua
-PTH = arg[2]
+PTH = '/usr/share/lua/5.2/'
 require("U-T.utils") 
 reset = function()
 if isFile('./CRCO-TG') then
@@ -211,16 +211,14 @@ end
   
 
 
-  if arg[1] == '>login' then
+  if arg[1] == 'LOGIN_BOT' then
     run()
-  elseif arg[1] == '>config' then
+  elseif arg[1] == 'CONFIG_BOT' then
     ConfigSelf() 
-elseif arg[1] == '>bot-reset' then
+elseif arg[1] == 'RESET_BOT' then
     reset()
   
-elseif arg[1] == '>run' then
+elseif arg[1] == 'START_BOT' then
   os.execute('lua ./Bot/MAIN.lua'):print(read('*a'))
-elseif not arg[1] then
-  print'Use this cmd \n./XPM run :> for run bot\n./XPM config :> for config source\n./XPM login :> for login Bot\nbot-reset :> reset bot account'
 end
 
