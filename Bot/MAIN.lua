@@ -126,7 +126,7 @@ if not config then
  return 
 end
 
-   for _, files in pairs(config.data.plist) do
+   for _, files in pairs(_EnvDB.data.plist) do
        print ("Loaded Plugin : ", files)
    local ok, err =  pcall(function()
    local PL_LOAD = loadfile("./plugins/"..files..'.lua')()
