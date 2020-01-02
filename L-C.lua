@@ -39,9 +39,7 @@ local color = {
     white = {37, 47}
 }
 ConfigSelf = function()
-  if isFile('./U-T/config.lua')  then
-    print("==> Config File already exists")
-  else
+  
   io.write([[
 
  => Enter Self-ID : 
@@ -75,7 +73,7 @@ ConfigSelf = function()
    
 CreateFile(configEnv , "./U-T/config.lua")
 print("\027[" .. color.white[1] .. ";" .. color.black[2] .. "m ==> Config Created ! \027[00m")
-end
+
 end
 local function vardump(wut)
   print(serpent.block(wut, {comment=false}))
@@ -176,7 +174,7 @@ end
             )
         elseif state["@type"] == "authorizationStateReady" then
             ready = true
-            print("==> Login Successfully Let's rock :)")
+            print("==> Login Successfully Let's rock")
             client:close(true)
         end
       
