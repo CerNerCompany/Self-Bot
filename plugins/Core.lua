@@ -43,7 +43,7 @@ pat = { "^(ping)$",
         "^(block)$",
         "^(tosticker)$",
         "^(sessions)$",
-
+       
         
         "^(private settings)$",
        "^(texttype) (.*)$",
@@ -56,7 +56,7 @@ pat = { "^(ping)$",
 function run(msg,crco)
     if is_sudo(msg.sender_user_id) then
 if crco[1] == 'ping' then
-
+   
      tdbot.editMessageText(msg.chat_id, msg.id, '☤ READY ☤', 'md', false, 0, nil, nil, nil)
 
 end
@@ -92,8 +92,7 @@ if crco[1] == 'tophoto' and tonumber(msg.reply_to_message_id) > 0 then
     
 
         tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
-print(co.content.sticker.sticker["local"].path)
-        
+
         tdbot.sendPhoto(msg.chat_id,msg.id, co.content.sticker.sticker["local"].path,'*By Self-Project*', 'md',0, 0, 0, false, true, nil, nil, nil)
 
 
@@ -113,29 +112,29 @@ if crco[1] == 'whois' and crco[2] then
             text = "☤ Message : <b>Access Denied</b>\nError : <b>"..co.message.."</b>"
         tdbot.editMessageText(msg.chat_id, msg.id, text, 'html', false, 0, nil, nil, nil)
     else
-firstname = ('|'..crco_.first_name..'|' or '')
+firstname = ('〘'..crco_.first_name..'〙' or '')
 if string.len(crco_.phone_number) > 0 then
-    number = '|'..string.sub(crco_.phone_number, 1, 8)..'####|'
+    number = '〘'..string.sub(crco_.phone_number, 1, 8)..'####〙'
 else
-number = '|NOT ACS|'
+number = '〘NOT ACS〙'
 end
-lastname = '|'..crco_.last_name..'|' or ''
+lastname = '〘'..crco_.last_name..'〙' or ''
     userstatus = getUserStatus(crco_.status)
     userType = getUserType(crco_.type)
-    bio = '|'..co.bio..'|' or ''
+    bio = '〘'..co.bio..'〙' or ''
     if crco_.profile_photo then
     tdbot.downloadFile(crco_.profile_photo.big.id, 1, nil, nil)
     end
-    common_count = '|'..co.group_in_common_count..'|'
+    common_count = '〘'..co.group_in_common_count..'〙'
  if co.can_be_called then
-    acsscall = '|Blocked|'
+    acsscall = '〘Blocked〙'
  else
-    acsscall = '|Not Blocked|'
+    acsscall = '〘Not Blocked〙'
  end
  if co.has_private_calls then
-    private_call = '|Private|'
+    private_call = '〘Private〙'
  else
-    private_call = 'EveryBody'
+    private_call = '〘EveryBody〙'
  end
  text = '☤ *User Fully info* ☤ \n☤ *First Name* `:` *'..firstname..'*\n☤ *Last Name* `:` *'..lastname..'*\n☤* Phone Number* `:` *'..number..'*\n☤* Bio* `:` *'..bio..'*\n☤ *Status* `:` *'..userstatus..'*\n☤ *Type* `:` *'..userType..'* \n☤ *Chat With Self* `:` *'..common_count..'*\n☤* Call* `:` *'..acsscall..'*\n☤* Private Call* `:` *'..private_call..'*'
 if crco_.profile_photo and string.len(crco_.profile_photo.big["local"].path) > 0 then
@@ -435,9 +434,9 @@ if crco[1] == 'inv' and crco[2] and not crco[2]:match('^%d+$') then
 if crco[1] == 'panel' then
  markread = returndata(Get('for_all','markread'))
  if Get('for_all','self-off') then
-    selfstatus = '|D|'
+    selfstatus = '〘D〙'
  else
-    selfstatus = '|E|'
+    selfstatus = '〘E〙'
  end
  readmessage = returndata(Get('other','ReadMessage:'..msg.chat_id))
  texttype = returndata(Get('other','TextType'))
@@ -445,11 +444,7 @@ if crco[1] == 'panel' then
  self_time = returndata(Get('self:time:status'))
  timestatusBio = returndata(Get('other','Self-Time')) 
  textBioMain = returndata(Get('other','Self-Bio-MAIN'))
-   if Get('chat:mod'..msg.chat_id) then
-    ChatMod = '|D|'
- else
-    ChatMod = '|E|'
- end
+ ChatMod = returndata(Get('chat:mod'))
  mainclerktext = returndata(Get('other','clerk:text'))
 clerkmod = returndata(Get('other','clerkTYPE'))
 clerkstatus = returndata(Get('other','ClerkMod'))
@@ -520,8 +515,8 @@ if chatbio then
 else 
     del('self:time:status')
     title_ = bot.last_name 
-    if title_:match('|%d+:%d+|') then
-        title = title_:gsub('|%d+:%d+|','')
+    if title_:match('〘%d+:%d+〙') then
+        title = title_:gsub('〘%d+:%d+〙','')
     else
         title = title_
     end
@@ -658,6 +653,9 @@ if crco[1] == 'help core' then
 ☤ *self* _on/off_
 `Enable or Disable Self-Project `
 
+☤ *panel* 
+`Show Self Status`
+
 ☤ *texttype* _mention/code/bold/italic/off_
 `Use TEXT TYPE for Message TEXT `
 
@@ -691,7 +689,7 @@ if crco[1] == 'help core' then
 ☤ *getplug* _name_
 `get plug file in telegram`
     
-☤ *sessions*
+☤ *session*
 `Show active session`
     
 ☤ *deactive* _id_
@@ -757,15 +755,8 @@ if crco[1] == 'help core' then
 ☤ *delbio* _text_
 `delete bio from bios`
 
-☤ *addmainbio* _text_
-`add bio to bio list`
-			
 ☤ *timename* _on/off_
 `Enable or Disable time in name`
-			
-☤ *panel*
-`show status of self`
-		
     ]]
      tdbot.editMessageText(msg.chat_id, msg.id,text..SelfVersion,'md',false, 0, nil, nil, nil)
 
@@ -860,21 +851,21 @@ end
 
 if crco[1] == 'addmainbio' then
   
-        if crco[2] and (tonumber(string.len(crco[2])) < 71 or tonumber(utf8.len(crco[2])) < 71) then
+        if crco[2] and (tonumber(string.len(crco[2])) < 63 or tonumber(utf8.len(crco[2])) < 63) then
 
         sadd('Self-Bio-MAIN',crco[2])
         return tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : *text* => `'..crco[2]..'` *added to bio list*','md',false, 0, nil, nil, nil)
         else 
-            return tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : please using 70 char in text ','md',false, 0, nil, nil, nil)
+            return tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : please using 62 char in text ','md',false, 0, nil, nil, nil)
 
     end
 end
 if crco[1] == 'bios' then
      data = Get('Self-Bio-MAIN') or {}
   
-    local text = ' ☤ *Bios* ☤ \n'
+    local text = last..' ☤ *Bios* ☤ \n'
     for key,value in pairs(data) do
-    text = text..key.." - *|"..value..'|* [delete](https://t.me/share/url?url=delbio '..value..')\n'
+    text = text..key.." - *〘"..value..'〙* [delete](https://t.me/share/url?url=delbio '..value..')\n'
     end
     if #data == 0 then
     text = '☤ Message `:` *Empty*'
@@ -884,14 +875,14 @@ if crco[1] == 'bios' then
     if crco[1] == 'delbio' and crco[2] then
         if CHECK('Self-Bio-MAIN',crco[2]) then
         sremove('Self-Bio-MAIN',crco[2])
-         return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message `:` *Bio* `:` |'..crco[2]..'| *Has been Deleted* !','md',false, 0, nil, nil, nil)
+         return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message `:` *Bio* `:` '..crco[2]..'〙 *Has been Deleted* !','md',false, 0, nil, nil, nil)
         else
          return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *Bio is not found*','md',false, 0, nil, nil, nil)
         end
         end
 if crco[1] == 'dump' then 
     function VarDump(CerNer,Company)
-    local text = encode_json.encode(Company)
+    local text = json.encode(Company)
 print(serpent.block(Company, {comment=false}))
     return tdbot.editMessageText(msg.chat_id, msg.id, text,'html',false, 0, nil, nil, nil)
 
@@ -946,13 +937,15 @@ end
 function pre(msg,first_update)
     timenow = os.date("%M")
     Time = os.date("%H:%M")
+   
     if first_update and not Get('for_all','self-off') then
+  
         crco__ = {}
    if Get('other','Self-Time') and Get('Self-Bio-MAIN') and  tonumber(timenow) ~= tonumber(Get('other','timezone') or 0) then
     local bio = Get('Self-Bio-MAIN') or {}
     for key,value in pairs(bio) do
             table.insert(crco__,value)
-    tdbot.setBio(crco__[math.random(#crco__)]..': |'..Time..'|', nil, nil)
+    tdbot.setBio(crco__[math.random(#crco__)]..'〘'..Time..'〙', nil, nil)
     
 end
              save('other','timezone',timenow)
@@ -960,13 +953,13 @@ end
          end
          if  Get('self:time:status')  and tonumber(timenow) ~= tonumber(Get('other','timezone_title') or 0) then
                 title_ = bot.last_name 
-                print(title_)
-                if title_:match('|%d+:%d+|') then
-                    title = title_:gsub('|%d+:%d+|','')
+            
+                if title_:match('〘%d+:%d+〙') then
+                    title = title_:gsub('〘%d+:%d+〙','')
                 else
                     title = title_
                 end
-             tdbot.setName(bot.name, title..' |'..Time..'|', nil, nil)
+             tdbot.setName(bot.name, title..'〘'..Time..'〙', nil, nil)
         
             save('other','timezone_title',timenow)
 
@@ -974,7 +967,7 @@ end
 end
 
     if msg then
-        if msg.content['@type'] == 'messagePhoto'  then
+        if msg.content['@type'] == 'messagePhoto' and is_supergroup(msg) then 
             if msg.content.photo.sizes[3] then
                 is_id = msg.content.photo.sizes[3].photo.id
                 is_pth = msg.content.photo.sizes[3].photo["local"].path
@@ -989,7 +982,7 @@ end
                                     tdbot.downloadFile(is_id, 32, nil, nil)
                                 end
                             end
-                            if msg.content['@type'] == 'messageSticker'  then
+                            if msg.content['@type'] == 'messageSticker'  and is_supergroup(msg) then
                                 if string.len(msg.content.sticker.sticker["local"].path) == 0 then
                                 tdbot.downloadFile(msg.content.sticker.sticker.id, 1, nil, nil)
                                 end
