@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
-#CRCO Forever
-#By  CerNerCompany {Amir Bagheri}
 GRE='\033[92m' # Green Light
 RD='\033[91m' # Red Light
 YLW='\033[93m' # Yellow Light
 NC='\033[0m' # White
+PTH=/usr/share/lua/5.2/
 trap "exit 1" TERM
 export TOP_PID=$$
 BotH='Self-Bot-X'
@@ -56,24 +55,6 @@ else
 echo -e "\b${GRE}Done."
 fi
 }
-
-DOVVB() {
-local flag=false c count cr=$'\r' nl=$'\n'
-while IFS='' read -d '' -rn 1 c; do
- if $flag; then
- printf '%c' "$c"
-  else
-if [[ $c != $cr && $c != $nl ]]; then
-  count=0
- else
-((count++))
- if ((count > 1)); then
-flag=true
-fi
-fi
-fi
- done
-}
 function Configing() {
     echo -e "\e[1m\e[32m"
 read -p "==> Do you want to install Packages??[y/n]"  -t 10 CerNerCompany
@@ -98,16 +79,16 @@ if [ -d "$HOME/$BotH" ];then
 if [ ! -f "$HOME/$BotH/CRCO/tdlua.so.zip" ]; then
 echo -e "\e[1m\e[97m==> Installing TDlua .."
 
-cd $HOME/$BotH/CRCO ; unzip tdlua.so.zip ; rm ./tdlua.so.zip >> /dev/null 2>&1 & loading
-sudo mv tdlua.so /usr/share/lua/5.2 >> /dev/null 2>&1 & loading
+cd $HOME/$BotH/CRCO ; unzip tdlua.so.zip >> /dev/null 2>&1 & loading
+sudo mv tdlua.so $PTH >> /dev/null 2>&1 & loading
  
 echo -e "\e[1m\e[97m==> TDLUA successfully installed "
 else 
 echo -e "\e[1m\e[32m==> \e[97m The file NotFound.. TDLUA\e[0m"
 
 fi
-if [ -f './usr/share/lua/5.2/tdlua.so' ];then
-echo -e "\e[1m\e[32m==> \e[97m The file is correct.. Telegram-Bot\e[0m"
+if [ -f $PTH'tdlua.so' ];then
+echo -e "\e[1m\e[32m==> \e[97m The file is correct.. TDLUA\e[0m"
 else
 echo -e "\e[1m\e[32m==> \e[97m The file NotFound.. TDLUA\e[0m"
 
@@ -120,12 +101,20 @@ fi
 }
 
 case $1 in
-l)
+start)
 echo -e "\e[1m\e[36m==> \e[31m ZPM running.. \e[0m"
----
+lua L-C.lua START_BOT
 exit;;
-
+reset)
+lua L-C.lua RESET_BOT
+exit;;
+login)
+lua L-C.lua LOGIN_BOT
+exit;;
 config)
+lua L-C.lua CONFIG_BOT
+exit;;
+install)
 Configing
 exit;;
 esac
