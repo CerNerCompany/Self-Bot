@@ -565,7 +565,7 @@ end
 end
 is_sudo = function(user_id)
     local var = false
-           for v,user in pairs(_EnvDB.info.sudo_id) do
+           for v,user in pairs(config.info.sudo_id) do
                 if user == user_id then
                     var = true
 end
