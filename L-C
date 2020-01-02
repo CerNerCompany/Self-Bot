@@ -1,4 +1,3 @@
-
 #!/usr/bin/env lua
 PTH = arg[2]
 require("U-T.utils") 
@@ -64,14 +63,7 @@ ConfigSelf = function()
  ]]
  )
    API_HASH = tostring(io.read())
-  io.write([[
 
-Enter Bank card number : 
-
-Exapmle : 6037 ... ... ... 
-]]
-)
- 
    configEnv.info = {
    sudo_id = {selfid},
    api_id = API_ID, 
