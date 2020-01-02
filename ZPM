@@ -3,7 +3,6 @@ GRE='\033[92m' # Green Light
 RD='\033[91m' # Red Light
 YLW='\033[93m' # Yellow Light
 NC='\033[0m' # White
-PTH=/usr/share/lua/5.2/
 trap "exit 1" TERM
 export TOP_PID=$$
 BotH='Self-Bot-X'
@@ -24,9 +23,12 @@ sudo apt autoremove
 sudo apt install gcc-4.9
 sudo apt --yes install wget libconfig9 libjansson4 lua5.2 liblua5.2 make unzip g++ whois fortune fortunes
 sudo apt install g++-4.7 -y c++-4.7 -y
-sudo apt install libreadline-dev -y libconfig-dev -y libssl-dev -y lua5.2 -y liblua5.2-dev -y lua-socket -y lua-sec -y lua-expat -y libevent-dev -y make unzip git redis-server autoconf g++ -y libjansson-dev -y libpython-dev -y expat libexpat1-dev -y
+sudo apt install libreadline-dev -y libconfig-dev -y luarocks - y libssl-dev -y lua5.2 -y liblua5.2-dev -y lua-socket -y lua-sec -y lua-expat -y libevent-dev -y make unzip git redis-server autoconf g++ -y libjansson-dev -y libpython-dev -y expat libexpat1-dev -y
 sudo apt install screen -y
 sudo apt install lua-redis
+sudo apt install lua*
+sudo luarocks install serpent 
+sudo luarocks install dkjson
 if [ "$?" != "0" ]; then
 exit 1
 fi
@@ -76,22 +78,17 @@ echo -ne "\n\e[1m\e[97mUpdating Packages...  "
 Update_CH >> /dev/null 2>&1 & loading
 fi
 if [ -d "$HOME/$BotH" ];then
-if [ ! -f "$HOME/$BotH/CRCO/tdlua.so.zip" ]; then
+if [ -f "$HOME/$BotH/CRCO/tdlua.so.zip" ]; then
+if [ ! -f "/usr/lib/x86_64-linux-gnu/lua/5.2/tdlua.so" ] ; then
 echo -e "\e[1m\e[97m==> Installing TDlua .."
 
 cd $HOME/$BotH/CRCO ; unzip tdlua.so.zip >> /dev/null 2>&1 & loading
-sudo mv tdlua.so $PTH >> /dev/null 2>&1 & loading
+sudo mv tdlua.so /usr/lib/x86_64-linux-gnu/lua/5.2/ >> /dev/null 2>&1 & loading
  
 echo -e "\e[1m\e[97m==> TDLUA successfully installed "
-else 
-echo -e "\e[1m\e[32m==> \e[97m The file NotFound.. TDLUA\e[0m"
-
 fi
-if [ -f $PTH'tdlua.so' ];then
-echo -e "\e[1m\e[32m==> \e[97m The file is correct.. TDLUA\e[0m"
 else
-echo -e "\e[1m\e[32m==> \e[97m The file NotFound.. TDLUA\e[0m"
-
+echo -e "\e[1m\e[97m==> TDLUA File already exists"
 fi
 echo -e "\e[1m\e[32m==> \e[97m The file is correct.. $BotH\e[0m"
 else
