@@ -39,7 +39,7 @@ delplug = function(file_name,msg)
     mainPTH = './plugins/'..file_name..'.lua'
  if isFile(mainPTH) then
 os.execute('rm ./plugins/'..file_name..'.lua')
-table.remove(config.data.plist,CHECK('plist',file_name))
+table.remove(_EnvDB.data.plist,CHECK('plist',file_name))
 
 text = '*Plug* : `'..file_name..'.lua` *Has been removed ! *'
 else 
@@ -78,8 +78,8 @@ DIS = function(NAME)
             text= 	   '☤ Message : *Plugin Not Enabled*'
             return  tdbot.editMessageText(msg.chat_id, msg.id,text ,'md',false, 0, nil, nil, nil)
         end
-       table.remove(config.data.plist,CHECK('plist',NAME))
-       CreateFile(config , "./U-T/config.lua")
+       table.remove(_EnvDB.data.plist,CHECK('plist',NAME))
+       CreateFile(_EnvDB, "./U-T/DB.lua")
 
          text= 	      '☤ Message : *Plugin Has been disabled* !'
         tdbot.editMessageText(msg.chat_id, msg.id,text ,'md',false, 0, nil, nil, nil)
@@ -91,7 +91,7 @@ DIS = function(NAME)
             PLIST_TABLE()
         ) do
             local status = "`|D|`"
-	          for k, v in pairs(config.data.plist) do
+	          for k, v in pairs(_EnvDB.data.plist) do
                   if v_ == v..'.lua' then
                    
                     status = "`|E|`"
@@ -118,7 +118,7 @@ DIS = function(NAME)
             if PL_FOUND(NAME) then
                 sadd('plist',NAME)
             tdbot.editMessageText(msg.chat_id, msg.id,'Message : *Plugin Has been enabled !*' ,'md',false, 0, nil, nil, nil)
-            CreateFile(config , "./U-T/config.lua")
+            CreateFile(_EnvDB , "./U-T/DB.lua")
            return PluginLoad()
 	    else
             
