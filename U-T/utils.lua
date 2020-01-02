@@ -87,8 +87,7 @@ end
 SelfVersion = '\n*Version* _:_`|BETA => 2.1|`'
 dofile_ = function(filename)
 if io.open("./U-T/"..filename..'.lua' or '','r') ==nil then
- 
- print(text)
+
  CreateFile(DB , './U-T/DB.lua')
 
  CreateFile(configEnv , "./U-T/"..filename..'.lua')
