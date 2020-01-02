@@ -122,7 +122,7 @@ fi
 case $1 in
 l)
 echo -e "\e[1m\e[36m==> \e[31m ZPM running.. \e[0m"
---
+---
 exit;;
 
 config)
