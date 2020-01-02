@@ -10,15 +10,15 @@
 # installing
 
 ```
-./ZPM install -- installing packages
+./ZPM install -- installing packages {1}
 
-./ZPM login -- Login to account 
+./ZPM login -- Login to account {3}
 
-./ZPM config --Configure Self
+./ZPM config --Configure Self {2}
 
 ./ZPM reset -- Reset Self
 
-./ZPM start -- Runing 
+./ZPM start -- Runing {4}
 
 ```
 
