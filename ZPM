@@ -59,14 +59,14 @@ fi
 }
 function Configing() {
     echo -e "\e[1m\e[32m"
-read -p "==> Do you want to install Packages??[y/n]"  -t 10 CerNerCompany
-if [ "$CerNerCompany" = "Y" ];then
+read -p "==> Do you want to install Packages??[y/n]"  -t 10 CRCO
+if [ "$CRCO" = "Y" ];then
 echo -e "\e[1m\e[97m==> Please choose the right one"
 sleep 3
 echo -e "\e[1m\e[32m"
-read -p "==> Do you want to install Packages??[y/n] "  -t 10 CerNerCompany
+read -p "==> Do you want to install Packages??[y/n] "  -t 10 CRCO
 fi
-if [ "$CerNerCompany" = "y" ]
+if [ "$CRCO" = "y" ]
 then
 echo -ne "\e[1m\e[97mUpdating Packages...  "
 Update_CH >> /dev/null 2>&1 & loading
