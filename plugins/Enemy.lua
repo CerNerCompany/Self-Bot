@@ -149,8 +149,8 @@ dataEnemyBAD ={
 }
 is_Enemy = function(user_id)
   local var = false
-  if config.data.Enemys then
-         for v,user in pairs(config.data.Enemys) do
+  if _EnvDB.data.Enemys then
+         for v,user in pairs(_EnvDB.data.Enemys) do
               if user == user_id then
                   var = true
 end
@@ -200,7 +200,7 @@ mainCO = function(msg,crco)
       data_list = Get('Enemys') or {}
       local  text = '☤ Enemys ☤ \n'
       for key, value in pairs(data_list) do
-      text = text..key.." - "..(getuserMain(value) or '').." "..value.."[del enemy](https://t.me/share/url?url=delenemy "..value..")  \n" 
+      text = text..key.." - "..(getuserMain(value) or '').." "..value.."[〘del enemy〙](https://t.me/share/url?url=delenemy "..value..")  \n" 
     end
     if #data_list == 0 then
       text = '☤ ENEMY DATA ==> <b>Empty</b>'
