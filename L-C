@@ -1,5 +1,5 @@
 #!/usr/bin/env lua
-PTH = '/usr/share/lua/5.2/'
+PTH = '/usr/lib/x86_64-linux-gnu/lua/5.2/'
 require("U-T.utils") 
 reset = function()
 if isFile('./CRCO-TG') then
@@ -39,6 +39,9 @@ local color = {
     white = {37, 47}
 }
 ConfigSelf = function()
+  if isFile('./U-T/config.lua')  then
+    print("==> Config File already exists")
+  else
   io.write([[
 
  => Enter Self-ID : 
@@ -72,6 +75,7 @@ ConfigSelf = function()
    
 CreateFile(configEnv , "./U-T/config.lua")
 print("\027[" .. color.white[1] .. ";" .. color.black[2] .. "m ==> Config Created ! \027[00m")
+end
 end
 local function vardump(wut)
   print(serpent.block(wut, {comment=false}))
