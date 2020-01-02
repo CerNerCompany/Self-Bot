@@ -13,7 +13,7 @@ utf8 = require "U-T.utf8"
 file = io.open(file, "w+")
 local serialized
 if not uglify then
- serialized = serpent.block(data, {comment = false,name = "_configEnv"})
+ serialized = serpent.block(data, {comment = false,name = "_Env"})
 else
  serialized = serpent.dump(data)
 end
@@ -21,7 +21,8 @@ file:write(serialized)
 file:close()
 end
 configEnv = {}
-DataBase = {
+DB = {}
+DB.data = {
 
   plist = {
     "Core",
@@ -88,7 +89,7 @@ dofile_ = function(filename)
 if io.open("./U-T/"..filename..'.lua' or '','r') ==nil then
  
  print(text)
- CreateFile(DataBase , './U-T/DB.lua')
+ CreateFile(_DB , './U-T/DB.lua')
 
  CreateFile(configEnv , "./U-T/"..filename..'.lua')
  print ('Config DEFAULT created !')
@@ -98,6 +99,7 @@ return __configEnv
 end
 
 config = dofile_( "config" )
+_EnvDB = dofile ("./U-T/DB.lua")
 function vardump(PRE)
 print(serpent.block(PRE, {comment=false}))
 end
@@ -372,38 +374,38 @@ return true
 end
 
  function check_save(y,x)
-for k,v in pairs(config[data][y]) do
+for k,v in pairs(DB[data][y]) do
  if x == k then
    return k
  end
 end
 return false
 end
-dataB = {}
+
 Get = function(value, main
 )
 Val_ = nil
 if main then
-if  config.data[value] and  config.data[value][main] then
-       Val_ =   config.data[value][main]
+if  _EnvDB.data[value] and _EnvDB.data[value][main] then
+       Val_ =   _EnvDB.data[value][main]
        end
    else
-if  config.data[value] then
-Val_ =  config.data[value]
+if  _EnvDB.data[value] then
+Val_ =  _EnvDB.data[value]
    end
    end
    return Val_
 end 
 save = function(val,name,tas)
   if tas then  
-    if not config.data[val] then
-      config.data[val] = {}
+    if not _EnvDB.data[val] then
+      _EnvDB.data[val] = {}
     end
-  config.data[val][name] = tas
+    _EnvDB.data[val][name] = tas
 else
-  config.data[val]  = name
+  _EnvDB.data[val]  = name
 end
-  CreateFile(config , "./U-T/config.lua")
+  CreateFile(_EnvDB , "./U-T/DB.lua")
 end
 getUserStatus = function(status)
   if status then
@@ -462,7 +464,7 @@ end
 function save_array_test(tab) 
   local table={}
    for k,_ in pairs(tab) do
-    --config.data 
+    --DB.data 
     table[#table+1]=k
   end
   end
@@ -500,8 +502,8 @@ function save_array_test(tab)
       end
 
 CHECK = function(VAL,NAME)
-  if config.data[VAL] then
-  for k,v in pairs(config.data[VAL]) do
+  if _EnvDB.data[VAL] then
+  for k,v in pairs(_EnvDB.data[VAL]) do
  
       if NAME == v then
           return k
@@ -512,7 +514,7 @@ end
 end
 is_Saved = function(pth,name)
 
-    list = config.data[pth] or {}
+    list = _EnvDB.data[pth] or {}
  
   
          for v,value in pairs(list) do
@@ -535,21 +537,21 @@ is_Saved = function(pth,name)
     
 end
 sadd = function(val,name)
-  if not config.data[val] then
-    config.data[val] = {}
+  if not _EnvDB.data[val] then
+    _EnvDB.data[val] = {}
   end
   if is_Saved(val,name)  then
-  table.insert(config.data[val] ,name)
-  CreateFile(config , "./U-T/config.lua")
+  table.insert(_EnvDB.data[val] ,name)
+  CreateFile(_EnvDB , "./U-T/DB.lua")
   end
 end
 sremove = function(val,name)
 if CHECK(val,name) then
-  table.remove(config.data[val] ,CHECK(val,name))
+  table.remove(_EnvDB.data[val] ,CHECK(val,name))
 end
 end
 searchvl=function(y,x) 
-     for _R,v in pairs(config[data][y]) do 
+     for _R,v in pairs(_EnvDB[data][y]) do 
      if v == x then 
 return _R
   end 
@@ -558,15 +560,15 @@ return _R
 end 
 del = function  (value,name)
 if name then
-     config.data[value][name] = nil
+  _EnvDB.data[value][name] = nil
 else
-  config.data[value] =nil
+  _EnvDB.data[value] =nil
 end
-     CreateFile(config , "./U-T/config.lua")
+     CreateFile(_EnvDB , "./U-T/DB.lua")
 end
 is_sudo = function(user_id)
     local var = false
-           for v,user in pairs(config.info.sudo_id) do
+           for v,user in pairs(_EnvDB.info.sudo_id) do
                 if user == user_id then
                     var = true
 end
