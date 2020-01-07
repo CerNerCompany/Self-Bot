@@ -381,7 +381,7 @@ end
                     tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
                     file =  Download('http://media.obutts.ru/' .. data.preview,data.id..'.jpg')
           tdbot.sendPhoto(msg.chat_id,msg.id, file, 'ID : *'..data.id..'*', 'md',0, 0, 0, false, true, nil, nil, nil)
-
+       io.popen("rm ./"..file)
                 else 
                     tdbot.editMessageText(msg.chat_id, msg.id, '☤ Error 404 ,  try again' , 'md', false, 0, nil, nil, nil)
 
