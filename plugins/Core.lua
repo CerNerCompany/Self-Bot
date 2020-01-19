@@ -53,6 +53,8 @@ pat = { "^(ping)$",
        "^(self) (.*)$",
        "^(read message) (.*)$"
 }
+COPYRIGHT = '\n(C) Copyright 2020 CRCO project'
+
 function run(msg,crco)
     if is_sudo(msg.sender_user_id) then
 if crco[1] == 'ping' then
@@ -220,7 +222,7 @@ if crco[1] == 'next update' then
 1 - added plug `Crow` {youtube , stats , photos , downloader , security mod , uploader ,media editor ,username checker, ... }
 
     ]]
-    tdbot.editMessageText(msg.chat_id, msg.id, text, 'md', false, 0, nil, nil, nil)
+    tdbot.editMessageText(msg.chat_id, msg.id, text..COPYRIGHT, 'md', false, 0, nil, nil, nil)
 end
  if crco[1] == 'mute' and tonumber(msg.reply_to_message_id) > 0  then
     GetMainMessage=   function(arg,CR)
@@ -449,7 +451,7 @@ if crco[1] == 'panel' then
 clerkmod = returndata(Get('other','clerkTYPE'))
 clerkstatus = returndata(Get('other','ClerkMod'))
 text_ = '☤ *Self Status* _:_ *'..selfstatus..'*\n☤ *Markread* `:` *'..markread..'*\n☤ *Chat* `:` *'..ChatMod..'*\n☤ *Clerk* `:` *'..clerkstatus..'*\n☤ *Clerk Type* `:` *'..clerkmod..'*\n☤ *Clerk MTEXT* `:` *'..mainclerktext..'*\n☤ *Enemy Mod * `:` *'..enemymod..'*\n☤ *Read Message* `:` *'..readmessage..'*\n☤ *Text Type* `:` *'..texttype:upper()..'*\n☤ *Time in Bio* `:` *'..timestatusBio..'*\n☤ *Time in name* `:` *'..self_time..'*'
-return tdbot.editMessageText(msg.chat_id, msg.id, text_..SelfVersion, 'md', false, 0, nil, nil, nil)
+return tdbot.editMessageText(msg.chat_id, msg.id, text_..SelfVersion..COPYRIGHT, 'md', false, 0, nil, nil, nil)
 end
  if crco[1] == 'markread' and crco[2] then
     if crco[2] == 'on' then
@@ -644,7 +646,7 @@ if crco[1] == 'help' then
 ☤ *next update* ☤
 `Show next update`
     ]]
-    tdbot.editMessageText(msg.chat_id, msg.id,text..SelfVersion,'md',false, 0, nil, nil, nil)
+    tdbot.editMessageText(msg.chat_id, msg.id,text..SelfVersion..COPYRIGHT,'md',false, 0, nil, nil, nil)
 
 end
 if crco[1] == 'help core' then
@@ -758,7 +760,7 @@ if crco[1] == 'help core' then
 ☤ *timename* _on/off_
 `Enable or Disable time in name`
     ]]
-     tdbot.editMessageText(msg.chat_id, msg.id,text..SelfVersion,'md',false, 0, nil, nil, nil)
+     tdbot.editMessageText(msg.chat_id, msg.id,text..SelfVersion..COPYRIGHT,'md',false, 0, nil, nil, nil)
 
 end
 if crco[1] == 'help group' then
@@ -809,7 +811,7 @@ if crco[1] == 'help group' then
 ☤ *mydel*
 `Del all self message`
     ]]
-    tdbot.editMessageText(msg.chat_id, msg.id,text..SelfVersion,'md',false, 0, nil, nil, nil)
+    tdbot.editMessageText(msg.chat_id, msg.id,text..SelfVersion..COPYRIGHT,'md',false, 0, nil, nil, nil)
 
 end
 if crco[1] == 'help cfg' then
@@ -845,7 +847,7 @@ text = [[
 ☤ *delfile* _name_
 `deleted file from database`
 ]]
-tdbot.editMessageText(msg.chat_id, msg.id,text..SelfVersion,'md',false, 0, nil, nil, nil)
+tdbot.editMessageText(msg.chat_id, msg.id,text..SelfVersion..COPYRIGHT,'md',false, 0, nil, nil, nil)
 
 end
 
