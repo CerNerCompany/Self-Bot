@@ -235,7 +235,7 @@ end
         getMainMute(crco[2],msg)
     end
     if crco[1] == 'clean msgs' then
-if is_supergroup(msg) then 
+if not is_supergroup(msg) then 
           text = "Message : <b>Access Denied</b>\nError : <b>Only supergroups !</b>"
   
       else
