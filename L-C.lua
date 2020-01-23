@@ -221,6 +221,6 @@ elseif arg[1] == 'RESET_BOT' then
     reset()
   
 elseif arg[1] == 'START_BOT' then
-  os.execute('lua ./Bot/MAIN.lua'):print(read('*a'))
+  os.execute('lua5.3 ./Bot/MAIN.lua'):print(read('*a'))
 end
 
