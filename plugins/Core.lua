@@ -235,8 +235,12 @@ end
         getMainMute(crco[2],msg)
     end
     if crco[1] == 'clean msgs' then
+if is_supergroup(msg) then 
+          text = "Message : <b>Access Denied</b>\nError : <b>Only supergroups !</b>"
+  
+      else
         tdbot.getChatHistory(msg.chat_id,msg.id,0 , 100000, MainGetMessage, nil)
-
+end
     end
     if crco[1] == 'mute'  and crco[2] and not crco[2]:match('^%d+$') then
         getMainUsername = function(ex,CR)
