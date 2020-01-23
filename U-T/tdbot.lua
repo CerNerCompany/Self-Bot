@@ -441,7 +441,7 @@ function tdbot.editMessageTextMention(chatid, messageid,tezt,off,leg,user)
           }
         }
       },
-      text = tezt',
+      text = tezt,
     },
 
   disable_web_page_preview=false,
