@@ -236,8 +236,8 @@ end
     end
     if crco[1] == 'clean msgs' then
 if not is_supergroup(msg) then 
-          text = "Message : <b>Access Denied</b>\nError : <b>Only supergroups !</b>"
-  
+          text = "☤ Message : <b>Access Denied</b>\nError : <b>Only supergroups !</b>"
+            return tdbot.editMessageText(msg.chat_id, msg.id,text,'md',false, 0, nil, nil, nil)
       else
         tdbot.getChatHistory(msg.chat_id,msg.id,0 , 100000, MainGetMessage, nil)
 end
