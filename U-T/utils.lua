@@ -7,6 +7,7 @@ utf8 = require "U-T.utf8"
      encode_json = require("dkjson")
    https = require("ssl.https")
   http = require("socket.http")
+  U_RL = require('socket.url')
        ltn12 = require("ltn12")
    ---MULTY, PRE -- 
    CreateFile = function(data, file, uglify)
@@ -84,7 +85,7 @@ end
 
 end
 
-SelfVersion = '\n*Version* _:_`|BETA => 2.1.1|`'
+SelfVersion = '\n*Version* _:_`|BETA => 2.1.2|`'
 dofile_ = function(filename)
 if io.open("./U-T/"..filename..'.lua' or '','r') ==nil then
 
