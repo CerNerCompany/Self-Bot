@@ -2441,7 +2441,7 @@ function tdbot.sendText(chat_id, reply_to_message_id, text, parse_mode, disable_
   local input_message_content = {
     ["@type"] = 'inputMessageText',
     disable_web_page_preview = disable_web_page_preview,
-    text = {text = text..'\n(C) Copyright 2020 CRCO project'},
+    text = {text = text},
     clear_draft = clear_draft
   }
   sendMessage(chat_id, reply_to_message_id, input_message_content, parse_mode, disable_notification, from_background, reply_markup, callback, data)
