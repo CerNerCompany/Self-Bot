@@ -1,6 +1,6 @@
 
 
- # Self-BOT-X Project 
+ # Self-BOT-X Beta Project 
 
 # **CRCO** #
 
