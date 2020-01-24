@@ -3,8 +3,9 @@ pat = { "^(ping)$",
         "^(panel)$",
         "^(dump)$",
         "^(tophoto)$",
-        "^(leave)$",
-    
+            "^(leave)$",
+            "^(boobs)$",
+
 
         "^(deactive) (.*)$",
 
@@ -47,6 +48,7 @@ pat = { "^(ping)$",
         
         "^(private settings)$",
        "^(texttype) (.*)$",
+      
        "^(markread) (.*)$",
        "^(biotime) (.*)$",
        "^(addmainbio) (.*)$",
@@ -58,8 +60,7 @@ COPYRIGHT = '\n(C) Copyright 2020 CRCO project'
 function run(msg,crco)
     if is_sudo(msg.sender_user_id) then
 if crco[1] == 'ping' then
-   
-     tdbot.editMessageText(msg.chat_id, msg.id, '☤ READY ☤', 'md', false, 0, nil, nil, nil)
+  tdbot.editMessageText(msg.chat_id, msg.id, '☤ *PONG* ☤', 'md', false, 0, nil, nil, nil)
 
 end
 if crco[1] == 'tosticker' and tonumber(msg.reply_to_message_id) > 0 then
@@ -163,11 +164,13 @@ else
 return
 end
 if chats then 
-del('chat:mod'..msg.chat_id)
-return tdbot.editMessageText(msg.chat_id,msg.id,'☤ Message : *Chat mod successfully enabled !*', 'md', false, 0, nil, nil, nil)
+    save('chat:mod'..msg.chat_id,true)
+
+return tdbot.editMessageText(msg.chat_id,msg.id,'☤ Message : *Chat mod successfully enabled in group !*', 'md', false, 0, nil, nil, nil)
 else 
-save('chat:mod'..msg.chat_id,true)
-return tdbot.editMessageText(msg.chat_id,msg.id,'☤ Message : *Chat mod successfully disabled !*', 'md', false, 0, nil, nil, nil)
+    del('chat:mod'..msg.chat_id)
+
+return tdbot.editMessageText(msg.chat_id,msg.id,'☤ Message : *Chat mod successfully disabled in group !*', 'md', false, 0, nil, nil, nil)
 end
 end
 if crco[1] == 'sessions' then
@@ -219,7 +222,7 @@ if crco[1] == 'next update' then
 
 *Next update* to 2.2
 
-1 - added plug `Crow` {youtube , stats , photos , downloader , security mod , uploader ,media editor ,username checker, ... }
+1 - added plug `Crow` {youtube  , photos , downloader , security mod , uploader ,media editor ,username checker, ... }
 
     ]]
     tdbot.editMessageText(msg.chat_id, msg.id, text..COPYRIGHT, 'md', false, 0, nil, nil, nil)
@@ -378,7 +381,7 @@ end
             end
                     tdbot.deleteChatMessagesFromUser(msg.chat_id, bot.id, getMainMessage_, nil)
                 end
-            
+              
                 if crco[1] == 'ass' then
                 res,status = http.request("http://api.obutts.ru/noise/"..math.random(1,999).."/"..math.random(1,100))
  
@@ -386,6 +389,21 @@ end
                  if data then 
                     tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
                     file =  Download('http://media.obutts.ru/' .. data.preview,data.id..'.jpg')
+          tdbot.sendPhoto(msg.chat_id,msg.id, file, 'ID : *'..data.id..'*', 'md',0, 0, 0, false, true, nil, nil, nil)
+       io.popen("rm ./"..file)
+                else 
+                    tdbot.editMessageText(msg.chat_id, msg.id, '☤ Error 404 ,  try again' , 'md', false, 0, nil, nil, nil)
+
+
+                end
+            end
+            if crco[1] == 'boobs' then
+                res,status = http.request("http://api.oboobs.ru/noise/"..math.random(1,999).."/"..math.random(1,100))
+ 
+                local data = encode_json.decode(res)[math.random(1,100)]
+                 if data then 
+                    tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
+                    file =  Download('http://media.oboobs.ru/' .. data.preview,data.id..'.jpg')
           tdbot.sendPhoto(msg.chat_id,msg.id, file, 'ID : *'..data.id..'*', 'md',0, 0, 0, false, true, nil, nil, nil)
        io.popen("rm ./"..file)
                 else 
@@ -450,11 +468,11 @@ if crco[1] == 'panel' then
  self_time = returndata(Get('self:time:status'))
  timestatusBio = returndata(Get('other','Self-Time')) 
  textBioMain = returndata(Get('other','Self-Bio-MAIN'))
- ChatMod = returndata(Get('chat:mod'))
+ ChatMod = returndata(Get('chat:mod'..msg.chat_id))
  mainclerktext = returndata(Get('other','clerk:text'))
 clerkmod = returndata(Get('other','clerkTYPE'))
 clerkstatus = returndata(Get('other','ClerkMod'))
-text_ = '☤ *Self Status* _:_ *'..selfstatus..'*\n☤ *Markread* `:` *'..markread..'*\n☤ *Chat* `:` *'..ChatMod..'*\n☤ *Clerk* `:` *'..clerkstatus..'*\n☤ *Clerk Type* `:` *'..clerkmod..'*\n☤ *Clerk MTEXT* `:` *'..mainclerktext..'*\n☤ *Enemy Mod * `:` *'..enemymod..'*\n☤ *Read Message* `:` *'..readmessage..'*\n☤ *Text Type* `:` *'..texttype:upper()..'*\n☤ *Time in Bio* `:` *'..timestatusBio..'*\n☤ *Time in name* `:` *'..self_time..'*'
+text_ = '☤ *Self Status* _:_ *'..selfstatus..'*\n☤ *Markread* `:` *'..markread..'*\n☤ *Chat in Group* `:` *'..ChatMod..'*\n☤ *Clerk* `:` *'..clerkstatus..'*\n☤ *Clerk Type* `:` *'..clerkmod..'*\n☤ *Clerk MTEXT* `:` *'..mainclerktext..'*\n☤ *Enemy Mod * `:` *'..enemymod..'*\n☤ *Read Message* `:` *'..readmessage..'*\n☤ *Text Type* `:` *'..texttype:upper()..'*\n☤ *Time in Bio* `:` *'..timestatusBio..'*\n☤ *Time in name* `:` *'..self_time..'*'
 return tdbot.editMessageText(msg.chat_id, msg.id, text_..SelfVersion..COPYRIGHT, 'md', false, 0, nil, nil, nil)
 end
  if crco[1] == 'markread' and crco[2] then
@@ -662,7 +680,10 @@ if crco[1] == 'help core' then
 ☤ *panel* 
 `Show Self Status`
 
-☤ *texttype* _mention/code/bold/italic/off_
+☤ *stats* 
+`Show stats of self-account`
+
+☤ *texttype* _mention/code/bold/italic/underline/strike/off_
 `Use TEXT TYPE for Message TEXT `
 
 ☤ *markread* _on/off_
@@ -735,7 +756,10 @@ if crco[1] == 'help core' then
 `Share Self Phone number`
 
 ☤ *ass*
-`Show Ass +18`
+`Show Ass (+18)`
+
+☤ *boobs*
+`Show Boobs (+18)`
 
 ☤ *whois* _userid_
 `Show fully User info`
@@ -888,7 +912,7 @@ if crco[1] == 'bios' then
         end
 if crco[1] == 'dump' then 
     function VarDump(CerNer,Company)
-    local text = json.encode(Company)
+    local text = encode_json.encode(Company)
 print(serpent.block(Company, {comment=false}))
     return tdbot.editMessageText(msg.chat_id, msg.id, text,'html',false, 0, nil, nil, nil)
 
@@ -920,6 +944,10 @@ if crco[1] == 'texttype' then
         type_mod = 'code'
     elseif crco[2] == 'mention' then
         type_mod = 'mention'
+    elseif crco[2] == 'underline' then
+        type_mod = 'underline'
+    elseif crco[2] == 'strike' then
+        type_mod = 'strike'
     elseif crco[2] == 'off' then
    type_mod = nil
     elseif crco[2] == 'bold' then
@@ -1017,6 +1045,10 @@ end
      tdbot.getMessage(msg.chat_id, tonumber(msg.reply_to_message_id),GETINGUSER,nil)
     elseif Get('other','TextType')  == 'code' then 
     tdbot.editMessageText(msg.chat_id,msg.id,'`'..msg.content.text.text..'`','md',false, 0, nil, nil, nil)
+elseif Get('other','TextType')  == 'strike' then 
+    tdbot.StrikethroughMessage(msg.chat_id, msg.id,utf8.len(msg.content.text.text),msg.content.text.text)
+elseif Get('other','TextType')  == 'underline' then 
+    tdbot.UnderlineMessage(msg.chat_id, msg.id,utf8.len(msg.content.text.text),msg.content.text.text)
     elseif Get('other','TextType')  == 'italic' then
          tdbot.editMessageText(msg.chat_id,msg.id,'_'..msg.content.text.text..'_','md',false, 0, nil, nil, nil)
         end
