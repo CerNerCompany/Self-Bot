@@ -340,7 +340,7 @@ end
 end
 PreMessage = function(msg,fast_update)
 if msg then
-  if msg.content._ == "messageText" and  msg.content.text.text then
+ if msg.content._ == "messageText" and  msg.content.text.text then
   if  Get('chat:mod'..msg.chat_id) and  Get("Chats:Name:"..msg.content.text.text)  and not is_sudo(msg.sender_user_id)  then
    return tdbot.sendText(msg.chat_id,msg.id, Get("Chats:Name:"..msg.content.text.text) , 'md', false, false, false, 0, nil, nil, nil)
     end
