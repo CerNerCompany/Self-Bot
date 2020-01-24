@@ -414,6 +414,78 @@ function tdbot.getChat(chat_id, callback, data)
     chat_id = chat_id
   }, callback or dl_cb, data))
 end
+function tdbot.StrikethroughMessage(chatid, messageid,qr,tezt)
+  tdbot_function ({_="editMessageText", 
+  chat_id=chatid,
+   message_id=messageid,
+
+  disable_notification=false,
+   from_background=false, 
+   reply_markup=nil,
+
+  input_message_content={
+    _="inputMessageText", 
+    text = {
+      ["@type"] = "formattedText",
+    
+      entities = {
+        {
+          ["@type"] = "textEntity",
+     
+          length = qr,
+          offset = 0,
+          type = {
+            ["@type"] = "textEntityTypeStrikethrough",
+         
+          
+          }
+        }
+      },
+      text = tezt,
+    },
+    disable_web_page_preview=false,
+    clear_draft=false
+   }}
+   , dl_cb,
+    nil
+   )
+ end
+ function tdbot.UnderlineMessage(chatid, messageid,qr,tezt)
+  tdbot_function ({_="editMessageText", 
+  chat_id=chatid,
+   message_id=messageid,
+
+  disable_notification=false,
+   from_background=false, 
+   reply_markup=nil,
+
+  input_message_content={
+    _="inputMessageText", 
+    text = {
+      ["@type"] = "formattedText",
+    
+      entities = {
+        {
+          ["@type"] = "textEntity",
+     
+          length = qr,
+          offset = 0,
+          type = {
+            ["@type"] = "textEntityTypeUnderline",
+         
+          
+          }
+        }
+      },
+      text = tezt,
+    },
+    disable_web_page_preview=false,
+    clear_draft=false
+   }}
+   , dl_cb,
+    nil
+   )
+ end
 function tdbot.editMessageTextMention(chatid, messageid,tezt,off,leg,user)
   tdbot_function ({_="editMessageText", 
   chat_id=chatid,
