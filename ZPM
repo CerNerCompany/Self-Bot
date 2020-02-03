@@ -23,16 +23,36 @@ sudo apt autoremove
 sudo apt install gcc-4.9
 sudo apt --yes install wget libconfig9 libjansson4 liblua5.3 make unzip g++ whois fortune fortunes
 sudo apt install g++-4.7 -y c++-4.7 -y
-sudo apt install libreadline-dev -y libconfig-dev -y luarocks - y libssl-dev -y lua5.3 -y liblua5.3-dev -y lua-socket -y lua-sec -y lua-expat -y libevent-dev -y make unzip git redis-server autoconf g++ -y libjansson-dev -y libpython-dev -y expat libexpat1-dev -y
+sudo apt install libreadline-dev -y libconfig-dev - y libssl-dev -y lua5.3 -y liblua5.3-dev -y libevent-dev -y make unzip git redis-server autoconf g++ -y libjansson-dev -y libpython-dev -y expat libexpat1-dev -y
 sudo apt install screen -y
-sudo luarocks install redis-lua
-sudo luarocks install serpent 
-sudo luarocks install dkjson
+
 if [ "$?" != "0" ]; then
 exit 1
 fi
 }
-
+function luarocksinstall { 
+wget https://luarocks.org/releases/luarocks-3.3.0.tar.gz
+tar zxpf luarocks-3.3.0.tar.gz
+./configure && make && sudo make install
+./configure --lua-version=5.3
+make build
+sudo make install
+cd ..
+if ["$?" != "0"];
+exit 1 
+fi 
+}
+function luarocksPACK { 
+sudo luarocks install dkjson
+sudo luarocks install redis-lua
+sudo luarocks install serpent 
+sudo luarocks install luasocket
+sudo luarocks install lua-sec
+sudo luarocks install luasocket
+if ["$?" != "0"];
+exit 1 
+fi 
+}
 function loading {
 spin[0]="-"
 spin[1]="\\"
@@ -75,6 +95,10 @@ MOREPAK >> /dev/null 2>&1 & loading
 sleep 2
 echo -ne "\n\e[1m\e[97mUpdating Packages...  "
 Update_CH >> /dev/null 2>&1 & loading
+echo -ne "\n\e[1m\e[97mInstalling luarocks .."
+luarocksinstall >> /dev/null 2>&1 & loading
+echo -ne "\n\e[1m\e[97mInstalling Packages from luarocks .."
+luarocksPACK >> /dev/null 2>&1 & loading
 fi
 if [ -d "$HOME/$BotH" ];then
 if [ -f "$HOME/$BotH/CRCO/tdlua.so.zip" ]; then
