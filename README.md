@@ -12,13 +12,14 @@
 ```
 ./ZPM install -- installing packages {1}
 
+./ZPM config --Configure Self {2}
+
 ./ZPM login -- Login to account {3}
 
-./ZPM config --Configure Self {2}
+./ZPM start -- Runing {4}
 
 ./ZPM reset -- Reset Self
 
-./ZPM start -- Runing {4}
 
 ```
 
