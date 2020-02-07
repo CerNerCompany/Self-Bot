@@ -39,7 +39,7 @@ tar zxpf luarocks-3.3.0.tar.gz
 make build
 sudo make install
 cd ..
-if ["$?" != "0"];
+if ["$?" != "0"]; then
 exit 1 
 fi 
 }
@@ -50,7 +50,7 @@ sudo luarocks install serpent
 sudo luarocks install luasocket
 sudo luarocks install lua-sec
 sudo luarocks install luasocket
-if ["$?" != "0"];
+if ["$?" != "0"]; then
 exit 1 
 fi 
 }
