@@ -39,7 +39,6 @@ pat = { "^(ping)$",
         "^(inv) (.*)$",
         "^(share)$",
         "^(id)$",
-        "^(echo)$",
         "^(inv)$",
         "^(flood) (.*)$",
         "^(block)$",
@@ -228,30 +227,7 @@ if crco[1] == 'next update' then
     ]]
     tdbot.editMessageText(msg.chat_id, msg.id, text..COPYRIGHT, 'md', false, 0, nil, nil, nil)
 end
-if crco[1] == 'echo' then 
-    function chars(str)
-        strc = {}
-        for i = 1, #str do
-            table.insert(strc, string.sub(str, i, i))
-        end
-        return strc
-    end
 
-   --- str = "Hello world!"
-    local str = "سلام"
-    char = chars(str)
-amir = 1
-
-for i = 1, #str do -- testing printing all the chars
-    -- if i == i then
-  
-
-
-    tdbot.editMessageText(msg.chat_id, msg.id, char[i], 'md', false, 0, nil, nil, nil)
-
-  
-end
-end
  if crco[1] == 'mute' and tonumber(msg.reply_to_message_id) > 0  then
     GetMainMessage=   function(arg,CR)
         
@@ -675,7 +651,7 @@ tdbot.getUser(value, getusername, nil)
         text = text.." @"..value.."," 
 
     end
-     tdbot.sendText(msg.chat_id, msg.id, text, 'md', false, false, false, 0, nil, nil, nil)
+     tdbot.sendText(msg.chat_id, msg.id, text, 'html', false, false, false, 0, nil, nil, nil)
 
     end
             tdbot.getSupergroupMembers(msg.chat_id, 'Recent', 0, 200, getchatMembers, nil)
