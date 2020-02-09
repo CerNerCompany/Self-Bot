@@ -10,9 +10,8 @@
 <div align="center">
 
 ![](https://img.shields.io/github/forks/KhodeAmir/Self-Bot-X.svg)
-![](https://img.shields.io/github/release/KhodeAmir/Self-Bot-X.svg)
-![](https://img.shields.io/github/issues/KhodeAmir/Self-Bot-X.svg)
 ![](https://img.shields.io/github/stars/KhodeAmir/Self-Bot-X.svg)
+![](https://img.shields.io/github/issues/KhodeAmir/Self-Bot-X.svg)
 ![](https://img.shields.io/badge/language-lua-yellow.svg)
 ![](https://img.shields.io/badge/license-MIT-informational.svg)
 </div>
