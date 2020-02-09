@@ -1,9 +1,4 @@
 
-
- # Self-BOT-X Beta Project 
-
-# **CRCO** #
-
 <div align="center"><a href="https://t.me/CRCOPROJECT"><img src="http://s8.picofile.com/file/8312881426/photo_2017_09_19_11_51_39.jpg" width="300"></a></div>
  
 ---
@@ -16,6 +11,9 @@
 ![](https://img.shields.io/badge/license-MIT-informational.svg)
 </div>
 
+---
+---
+ # Self-BOT-X Beta Project 
 ---
 # installing
 
