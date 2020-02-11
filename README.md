@@ -12,7 +12,6 @@
 </div>
 
 ---
----
  # Self-BOT-X Beta Project 
 ---
 # installing
