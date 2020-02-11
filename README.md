@@ -1,6 +1,6 @@
 
-<div align="center"><a href="https://t.me/CRCOPROJECT"><img src="http://s8.picofile.com/file/8312881426/photo_2017_09_19_11_51_39.jpg" width="300"></a></div>
- 
+<p align="center"><a href="https://t.me/CRCOPROJECT"><img src="https://raw.githubusercontent.com/khodeamir/self-bot/master/CRCO/photos/end.png" width="300"src="">
+</p>
 ---
 <div align="center">
 
