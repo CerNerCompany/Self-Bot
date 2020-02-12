@@ -230,14 +230,6 @@ if crco[1] == 'next update' then
 end
 if crco[1] == 'say' and crco[2] then 
  
-   
-    function chars(str)
-        strc = {}
-        for i = 1, utf8.len(str) do
-            table.insert(strc, utf8.sub(str, i, i))
-        end
-        return strc
-    end
     local str = crco[2]
     char = chars(str)
 
