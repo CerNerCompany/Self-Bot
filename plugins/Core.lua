@@ -229,21 +229,20 @@ if crco[1] == 'next update' then
     tdbot.editMessageText(msg.chat_id, msg.id, text..COPYRIGHT, 'md', false, 0, nil, nil, nil)
 end
 if crco[1] == 'say' and crco[2] then 
- 
-    local str = crco[2]
-    char = chars(str)
+     str = crco[2]
+    function edit(data , org)
+             if utf8.len(data.text) >= data.i then 
+                   text = utf8.sub(data.text, 1 , data.i)
+                   tdbot.editMessageText(msg.chat_id, msg.id, '〘 '..text..' 〙', 'md')
+                  data.i = data.i + 1
+                 tdbot.setAlarm(0.1, edit, data)
+             end
+         end
+         if crco[2] and (tonumber(string.len(crco[2])) < 71 or tonumber(utf8.len(crco[2])) < 71) then
+         tdbot.setAlarm(0.1, edit, {text = str, i = 1})
+         else
+             tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : please using 70 char in text ','md',false, 0, nil, nil, nil)
 
-
-        local t = {}
-        for k,v in ipairs(char) do
-         t[#t+1] = tostring(v)
-           local text = encode_json.encode(t)
-
-     ww = text:match('"(.*)"')
-     am = replace(ww,'"',''):gsub(',','')
-     sleep(0.1)
-     tdbot.editMessageText(msg.chat_id, msg.id, '〘 '..am..' 〙', 'md', false, 0, nil, nil, nil)
-        
 end
 end
  if crco[1] == 'mute' and tonumber(msg.reply_to_message_id) > 0  then
