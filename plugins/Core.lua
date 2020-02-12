@@ -39,6 +39,7 @@ pat = { "^(ping)$",
         "^(inv) (.*)$",
         "^(share)$",
         "^(id)$",
+        "^(say) (.*)$",
         "^(inv)$",
         "^(flood) (.*)$",
         "^(block)$",
@@ -227,7 +228,32 @@ if crco[1] == 'next update' then
     ]]
     tdbot.editMessageText(msg.chat_id, msg.id, text..COPYRIGHT, 'md', false, 0, nil, nil, nil)
 end
+if crco[1] == 'say' and crco[2] then 
+ 
+   
+    function chars(str)
+        strc = {}
+        for i = 1, utf8.len(str) do
+            table.insert(strc, utf8.sub(str, i, i))
+        end
+        return strc
+    end
+    local str = crco[2]
+    char = chars(str)
 
+
+        local t = {}
+        for k,v in ipairs(char) do
+         t[#t+1] = tostring(v)
+           local text = encode_json.encode(t)
+
+     ww = text:match('"(.*)"')
+     am = replace(ww,'"',''):gsub(',','')
+
+     tdbot.editMessageText(msg.chat_id, msg.id, '〘'..am..'〙', 'md', false, 0, nil, nil, nil)
+            
+end
+end
  if crco[1] == 'mute' and tonumber(msg.reply_to_message_id) > 0  then
     GetMainMessage=   function(arg,CR)
         
@@ -364,7 +390,8 @@ if crco[1] == 'share' then
     return tdbot.sendContact(msg.chat_id,(msg.reply_to_message_id or msg.id), bot.phone_number, bot.name, bot.last_name, bot.id, false, true, nil, nil, nil)
     end
     if crco[1] == 'flood' and tonumber(msg.reply_to_message_id) > 0 then
-     tdbot.getMessage(msg.chat_id, tonumber(msg.reply_to_message_id),function(cr,co)
+        tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
+        tdbot.getMessage(msg.chat_id, tonumber(msg.reply_to_message_id),function(cr,co)
         for i=1,crco[2] do
           tdbot.forwardMessages(msg.chat_id, msg.chat_id, {[1] = msg.reply_to_message_id}, 1)
         end
@@ -651,7 +678,7 @@ tdbot.getUser(value, getusername, nil)
         text = text.." @"..value.."," 
 
     end
-     tdbot.sendText(msg.chat_id, msg.id, text, 'html', false, false, false, 0, nil, nil, nil)
+     tdbot.sendText(msg.chat_id, msg.id, text, 'md', false, false, false, 0, nil, nil, nil)
 
     end
             tdbot.getSupergroupMembers(msg.chat_id, 'Recent', 0, 200, getchatMembers, nil)
@@ -790,6 +817,9 @@ if crco[1] == 'help core' then
 
 ☤ *timename* _on/off_
 `Enable or Disable time in name`
+
+☤ *say _text_
+`echo your text `
     ]]
      tdbot.editMessageText(msg.chat_id, msg.id,text..SelfVersion..COPYRIGHT,'md',false, 0, nil, nil, nil)
 
