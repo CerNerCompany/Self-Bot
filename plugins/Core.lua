@@ -241,7 +241,7 @@ if crco[1] == 'say' and crco[2] then
 
      ww = text:match('"(.*)"')
      am = replace(ww,'"',''):gsub(',','')
-     sleep(1)
+     sleep(0.5)
      tdbot.editMessageText(msg.chat_id, msg.id, '〘 '..am..' 〙', 'md', false, 0, nil, nil, nil)
         
 end
