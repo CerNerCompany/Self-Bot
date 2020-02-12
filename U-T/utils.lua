@@ -1,5 +1,6 @@
 --U-T
 utf8 = require "U-T.utf8" 
+
   client = require("redis")
   socket = require('socket')
     redis = client.connect('127.0.0.1', 6379)
@@ -448,14 +449,24 @@ end
   end
     return PreType
   end
-  
-returndata = function(value)
+  function string.replace(text, old, new)
+    local b,e = text:find(old,1,true)
+    if b==nil then
+       return text
+    else
+       return text:sub(1,b-1) .. new .. text:sub(e+1)
+    end
+  end
+returndata = function(value,amir)
 if  value == nil  then
   return '〘D〙'
 elseif value  and type(value) ~= 'string' then
   return '〘E〙'
-elseif value and type(value) == 'string' then
+elseif not amir  and value and type(value) == 'string'  then
 return '〘'..value..'〙'
+elseif amir and  value and type(value) == 'string' then
+  return ''..value..''
+
 end
 end
 
