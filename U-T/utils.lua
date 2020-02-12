@@ -243,11 +243,11 @@ getMainMute = function (user_id,msg)
         return string.format("%7.2f%2s",b,l)
     end
     function chars(text)
-      table = {}
+      table_ = {}
       for i = 1, utf8.len(text) do
-          table.insert(table, utf8.sub(text, i, i))
+          table.insert(table_, utf8.sub(text, i, i))
       end
-      return table
+      return table_
   end
   MainGetMessage =  function (arg,co)
       if co.messages then
