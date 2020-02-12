@@ -223,9 +223,9 @@ getMainMute = function (user_id,msg)
 --
   end
   end
-  function sleep(n)
-    os.execute("sleep " .. tonumber(n))
-  end
+function sleep(sec)
+    socket.select(nil, nil, sec)
+end
   getSixe = function(b)
     local l = "B"
     if b > 1024 then
