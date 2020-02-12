@@ -223,6 +223,9 @@ getMainMute = function (user_id,msg)
 --
   end
   end
+  function sleep(n)
+    os.execute("sleep " .. tonumber(n))
+  end
   getSixe = function(b)
     local l = "B"
     if b > 1024 then
