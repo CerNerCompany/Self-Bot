@@ -229,7 +229,7 @@ getMainMute = function (user_id,msg)
     if utf8.len(data.text) >= data.i 
     then 
           text_ = utf8.sub(data.text, 1 , data.i)
-          print(data.text)
+          
           tdbot.editMessageText(msg.chat_id, msg.id,text_, 'md')
          data.i = data.i + 1
         tdbot.setAlarm(0.1, TypeKey, data)
