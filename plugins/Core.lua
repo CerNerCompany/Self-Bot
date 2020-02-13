@@ -230,16 +230,10 @@ if crco[1] == 'next update' then
 end
 if crco[1] == 'say' and crco[2] then 
      str = crco[2]
-    function edit(data , org)
-             if utf8.len(data.text) >= data.i then 
-                   text = utf8.sub(data.text, 1 , data.i)
-                   tdbot.editMessageText(msg.chat_id, msg.id, '〘 '..text..' 〙', 'md')
-                  data.i = data.i + 1
-                 tdbot.setAlarm(0.1, edit, data)
-             end
-         end
-         if crco[2] and (tonumber(string.len(crco[2])) < 71 or tonumber(utf8.len(crco[2])) < 71) then
-         tdbot.setAlarm(0.1, edit, {text = str, i = 1})
+  
+
+         if crco[2] and (tonumber(string.len(crco[2])) < 71 or tonumber(utf8.len(crco[2])) < 71)  and tonumber(utf8.len(crco[2])) > 1then
+         tdbot.setAlarm(0.1, TypeKey, {text = str, i = 1})
          else
              tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : please using 70 char in text ','md',false, 0, nil, nil, nil)
 
@@ -693,7 +687,7 @@ if crco[1] == 'help' then
 
 end
 if crco[1] == 'help core' then
-    text = [[
+    text_ = [[
 ☤   Self-Bot   ☤
 ☤ *self* _on/off_
 `Enable or Disable Self-Project `
@@ -704,7 +698,7 @@ if crco[1] == 'help core' then
 ☤ *stats* 
 `Show stats of self-account`
 
-☤ *texttype* _mention/code/bold/italic/underline/strike/off_
+☤ *texttype* _mention/code/bold/italic/underline/strike/typekey/off_
 `Use TEXT TYPE for Message TEXT `
 
 ☤ *markread* _on/off_
@@ -809,7 +803,7 @@ if crco[1] == 'help core' then
 ☤ *timename* _on/off_
 `Enable or Disable time in name`
 
-☤ *say _text_
+☤ *say* _text_
 `echo your text `
     ]]
      tdbot.editMessageText(msg.chat_id, msg.id,text..SelfVersion..COPYRIGHT,'md',false, 0, nil, nil, nil)
@@ -970,6 +964,8 @@ if crco[1] == 'texttype' then
         type_mod = 'mention'
     elseif crco[2] == 'underline' then
         type_mod = 'underline'
+    elseif crco[2] == 'typekey' then
+        type_mod = 'typekey'
     elseif crco[2] == 'strike' then
         type_mod = 'strike'
     elseif crco[2] == 'off' then
@@ -1073,12 +1069,22 @@ elseif Get('other','TextType')  == 'strike' then
     tdbot.StrikethroughMessage(msg.chat_id, msg.id,utf8.len(msg.content.text.text),msg.content.text.text)
 elseif Get('other','TextType')  == 'underline' then 
     tdbot.UnderlineMessage(msg.chat_id, msg.id,utf8.len(msg.content.text.text),msg.content.text.text)
-    elseif Get('other','TextType')  == 'italic' then
+elseif Get('other','TextType')  == 'typekey' and tonumber(utf8.len(msg.content.text.text)) < 70 and tonumber(utf8.len(msg.content.text.text)) > 2 then
+    function GETINGUSER(CR,CO)
+        if tonumber(CO.edit_date) == 0  then
+            
+            tdbot.setAlarm(0.1, TypeKey, {text =msg.content.text.text , i = 1 , type_ = true})
+
+        end
+        end
+        tdbot.getMessage(msg.chat_id, tonumber(msg.id),GETINGUSER,nil)
+
+elseif Get('other','TextType')  == 'italic' then
          tdbot.editMessageText(msg.chat_id,msg.id,'_'..msg.content.text.text..'_','md',false, 0, nil, nil, nil)
         end
    
 end
-    end
+end
 end
 end
 end
