@@ -687,7 +687,7 @@ if crco[1] == 'help' then
 
 end
 if crco[1] == 'help core' then
-    text_ = [[
+    text = [[
 ☤   Self-Bot   ☤
 ☤ *self* _on/off_
 `Enable or Disable Self-Project `
