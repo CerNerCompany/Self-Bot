@@ -146,9 +146,11 @@ end
         tdbot.editMessageText(msg.chat_id, msg.id,PluginsLIST(),'md',false, 0, nil, nil, nil)
 end
         if crco[1] == 'reload' then
-            tdbot.editMessageText(msg.chat_id, msg.id,'Message : *All Plugins Reloaded !* \n☤ [〘show plugins list〙](https://t.me/share/url?url=plugs)' ,'md',false, 0, nil, nil, nil)
+            tdbot.setAlarm(0.1, TypeKey, {text = 'Message : All Plugins Reloaded !', i = 1})
+
            return PluginLoad()
-	        end
+ 
+        end
     if crco[2] == '-' then
           return  DIS(crco[3])
 	        end
