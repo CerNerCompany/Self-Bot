@@ -54,6 +54,28 @@ if ["$?" != "0"]; then
 exit 1 
 fi 
 }
+function KillSelfBot {
+kill $(ps aux | grep 'AutoRun' | awk '{print $2}') >> /dev/null 2>&1
+echo -e "\n${RD} Self process has been killed !"
+}
+function search(){
+    ps aux | grep -i $1| grep -v grep | awk '{print $2  $12}'
+read -p "==> Do you want to kill process??  [y]
+
+==>  for cancel [c]" procid
+if  [ "$procid" = 'y' ]
+then
+kill $(ps aux | grep $1 | awk '{print $2}') >> /dev/null 2>&1
+
+echo -e "\n${RD} process has been killed !"
+
+        
+      
+fi
+if  [ "$procid" = "c" ]; then
+exit 0 
+fi 
+}
 function loading {
 spin[0]="-"
 spin[1]="\\"
@@ -129,11 +151,17 @@ exit;;
 reset)
 lua5.3 L-C.lua RESET_BOT
 exit;;
+killself)
+KillSelfBot
+exit;;
 login)
 lua5.3 L-C.lua LOGIN_BOT
 exit;;
 config)
 lua5.3 L-C.lua CONFIG_BOT
+exit;;
+search)
+search $2
 exit;;
 install)
 Configing
