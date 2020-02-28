@@ -1,14 +1,16 @@
 --U-T
 utf8 = require "U-T.utf8" 
-
+lanes = require "lanes".configure()
   client = require("redis")
   socket = require('socket')
+ -- requests = require('requests')
     redis = client.connect('127.0.0.1', 6379)
         serpent = require "serpent"
      encode_json = require("dkjson")
    https = require("ssl.https")
   http = require("socket.http")
   U_RL = require('socket.url')
+  warp = dofile('./WARPT/config.lua')
        ltn12 = require("ltn12")
    ---MULTY, PRE -- 
    CreateFile = function(data, file, uglify)
@@ -82,7 +84,7 @@ elseif  msg.content._ == "messageText" and  msg.content.caption.text then
   end
 
 end
-  run_BOT(msg,update)
+run_BOT(msg,update)
 
 end
 
