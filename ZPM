@@ -49,6 +49,7 @@ sudo luarocks install redis-lua
 sudo luarocks install serpent 
 sudo luarocks install luasocket
 sudo luarocks install lua-sec
+sudo luarocks install lua-requests
 sudo luarocks install luasocket
 if ["$?" != "0"]; then
 exit 1 
