@@ -955,7 +955,7 @@ if crco[1] == 'bios' then
            dataadded = redis:get(hash..'GB:ADD') or 'O'
 is_sleep = (redis:get(hash..'WARP:SLEEP') or 'false')
 
-            text = '*WARP Account info *:\n*ID* : `'..hash..'`\n*DATA *: `'..dataadded..' GB`\n*is sleep :* _'..is_sleep..'_'
+            text = '*WARP Account info *:\n*ID* : `'..hash..'`\n*data added*: `'..dataadded..' GB`\n*is sleep :* _'..is_sleep..'_'
             return tdbot.editMessageText(msg.chat_id, msg.id,text,'md',false, 0, nil, nil, nil)
         end
             if crco[1] == 'dump' then 
