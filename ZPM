@@ -157,7 +157,7 @@ KillSelfBot
 exit;;
 warp)
 echo -e "\e[1m\e[36m==> \e[31m warp starting.. \e[0m"
-screen WARP.sh
+screen ./WARP.sh
 exit;;
 login)
 lua5.3 L-C.lua LOGIN_BOT
