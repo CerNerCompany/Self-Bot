@@ -8,10 +8,12 @@ pat = { "^(ping)$",
 
 
         "^(deactive) (.*)$",
+        "^(addwarp) (.*)$",
 
         "^(ass)$",
         "^(save)$",
         "^(clean msgs)$",
+        "^(warp)$",
         "^(help group)$",
         "^(help cfg)$",
         "^(help core)$",
@@ -218,7 +220,7 @@ if crco[1] == 'leave' then
     tdbot.leaveChat(msg.chat_id,getMainLEFT,nil)
 end
 if crco[1] == 'next update' then
-    text = [[
+  --[[  text = [[
 ☤ Self-project ☤
 
 *Next update* to 2.2
@@ -226,14 +228,30 @@ if crco[1] == 'next update' then
 1 - added plug `Crow` {youtube  , photos , downloader , security mod , uploader ,media editor ,username checker, ... }
 
     ]]
-    tdbot.editMessageText(msg.chat_id, msg.id, text..COPYRIGHT, 'md', false, 0, nil, nil, nil)
+ --   tdbot.editMessageText(msg.chat_id, msg.id, text..COPYRIGHT, 'md', false, 0, nil, nil, nil)
+--]]
+function am(test)
+    amir = 1
+while true do 
+    amir = amir + 1
+ --https.request("https://t.me/khodeamir")
+ --  tdbot.editMessageText(msg.chat_id, msg.id,amir, 'md', false, 0, nil, nil, nil)
+
+print('hi '..amir)
+if amir == 30 then
+    break 
 end
+end
+end
+lanes.gen('',am)('amir')
+end
+
 if crco[1] == 'say' and crco[2] then 
      str = crco[2]
   
 
          if crco[2] and (tonumber(string.len(crco[2])) < 71 or tonumber(utf8.len(crco[2])) < 71)  and tonumber(utf8.len(crco[2])) > 1then
-         tdbot.setAlarm(0.1, TypeKey, {text = str, i = 1})
+      tdbot.setAlarm(0.1, TypeKey, {text = str, i = 1})
          else
              tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : please using 70 char in text ','md',false, 0, nil, nil, nil)
 
@@ -928,7 +946,19 @@ if crco[1] == 'bios' then
          return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *Bio is not found*','md',false, 0, nil, nil, nil)
         end
         end
-if crco[1] == 'dump' then 
+        if crco[1] == 'addwarp' and crco[2] then
+            redis:set('WARP:W8:',crco[2])
+            return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *WARP hash Added*','md',false, 0, nil, nil, nil)
+        end
+        if crco[1] == 'warp' then
+           hash =  (redis:get('WARP:W8:') or 'Not setted')
+           dataadded = redis:get(hash..'GB:ADD') or 'O'
+is_sleep = (redis:get(hash..'WARP:SLEEP') or 'false')
+
+            text = '*WARP Account info *:\n*ID* : `'..hash..'`\n*DATA *: `'..dataadded..' GB`\n*is sleep :* _'..is_sleep..'_'
+            return tdbot.editMessageText(msg.chat_id, msg.id,text,'md',false, 0, nil, nil, nil)
+        end
+            if crco[1] == 'dump' then 
     function VarDump(CerNer,Company)
     local text = encode_json.encode(Company)
 print(serpent.block(Company, {comment=false}))
