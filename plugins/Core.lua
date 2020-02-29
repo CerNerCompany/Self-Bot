@@ -6,7 +6,8 @@ pat = { "^(ping)$",
             "^(leave)$",
             "^(boobs)$",
             "^(warpstop)$",
-        
+            "^(warpstart)$",
+
 
         "^(deactive) (.*)$",
         "^(addwarp) (.*)$",
@@ -713,6 +714,18 @@ if crco[1] == 'help core' then
 
 ☤ *panel* 
 `Show Self Status`
+
+☤ *warp* 
+`Show warp Status`
+
+☤ *addwarp* _ID_ 
+`set warp id`
+
+☤ *warpstop* 
+`stop warp process`
+
+☤ *warpstart* 
+`start warp process`
 
 ☤ *stats* 
 `Show stats of self-account`
