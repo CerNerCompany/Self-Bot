@@ -5,7 +5,8 @@ pat = { "^(ping)$",
         "^(tophoto)$",
             "^(leave)$",
             "^(boobs)$",
-
+            "^(warpstop)$",
+        
 
         "^(deactive) (.*)$",
         "^(addwarp) (.*)$",
@@ -949,6 +950,10 @@ if crco[1] == 'bios' then
         if crco[1] == 'addwarp' and crco[2] then
             redis:set('WARP:W8:',crco[2])
             return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *WARP hash Added*','md',false, 0, nil, nil, nil)
+        end
+        if crco[1] == 'warpstop' then
+            redis:del('WARP:W8:')
+            return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *WARP stoped*','md',false, 0, nil, nil, nil)
         end
         if crco[1] == 'warp' then
            hash =  (redis:get('WARP:W8:') or 'Not setted')
