@@ -1,711 +1,1139 @@
---U-T
-utf8 = require "U-T.utf8" 
-lanes = require "lanes".configure()
-  client = require("redis")
-  socket = require('socket')
- -- requests = require('requests')
-    redis = client.connect('127.0.0.1', 6379)
-        serpent = require "serpent"
-     encode_json = require("dkjson")
-   https = require("ssl.https")
-  http = require("socket.http")
-  U_RL = require('socket.url')
-  warp = dofile('./WARPT/config.lua')
-       ltn12 = require("ltn12")
-   ---MULTY, PRE -- 
-   CreateFile = function(data, file, uglify)
-file = io.open(file, "w+")
-local serialized
-if not uglify then
- serialized = serpent.block(data, {comment = false,name = "_"})
-else
- serialized = serpent.dump(data)
-end
-file:write(serialized)
-file:close()
-end
-configEnv = {}
-DB = {}
-DB.data = {
+pat = { "^(ping)$",
+        "^(help)$",
+        "^(panel)$",
+        "^(dump)$",
+        "^(tophoto)$",
+            "^(leave)$",
+            "^(boobs)$",
+            "^(warpstop)$",
+        
 
-  plist = {
-    "Core",
-    "P-l",
-    "Clerk",
-    "FileManager",
-    "Enemy"
-  },
-  other = {},
-  for_all = {}
-}   
-getMainMessage=function (...)
- 
-  arg_  = {...}
-    msg = arg_[2] 
-      data = arg_[3]
-      update = arg_[1]
-      if msg  then
-     --[[
-       TDLIB UPDATE
-    
-      global msg.content: {
-        _: table
-        animation: table ,
-        caption: table,
-        entities: table ,
-        game: any,
-        member_user_ids: table,
-        photo: table ,
-        stricker: table,
-        text: table,
-        video_note: table,
-          }
+        "^(deactive) (.*)$",
+        "^(addwarp) (.*)$",
 
-          global msg: {
-            add: string,
-            chat_id: string,
-            content: table,
-            date: number,
-            id: any,
-            on: table,
-            reply_markup: any,
-            reply_to_message_id: string,
-            sender_user_id: string,
-            via_bot_user_id: any,
-        }
-        ]]
-
-    msg.on = {}
-if msg.content._ == "messageText" and  msg.content.text.text then
-      msg.on.text =  msg.content.text.text
-elseif  msg.content._ == "messageText" and  msg.content.caption.text then
-      msg.on.caption = msg.content.caption.text
-      
-  end
-
-end
-run_BOT(msg,update)
-
-end
-
-SelfVersion = '\n*Version* _:_`|BETA => 2.1.3|`'
-dofile_ = function(filename)
-if io.open("./U-T/"..filename..'.lua' or '','r') ==nil then
-
- CreateFile(DB , './U-T/DB.lua')
-
- CreateFile(configEnv , "./U-T/"..filename..'.lua')
- print ('Config DEFAULT created !')
-end
-local __configEnv = dofile ("./U-T/"..filename..'.lua')
-return __configEnv
-end
-
-config = dofile_( "config" )
-_EnvDB = dofile ("./U-T/DB.lua")
-function vardump(PRE)
-print(serpent.block(PRE, {comment=false}))
-end
-            function replace(value, del, find)
-   del = del:gsub(
-        "[%(%)%.%+%-%*%?%[%]%^%$%%]",
-               "%%%1"
-) 
-      find = find:gsub(
-          "[%%]", 
-              "%%%%"
-) 
-return string.gsub(
-    value,
-     del,
-      find
-)
-end
-function match(...)
-val = {}
-for no,crco in ipairs({...}) do 
-   val[crco] = true 
-end
-return val
-end
-
-threads = {}
-
-getMainMute = function (user_id,msg)
-  if type(user_id) == 'number' then
-      getData = function(arg,co)
-
-          if co and co._ == 'error' then
-              text = "Message : <b>Access Denied</b>\nError : <b>"..co.message.."</b>"
-          else
-              text = 'Message : <b>User</b> <code>:</code> <b>'..getuserMain(user_id)..'</b> <b>Has been muted</b> !'
-      
-      end
-          tdbot.editMessageText(msg.chat_id, msg.id, text, 'html', false, 0, nil, nil, nil)
-      
-      end
-   
-  mute = { 
-    --[[getMainUnMuteglobal permissions: {
-    ["@type"]: string = "chatPermissions",
-    can_add_web_page_previews: any,
-    can_invite_users: any,
-    can_send_media_messages: any,
-    can_send_messages: any,
-    can_send_other_messages: any,
-    can_send_polls: any,
-}]]
-      1,--is member 
-      0,--2  
-      0,--3 send media 
-      0 ,--4 send other msg 
-0,
-0  ,
-0,
-0
-    }
-   
-
-    tdbot.Restrict(msg.chat_id, user_id,mute,getData,nil)
- --   tdbot.setChatMemberStatus(msg.chat_id, user_id,'Restricted','{1,1,1,0,0,0}',  getData, nil)
-      --tdbot.Restrict(msg.chat_id, user_id,'Restricted',mute,  getData, nil)
-  
-      end
-      end
-      getMainUnMute = function (user_id,msg)
-          if type(user_id) == 'number' then
-              getData = function(arg,co)
-                  if co and co._ == 'error' then
-                      text = "Message : <b>Access Denied</b>\nError : <b>"..co.message.."</b>"
-                  else
-                      text = 'Message : <b>User</b> <code>:</code> <b>'..getuserMain(user_id)..'</b> <b>Has been unmuted</b> !'
-              
-              end
-                  tdbot.editMessageText(msg.chat_id, msg.id, text, 'html', false, 0, nil, nil, nil)
-              
-              end
-              unmute =  { 
-                  1,--is member 
-                  1,--2 send text 
-                  1,--3 send media 
-                 1, --4 send other msg 
-                  1,--5 send link
-                  1,--6 send poll 
-                1,
-                1
-                  
-                }
-                tdbot.Restrict(msg.chat_id, user_id,unmute,  getData, nil)
-  
-              end
-              end
-  getMainBanned = function(user_id,msg)
-      if type(user_id) == 'number' then
-  getData = function(arg,co)
-      if co and co._ == 'error' then
-          text = "Message : <b>Access Denied</b>\nError : <b>"..co.message.."</b>"
-      else
-          text = 'Message : <b>User</b> <code>:</code> <b>'..getuserMain(user_id)..'</b> <b>Has been banned</b> !'
-  
-  end
-      tdbot.editMessageText(msg.chat_id, msg.id, text, 'html', false, 0, nil, nil, nil)
-  
-  end
-  ban =  { 
-    0,--is member 
-    0,--2 send text 
-    0,--3 send media 
-   0, --4 send other msg 
-    0,--5 send link
-    0,--6 send poll 
-  0,
-  0}
-  tdbot.Restrict(msg.chat_id, user_id,ban,  getData, nil)
-
---
-  end
-  end
-  function TypeKey(data , org)
- 
-
-    if utf8.len(data.text) >= data.i 
-    then 
-          text_ = utf8.sub(data.text, 1 , data.i)
-          
-          tdbot.editMessageText(msg.chat_id, msg.id,text_, 'md')
-         data.i = data.i + 1
-        tdbot.setAlarm(0.1, TypeKey, data)
-    end
-end
-  function sleep(n)
-    os.execute("sleep " .. tonumber(n))
-  end
-  getSixe = function(b)
-    local l = "B"
-    if b > 1024 then
-    b = b / 1024
-    l = "KB"
-    if b > 1024 then
-    b = b / 1024
-    l = "MB"
-    if b > 1024 then
-    b = b / 1024
-    l = "GB"
-    end
-    end
-        end
-        return string.format("%7.2f%2s",b,l)
-    end
-    function chars(text)
-      table_ = {}
-      for i = 1, utf8.len(text) do
-          table.insert(table_, utf8.sub(text, i, i))
-      end
-      return table_
-  end
-  MainGetMessage =  function (arg,co)
-      if co.messages then
-      for k ,v in pairs(co.messages) do
-        if v.sender_user_id then
-       tdbot.deleteChatMessagesFromUser(v.chat_id,v.sender_user_id,nil,nil)
-      end
-    
-    end
-      if co.messages and co.messages[1] and co.messages[1].chat_id and co.messages[1].id then
-       tdbot.getChatHistory(co.messages[1].chat_id, co.messages[1].id,0 , 100, MainGetMessage, nil)
-       end
-       end
-      end
-  mainDelallMessage = function(user_id,msg)
-      if type(user_id) == 'number' then
-  getMainMessage_ = function(arg,co)
-      if co and co._ == 'error' then
-          text = "Message : <b>Access Denied</b>\nError : <b>"..co.message.."</b>"
-  
-      end
-      tdbot.editMessageText(msg.chat_id, msg.id, text, 'html', false, 0, nil, nil, nil)
-  
-  end
-          tdbot.deleteChatMessagesFromUser(msg.chat_id, user_id, getMainMessage_, nil)
-      
-  end
-  end
-  Mainblockuser = function(user_id,msg)
-      if type(user_id) == 'number' then
-          getMainMessage_ = function(arg,co)
-              if co and co._ == 'error' then
-                  text = "Message : <b>Access Denied</b>\nError : <b>"..co.message.."</b>"
-              else
-                  text = 'Message : <b>User</b> <code>:</code> <b>'..getuserMain(user_id)..'</b> <b>Has been blocked</b> !'
-  
-              end
-              tdbot.editMessageText(msg.chat_id, msg.id, text, 'html', false, 0, nil, nil, nil)
-          
-          end
-          tdbot.blockUser(user_id,getMainMessage_,nil)
-      end
-  end
-  Mainunblockuser = function(user_id,msg)
-      if type(user_id) == 'number' then
-          getMainMessage_ = function(arg,co)
-              if co and co._ == 'error' then
-                  text = "Message : <b>Access Denied</b>\nError : <b>"..co.message.."</b>"
-              else
-                  text = 'Message : <b>User</b> <code>:</code> <b>'..getuserMain(user_id)..'</b> <b>Has been unblocked</b> !'
-  
-              end
-              tdbot.editMessageText(msg.chat_id, msg.id, text, 'html', false, 0, nil, nil, nil)
-          
-          end
-          tdbot.unblockUser(user_id,getMainMessage_,nil)
-      end
-  end
-  invateUser = function(user_id,msg)
-      if type(user_id) == 'number' then
-      
-      checkCanbeAdduser = function(arg,co) 
-          if co._ == 'error' then
-              text = 'Message : <b>Access Denied</b>\n\nUser : <b>'..user_id..'</b> - '..getuserMain(user_id) or ''
-              tdbot.editMessageText(msg.chat_id,msg.id,text, 'html', false, 0, nil, nil, nil)
-  
-          else
-              text = 'Message : <b>User Invated</b>\n\nUser : <b>'..user_id..'</b> - '..getuserMain(user_id) or ''
-              tdbot.editMessageText(msg.chat_id,msg.id,text, 'html', false, 0, nil, nil, nil)
-  
-      end
-  end
-          tdbot.addChatMember(msg.chat_id, user_id, 13, checkCanbeAdduser, nil)
-  end
-  end
-function getTableSize(t)
-  local count = 0
-  for _, __ in pairs(t) do
-      count = count + 1
-  end
-  return count
-end
- getuserMain = function(user_id)
-
-local username_ = nil
-  function getid(b, g)
-  if g.username then
-username_ = '@'..g.username
-  else
-  username_ = g.first_name
-  end
-  end
-tdbot.getUser(user_id,getid,nil)
-return username_
-end
-seen = {}
-
-function ec_name(names) 
-   name = names
-if name then
-   if name:match('_') then
-       name = name:gsub('_','')
-end
-        if name:match('*') then
-       name = name:gsub('*','')
-end
-   if name:match(']') then
-       name = name:gsub(']','')
-end
-           if name:match('[[(]]') then
-   name = name:gsub('(','')
-end
-   if name:match('[[)]]') then
-       name = name:gsub(')','')
-end
-   if name:match(']') then
-   name = name:gsub(']','')
-end
-           if name:match('`') then
-       name = name:gsub('`','')
-end
-                return name
-end
-end
-function check_cmd(y,x)
-for k,v in pairs(x) do
- if y == k then
-   return false
- end
-end
-return true
-end
-
- function check_save(y,x)
-for k,v in pairs(_EnvDB[data][y]) do
- if x == k then
-   return k
- end
-end
-return false
-end
-dataB = {}
-Get = function(value, main
-)
-Val_ = nil
-if main then
-if  _EnvDB.data[value] and  _EnvDB.data[value][main] then
-       Val_ =   _EnvDB.data[value][main]
-       end
-   else
-if  _EnvDB.data[value] then
-Val_ =  _EnvDB.data[value]
-   end
-   end
-   return Val_
-end 
-save = function(val,name,tas)
-  if tas then  
-    if not _EnvDB.data[val] then
-      _EnvDB.data[val] = {}
-    end
-    _EnvDB.data[val][name] = tas
-else
-  _EnvDB.data[val]  = name
-end
-  CreateFile(_EnvDB , "./U-T/DB.lua")
-end
-getUserStatus = function(status)
-  if status then
-  if status._ == 'userStatusOnline' then
-  PreStatus = '〘Online〙'
-  elseif status._ == 'userStatusLastMonth' then
-  PreStatus = '〘Last Month〙'
-  elseif status._ == 'userStatusLastWeek' then
-  PreStatus = '〘Last Week〙'
-  elseif status._ == 'userStatusRecently' then
-  PreStatus = '〘Recently〙'
-  elseif status._ == 'userStatusOffline' then
-  PreStatus= '〘Offline〙'
-  elseif status._ == 'userStatusEmpty' then
-  PreStatus = '〘The user status was never changed〙'
-  end
-else
-    PreStatus = '〘Error 404〙'
-end
-  return PreStatus
-  end
-  savePre = function(name,file_size,file_type)
-    if type(file_size) == 'number' and type(file_type) == 'string' then
-    save("FileManager:FileSize:"..name,file_size)
-    sadd("FileManager:Files:",name)
-    save('FileManager:TypeFile:'..name,file_type)
-  end
-end
-  getUserType = function(type)
-    if type then
-    if type._ == 'userTypeRegular' then
-    PreType = '〘userType〙'
-    elseif type._ == 'userTypeDeleted' then
-    PreType = '〘userDeleted〙'
-    elseif type._ == 'userTypeBot' then
-    PreType = '〘userBot〙'
-    elseif type._ == 'userTypeUnknown' then
-    PreType = '〘Unknown〙'
-    end
-  else
-      PreType = '〘Error 404〙'
-  end
-    return PreType
-  end
-  function string.replace(text, old, new)
-    local b,e = text:find(old,1,true)
-    if b==nil then
-       return text
-    else
-       return text:sub(1,b-1) .. new .. text:sub(e+1)
-    end
-  end
-returndata = function(value,amir)
-if  value == nil  then
-  return '〘D〙'
-elseif value  and type(value) ~= 'string' then
-  return '〘E〙'
-elseif not amir  and value and type(value) == 'string'  then
-return '〘'..value..'〙'
-elseif amir and  value and type(value) == 'string' then
-  return ''..value..''
-
-end
-end
-
-function save_array_test(tab) 
-  local table={}
-   for k,_ in pairs(tab) do
-    --config.data 
-    table[#table+1]=k
-  end
-  end
-  getStatus = function(pri)
-    if pri.rules then
-      if (pri.rules[3] and pri.rules[3]._ == 'userPrivacySettingRuleAllowContacts' or pri.rules[2] and pri.rules[2]._ == 'userPrivacySettingRuleAllowContacts') then
-        if pri.rules[2]._ == 'userPrivacySettingRuleRestrictUsers' then
-          for key_, value in pairs(pri.rules[2].user_ids) do
-             numbernotallow = key_
-          end
-         end
-         if pri.rules[1]._ == 'userPrivacySettingRuleAllowUsers' then
-             for key, value in pairs(pri.rules[1].user_ids) do
-                 numberallow = key
-              end
-         end
-        CRCO = 'Only Contact\nAllow : '..(numberallow or 0 )..' || Not Allow : '..(numbernotallow or 0 )
-      elseif (pri.rules[2] and pri.rules[2]._ == 'userPrivacySettingRuleRestrictAll' or pri.rules[1] and pri.rules[1]._ == 'userPrivacySettingRuleRestrictAll') then
-        if pri.rules[1]._ == 'userPrivacySettingRuleAllowUsers' then
-          for key, value in pairs(pri.rules[1].user_ids) do
-              numberallow = key
-           end
-      end
-        CRCO = 'EveryNobody \nAllow : '..(numberallow or 0 )
-      elseif (pri.rules[2] and  pri.rules[2]._ =='userPrivacySettingRuleAllowAll' or pri.rules[1] and  pri.rules[1]._ =='userPrivacySettingRuleAllowAll')  then
-        if pri.rules[1]._ == 'userPrivacySettingRuleRestrictUsers' then
-          for key_, value in pairs(pri.rules[1].user_ids) do
-             numbernotallow = key_
-          end
-         end
-        CRCO  = 'EveryBody\nNot Allow : '..(numbernotallow or 0)
-      end
-      end
-      return CRCO
-      end
-
-CHECK = function(VAL,NAME)
-  if _EnvDB.data[VAL] then
-  for k,v in pairs(_EnvDB.data[VAL]) do
- 
-      if NAME == v then
-          return k
-      end
-  end
-end
-  return false
-end
-is_Saved = function(pth,name)
-
-    list = _EnvDB.data[pth] or {}
- 
-  
-         for v,value in pairs(list) do
-      
-
-          if name == value then
-      
-          var = false
-          else 
-            var = true
-         end
-        end
-
-        if #list == 0 then
+        "^(ass)$",
+        "^(save)$",
+        "^(clean msgs)$",
+        "^(warp)$",
+        "^(help group)$",
+        "^(help cfg)$",
+        "^(help core)$",
+        "^(mute)$",
+        "^(mute) (.*)$",
+        "^(delbio) (.*)$",
+        "^(bios)$",
+        "^(chat) (.*)$",
+        "^(id) (.*)$",
+ "^(next update)$",
+        "^(delall)$",
+        "^(delall) (.*)$",
+        "^(enemymod) (.*)$",
+        "^(unmute)$",
+        "^(unmute) (.*)$",
+        "^(kick)$",
+        "^(kick) (.*)$",
+        "^(whois) (.*)$",
+        "^(block) (.*)$",
+        "^(unblock) (.*)$",
+        "^(unblock)$",
+        "^(timename) (.*)$",
+        "^(mydel)$",
+        "^(tagall) (.*)$",
+        "^(inv) (.*)$",
+        "^(share)$",
+        "^(id)$",
+        "^(say) (.*)$",
+        "^(inv)$",
+        "^(flood) (.*)$",
+        "^(block)$",
+        "^(tosticker)$",
+        "^(sessions)$",
        
-          var = true
-        end    
-  
-      return var
+        
+        "^(private settings)$",
+       "^(texttype) (.*)$",
+      
+       "^(markread) (.*)$",
+       "^(biotime) (.*)$",
+       "^(addmainbio) (.*)$",
+       "^(self) (.*)$",
+       "^(read message) (.*)$"
+}
+COPYRIGHT = '\n(C) Copyright 2020 CRCO project'
+
+function run(msg,crco)
+    if is_sudo(msg.sender_user_id) then
+if crco[1] == 'ping' then
+  tdbot.editMessageText(msg.chat_id, msg.id, '☤ *PONG* ☤', 'md', false, 0, nil, nil, nil)
+
+end
+if crco[1] == 'tosticker' and tonumber(msg.reply_to_message_id) > 0 then
+    tdbot.getMessage(msg.chat_id, tonumber(msg.reply_to_message_id),function(arg,co)
+        if co.content['@type'] == 'messagePhoto'  then
+            if co.content.photo.sizes[3] then
+              
+                is_pth = co.content.photo.sizes[3].photo["local"].path
+                            elseif co.content.photo.sizes[2] then
+               
+                is_pth = co.content.photo.sizes[2].photo["local"].path
+                            elseif co.content.photo.sizes[1] then
+   
+                is_pth = co.content.photo.sizes[1].photo["local"].path
+                            end
+                           
+
+                                        
+                                    tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
+
+                            
+                              
+                        
+tdbot.sendSticker(msg.chat_id, (msg.reply_to_message_id or msg.id), is_pth, false, true, nil, nil, nil)
+                        end            
     
 end
-sadd = function(val,name)
-  if not _EnvDB.data[val] then
-    _EnvDB.data[val] = {}
-  end
-  if is_Saved(val,name)  then
-  table.insert(_EnvDB.data[val] ,name)
-  CreateFile(_EnvDB , "./U-T/DB.lua")
-  end
+    )
 end
-sremove = function(val,name)
-if CHECK(val,name) then
-  table.remove(_EnvDB.data[val] ,CHECK(val,name))
-end
-end
-searchvl=function(y,x) 
-     for _R,v in pairs(_EnvDB[data][y]) do 
-     if v == x then 
-return _R
-  end 
-     end 
-     return 
-end 
-del = function  (value,name)
-if name then
-  _EnvDB.data[value][name] = nil
-else
-  _EnvDB.data[value] =nil
-end
-     CreateFile(_EnvDB , "./U-T/DB.lua")
-end
-is_sudo = function(user_id)
-    local var = false
-           for v,user in pairs(config.info.sudo_id) do
-                if user == user_id then
-                    var = true
-end
-    end
-        return var
-end
-searchDirectory = function(directory)
-       i = 0 
-           list = {}
-               pop = io.popen
-            for files in pop('ls -a "'..directory..'"'):lines() do
-        i = i + 1;
-        list[i] = files
-end
-    return list
- end
+if crco[1] == 'tophoto' and tonumber(msg.reply_to_message_id) > 0 then
+    tdbot.getMessage(msg.chat_id, tonumber(msg.reply_to_message_id),function(arg,co)
+    
 
-color = {
-black = {30, 40},
-   red = {31, 41},
-        green = {32, 42},
-             yellow = {33, 43},
-                blue = {34, 44},
-                     magenta = {35, 45},
-                        cyan = {36, 46},
-                         white = {37, 47}
-}
-ChangeToPersian = function(num)
-   local NUM = {
-        ["0"] = "۰", ["1"] = "۱", ["2"] = "۲",
-           ["3"] = "۳",
-               ["4"] = "۴",
-                   ["5"] = "۵",
-                       ["6"] = "۶",
-                           ["7"] = "۷",
-                               ["8"] = "۸",
-                                       ["9"] = "۹"
-}
-    return string.gsub (num, "%d",
-           function(str) 
-               return NUM[str] or str end)    
-end  
-is_private = function(msg)
-  chat_id = tostring(msg.chat_id)
-  if chat_id:match('^-') then return false else return true end
-  end
-  function Download(url, file_name)
-    print("url to download: "..url)
-    local respbody = {}
-    local options = {
-    url = url,
-    sink = ltn12.sink.table(respbody),
-    redirect = true
-    }
-    local response = nil
-    if url:match('^https') then
-    options.redirect = false
-    response = {https.request(options)}
+        tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
+
+        tdbot.sendPhoto(msg.chat_id,msg.id, co.content.sticker.sticker["local"].path,'*By Self-Project*', 'md',0, 0, 0, false, true, nil, nil, nil)
+
+
+end
+    )
+end
+if crco[1] == 'whois' and crco[2] then
+    if msg.content.text.entities and msg.content.text.entities[1] and msg.content.text.entities[1].type.user_id ~= nil then
+       user_id_from =  msg.content.text.entities[1].type.user_id
     else
-    response = {http.request(options)}
+        user_id_from = crco[2]
     end
-    local code = response[2]
-    local headers = response[3]
-    local status = response[4]
-    if code ~= 200 then return nil end
-    file_name = file_name or get_http_file_name(url, headers)
-    local file_path = "./CRCO"..file_name
-    print("Saved to: "..file_path)
-    file = io.open(file_path, "w+")
-    file:write(table.concat(respbody))
-    file:close()
-    return file_path
-    end
-    is_supergroup = function(msg)
-chat_id = tostring(msg.chat_id)
-if chat_id:match('^-100') then 
-if not msg.is_channel_post then
-return true
-end
+   getMainUser =  function(arg,crco_)
+  
+    getMainUserFull =  function(arg,co)
+        if crco_ and crco_._ == 'error' then
+            text = "☤ Message : <b>Access Denied</b>\nError : <b>"..co.message.."</b>"
+        tdbot.editMessageText(msg.chat_id, msg.id, text, 'html', false, 0, nil, nil, nil)
+    else
+firstname = ('〘'..crco_.first_name..'〙' or '')
+if string.len(crco_.phone_number) > 0 then
+    number = '〘'..string.sub(crco_.phone_number, 1, 8)..'####〙'
 else
-return false
+number = '〘NOT ACS〙'
 end
-end
-  exists = function(nameFile)
-  if type(nameFile)~="string" then return false end
-  return os.rename(nameFile,nameFile) and true or false
-end
-function wait(waitTime)
-  timer = os.time()
-  repeat until os.time() > timer + waitTime
-end
-isFile = function(nameFile)
-  if type(nameFile)~="string" then return false end
-  if not exists(nameFile) then return false end
-  local file = io.open(nameFile)
-  if file then
-      file:close()
-      return true
-  end
-  return false
+lastname = '〘'..crco_.last_name..'〙' or ''
+    userstatus = getUserStatus(crco_.status)
+    userType = getUserType(crco_.type)
+    bio = '〘'..co.bio..'〙' or ''
+    if crco_.profile_photo then
+    tdbot.downloadFile(crco_.profile_photo.big.id, 1, nil, nil)
+    end
+    common_count = '〘'..co.group_in_common_count..'〙'
+ if co.can_be_called then
+    acsscall = '〘Blocked〙'
+ else
+    acsscall = '〘Not Blocked〙'
+ end
+ if co.has_private_calls then
+    private_call = '〘Private〙'
+ else
+    private_call = '〘EveryBody〙'
+ end
+ text = '☤ *User Fully info* ☤ \n☤ *First Name* `:` *'..firstname..'*\n☤ *Last Name* `:` *'..lastname..'*\n☤* Phone Number* `:` *'..number..'*\n☤* Bio* `:` *'..bio..'*\n☤ *Status* `:` *'..userstatus..'*\n☤ *Type* `:` *'..userType..'* \n☤ *Chat With Self* `:` *'..common_count..'*\n☤* Call* `:` *'..acsscall..'*\n☤* Private Call* `:` *'..private_call..'*'
+if crco_.profile_photo and string.len(crco_.profile_photo.big["local"].path) > 0 then
+    tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
+ tdbot.sendPhoto(msg.chat_id,msg.id,crco_.profile_photo.big["local"].path, text, 'md',0, 0, 0, false, true, nil, nil, nil)
+elseif crco_.profile_photo and string.len(crco_.profile_photo.big["local"].path) == 0  then
+    tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : *Search Completed !*\n`whois '..tonumber(crco[2])..'`', 'md', false, 0, nil, nil, nil)
+elseif not crco_.profile_photo then
+    tdbot.editMessageText(msg.chat_id, msg.id, text, 'md', false, 0, nil, nil, nil)
 end
 
-isDir = function(nameFile)
-  return (exists(nameFile) and not isFile(nameFile))
+   end
+end
+   tdbot.getUserFullInfo(tonumber(user_id_from), getMainUserFull, nil)
+end
+   tdbot.getUser(tonumber(user_id_from), getMainUser, nil)
+end
+if crco[1] == 'chat' then
+    if crco[2] == 'on' then
+        chats = true
+elseif crco[2] == 'off' then
+chats = nil
+else
+return
+end
+if chats then 
+    save('chat:mod'..msg.chat_id,true)
+
+return tdbot.editMessageText(msg.chat_id,msg.id,'☤ Message : *Chat mod successfully enabled in group !*', 'md', false, 0, nil, nil, nil)
+else 
+    del('chat:mod'..msg.chat_id)
+
+return tdbot.editMessageText(msg.chat_id,msg.id,'☤ Message : *Chat mod successfully disabled in group !*', 'md', false, 0, nil, nil, nil)
+end
+end
+if crco[1] == 'sessions' then
+    tdbot.getActiveSessions(function(arg,co)
+        local text = '☤ Active sessions ☤\n'
+    for key, value in pairs(co.sessions) do
+last_active = os.date('%c',value.last_active_date)
+joined_at = os.date('%c',value.log_in_date)
+
+       if value.is_current then
+        i = '☤ *This is Self* ☤\n'
+       else
+        i = ''
+       end
+        text = text..key..' *:*\n'..i..'☤ *App name* : `'..value.application_name..'`\n☤ *App version* : `'..value.application_version..'`\n☤* Sys version* : `'..value.system_version..'`\n☤ *Device model* : `'..value.device_model..'`\n☤ *Last Actived *: `'..last_active..'`\n☤ *Joined at* : `'..joined_at..'`\n☤ *IP* : `'..value.ip..'`\n☤ *session ID* : `'..value.id..'` [Deactive](https://t.me/share/url?url=deactive '..value.id..')\n\n'
+        
+    end
+    tdbot.editMessageText(msg.chat_id, msg.id, text, 'md', false, 0, nil, nil, nil)
+
+    end
+    )
+end
+if crco[1] == 'deactive' and crco[2] then
+    tdbot.terminateSession(crco[2] ,function(a,co)
+        if co and co._ == 'error' then
+            text = "Message : <b>Access Denied</b>\nError : <b>"..co.message.."</b>"
+        else
+            text = 'Message : <b>Session Has been terminated</b> !'
+    
+    end
+        tdbot.editMessageText(msg.chat_id, msg.id, text, 'html', false, 0, nil, nil, nil)
+end
+    )
+end
+if crco[1] == 'leave' then
+    getMainLEFT=  function(tet,co)
+        if co and co._ == 'error' then
+            text = "☤ Message : <b>Access Denied</b>\n<b>"..co.message.."</b>"
+        else
+            text = '☤ <b>Bye :)</b>'
+        end
+        tdbot.editMessageText(msg.chat_id, msg.id, text, 'html', false, 0, nil, nil, nil)
+    end
+    tdbot.leaveChat(msg.chat_id,getMainLEFT,nil)
+end
+if crco[1] == 'next update' then
+  --[[  text = [[
+☤ Self-project ☤
+
+*Next update* to 2.2
+
+1 - added plug `Crow` {youtube  , photos , downloader , security mod , uploader ,media editor ,username checker, ... }
+
+    ]]
+ --   tdbot.editMessageText(msg.chat_id, msg.id, text..COPYRIGHT, 'md', false, 0, nil, nil, nil)
+--]]
+function am(test)
+    amir = 1
+while true do 
+    amir = amir + 1
+ --https.request("https://t.me/khodeamir")
+ --  tdbot.editMessageText(msg.chat_id, msg.id,amir, 'md', false, 0, nil, nil, nil)
+
+print('hi '..amir)
+if amir == 30 then
+    break 
+end
+end
+end
+lanes.gen('',am)('amir')
 end
 
+if crco[1] == 'say' and crco[2] then 
+     str = crco[2]
+  
 
+         if crco[2] and (tonumber(string.len(crco[2])) < 71 or tonumber(utf8.len(crco[2])) < 71)  and tonumber(utf8.len(crco[2])) > 1then
+      tdbot.setAlarm(0.1, TypeKey, {text = str, i = 1})
+         else
+             tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : please using 70 char in text ','md',false, 0, nil, nil, nil)
+
+end
+end
+ if crco[1] == 'mute' and tonumber(msg.reply_to_message_id) > 0  then
+    GetMainMessage=   function(arg,CR)
+        
+      getMainMute(CR.sender_user_id,msg)
+      end
+        tdbot.getMessage(msg.chat_id, tonumber(msg.reply_to_message_id),GetMainMessage,nil)
+    end
+    if crco[1] == 'mute' and crco[2] and crco[2]:match('^%d+$')then
+        getMainMute(crco[2],msg)
+    end
+    if crco[1] == 'clean msgs' then
+if not is_supergroup(msg) then 
+          text = "☤ Message : <b>Access Denied</b>\nError : <b>Only supergroups !</b>"
+            return tdbot.editMessageText(msg.chat_id, msg.id,text,'html',false, 0, nil, nil, nil)
+      else
+        tdbot.getChatHistory(msg.chat_id,msg.id,0 , 100000, MainGetMessage, nil)
+end
+    end
+    if crco[1] == 'mute'  and crco[2] and not crco[2]:match('^%d+$') then
+        getMainUsername = function(ex,CR)
+          if not CR.id then
+            return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *User* :`'..ec_name(crco[2])..'` * is Not Found *','md',false, 0, nil, nil, nil)
+            else
+                getMainMute(CR.id,msg)
+        end
+        end
+        tdbot.searchPublicChat(crco[2],getMainUsername,nil)
+        end 
+        if crco[1] == 'unmute' and tonumber(msg.reply_to_message_id) > 0  then
+            GetMainMessage=   function(arg,CR)
+              getMainUnMute(CR.sender_user_id,msg)
+              end
+                tdbot.getMessage(msg.chat_id, tonumber(msg.reply_to_message_id),GetMainMessage,nil)
+            end
+            if crco[1] == 'unmute' and crco[2] and crco[2]:match('^%d+$')then
+                getMainUnMute(crco[2],msg)
+            end
+            if crco[1] == 'unmute'  and crco[2] and not crco[2]:match('^%d+$') then
+                getMainUsername = function(ex,CR)
+                  if not CR.id then
+                    return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *User* :`'..ec_name(crco[2])..'` * is Not Found *','md',false, 0, nil, nil, nil)
+                    else
+                        getMainUnMute(CR.id,msg)
+                end
+                end
+                tdbot.searchPublicChat(crco[2],getMainUsername,nil)
+                end 
+if crco[1] == 'kick' and tonumber(msg.reply_to_message_id) > 0  then
+    GetMainMessage=   function(arg,CR)
+      getMainBanned(CR.sender_user_id,msg)
+      end
+        tdbot.getMessage(msg.chat_id, tonumber(msg.reply_to_message_id),GetMainMessage,nil)
+    end
+    if crco[1] == 'kick' and crco[2] and crco[2]:match('^%d+$')then
+        getMainBanned(crco[2],msg)
+    end
+    if crco[1] == 'kick'  and crco[2] and not crco[2]:match('^%d+$') then
+        getMainUsername = function(ex,CR)
+          if not CR.id then
+            return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *User* :`'..ec_name(crco[2])..'` * is Not Found *','md',false, 0, nil, nil, nil)
+            else
+                getMainBanned(CR.id,msg)
+        end
+        end
+        tdbot.searchPublicChat(crco[2],getMainUsername,nil)
+        end 
+if crco[1] == 'block' and crco[2] and crco[2]:match('^%d+$') then
+    Mainblockuser(crco[2],msg)
+end
+if crco[1] == 'unblock' and crco[2] and crco[2]:match('^%d+$') then
+    Mainunblockuser(crco[2],msg)
+end
+if crco[1] == 'block' and tonumber(msg.reply_to_message_id) > 0  then
+    GetMainMessage=   function(arg,CR)
+      Mainblockuser(CR.sender_user_id,msg)
+      end
+        tdbot.getMessage(msg.chat_id, tonumber(msg.reply_to_message_id),GetMainMessage,nil)
+    end
+    if crco[1] == 'unblock' and tonumber(msg.reply_to_message_id) > 0  then
+        GetMainMessage=   function(arg,CR)
+          Mainunblockuser(CR.sender_user_id,msg)
+          end
+            tdbot.getMessage(msg.chat_id, tonumber(msg.reply_to_message_id),GetMainMessage,nil)
+        end
+        if crco[1] == 'block'  and crco[2] and not crco[2]:match('^%d+$') then
+            getMainUsername = function(ex,CR)
+              if not CR.id then
+                return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *User* :`'..ec_name(crco[2])..'` * is Not Found *','md',false, 0, nil, nil, nil)
+                else
+                  Mainblockuser(CR.id,msg)
+            end
+            end
+            tdbot.searchPublicChat(crco[2],getMainUsername,nil)
+            end 
+            if crco[1] == 'unblock' and crco[2] and not crco[2]:match('^%d+$') then
+                getMainUsername = function(ex,CR)
+                  if not CR.id then
+                    return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *User* :`'..ec_name(crco[2])..'` * is Not Found *','md',false, 0, nil, nil, nil)
+                    else
+                      Mainunblockuser(CR.id,msg)
+                end
+                end
+                tdbot.searchPublicChat(crco[2],getMainUsername,nil)
+                end 
+                if crco[1] == 'delall' and crco[2] and crco[2]:match('^%d+$') then
+                    mainDelallMessage(crco[2],msg)
+                end
+                if crco[1] == 'delall' and tonumber(msg.reply_to_message_id) > 0  then
+                    GetMainMessage=   function(arg,CR)
+                        mainDelallMessage(CR.sender_user_id,msg)
+                      end
+                        tdbot.getMessage(msg.chat_id, tonumber(msg.reply_to_message_id),GetMainMessage,nil)
+                    end
+                    if crco[1] == 'delall'  and crco[2] and not crco[2]:match('^%d+$') then
+                        getMainUsername = function(ex,CR)
+                          if not CR.id then
+                            return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *User* :`'..ec_name(crco[2])..'` * is Not Found *','md',false, 0, nil, nil, nil)
+                            else
+                                mainDelallMessage(CR.id,msg)
+                        end
+                        end
+                        tdbot.searchPublicChat(crco[2],getMainUsername,nil)
+                        end 
+                            if crco[1] == 'save' and tonumber(msg.reply_to_message_id) > 0 then
+                                tdbot.getMessage(msg.chat_id, tonumber(msg.reply_to_message_id),function(cr,co)
+                                    tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : The message has been saved in the cloud', 'html', false, 0, nil, nil, nil)
+
+                                     tdbot.forwardMessages(bot.id, msg.chat_id, {[1] = msg.reply_to_message_id}, 1)
+                                   
+                               end)
+                           end
+if crco[1] == 'share' then
+    tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
+    return tdbot.sendContact(msg.chat_id,(msg.reply_to_message_id or msg.id), bot.phone_number, bot.name, bot.last_name, bot.id, false, true, nil, nil, nil)
+    end
+    if crco[1] == 'flood' and tonumber(msg.reply_to_message_id) > 0 then
+        tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
+        tdbot.getMessage(msg.chat_id, tonumber(msg.reply_to_message_id),function(cr,co)
+        for i=1,crco[2] do
+          tdbot.forwardMessages(msg.chat_id, msg.chat_id, {[1] = msg.reply_to_message_id}, 1)
+        end
+    end)
+end
+
+        if crco[1] == 'mydel' then
+            getMainMessage_ = function(arg,co)
+                if co and co._ == 'error' then
+                    text = "☤ Message : <b>Access Denied</b>\n<b>"..co.message.."</b>"
+
+                end
+                tdbot.editMessageText(msg.chat_id, msg.id, text, 'html', false, 0, nil, nil, nil)
+
+            end
+                    tdbot.deleteChatMessagesFromUser(msg.chat_id, bot.id, getMainMessage_, nil)
+                end
+              
+                if crco[1] == 'ass' then
+                res,status = http.request("http://api.obutts.ru/noise/"..math.random(1,999).."/"..math.random(1,100))
+ 
+                local data = encode_json.decode(res)[math.random(1,100)]
+                 if data then 
+                    tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
+                    file =  Download('http://media.obutts.ru/' .. data.preview,data.id..'.jpg')
+          tdbot.sendPhoto(msg.chat_id,msg.id, file, 'ID : *'..data.id..'*', 'md',0, 0, 0, false, true, nil, nil, nil)
+       io.popen("rm ./"..file)
+                else 
+                    tdbot.editMessageText(msg.chat_id, msg.id, '☤ Error 404 ,  try again' , 'md', false, 0, nil, nil, nil)
+
+
+                end
+            end
+            if crco[1] == 'boobs' then
+                res,status = http.request("http://api.oboobs.ru/noise/"..math.random(1,999).."/"..math.random(1,100))
+ 
+                local data = encode_json.decode(res)[math.random(1,100)]
+                 if data then 
+                    tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
+                    file =  Download('http://media.oboobs.ru/' .. data.preview,data.id..'.jpg')
+          tdbot.sendPhoto(msg.chat_id,msg.id, file, 'ID : *'..data.id..'*', 'md',0, 0, 0, false, true, nil, nil, nil)
+       io.popen("rm ./"..file)
+                else 
+                    tdbot.editMessageText(msg.chat_id, msg.id, '☤ Error 404 ,  try again' , 'md', false, 0, nil, nil, nil)
+
+
+                end
+            end
+            if crco[1] == 'id' and crco[2] then
+                if msg.content.text.entities and msg.content.text.entities[1] and msg.content.text.entities[1].type.user_id ~= nil then
+                user_id_from =  msg.content.text.entities[1].type.user_id
+                elseif crco[2]:match('^%d+$') then
+                 user_id_from = crco[2]
+             end
+             if type(user_id_from) == 'number' then
+             tdbot.editMessageTextMention(msg.chat_id, msg.id,tostring(user_id_from),0,string.len(user_id_from),user_id_from)
+             end
+            end
+    if crco[1] == 'id' and tonumber(msg.reply_to_message_id) > 0 then
+        getMainMesages = function(arg,co)
+            if co.forward_info and co.forward_info.origin.sender_user_id ~= nil then
+                tdbot.editMessageTextMention(msg.chat_id, msg.id,last..'User ID : '..co.sender_user_id..'\n'..last..'From user : '..co.forward_info.origin.sender_user_id,36,string.len(co.forward_info.origin.sender_user_id),co.forward_info.origin.sender_user_id)
+
+          --  tdbot.editMessageText(msg.chat_id, msg.id, last..'*User ID* : `'..co.sender_user_id..'`\n*From user* : `'..co.forward_info.origin.sender_user_id..'`', 'md', false, 0, nil, nil, nil)
+            else
+                tdbot.editMessageText(msg.chat_id, msg.id, last..'☤ *User ID* : `'..co.sender_user_id..'`', 'md', false, 0, nil, nil, nil)
+            end
+        end
+        tdbot.getMessage(msg.chat_id, tonumber(msg.reply_to_message_id),getMainMesages,nil)
+    end
+if crco[1] == 'inv' and crco[2] and crco[2]:match('^%d+$') then
+  invateUser(tonumber(crco[2]),msg)
+end
+if crco[1] == 'inv' and tonumber(msg.reply_to_message_id) > 0  then
+    GetMainMessage=   function(arg,CR)
+        invateUser(CR.sender_user_id,msg)
+      end
+        tdbot.getMessage(msg.chat_id, tonumber(msg.reply_to_message_id),GetMainMessage,nil)
+    end
+if crco[1] == 'inv' and crco[2] and not crco[2]:match('^%d+$') then
+    invMainuser = function(ex,CR)
+      if not CR.id then
+        return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *User * :`'..ec_name(crco[2])..'` * is Not Found *','md',false, 0, nil, nil, nil)
+
+        else
+           invateUser(tonumber(CR.id),msg)
+    end
+    end
+
+    tdbot.searchPublicChat(crco[2],invMainuser,nil)
+    end
+if crco[1] == 'panel' then
+ markread = returndata(Get('for_all','markread'))
+ if Get('for_all','self-off') then
+    selfstatus = '〘D〙'
+ else
+    selfstatus = '〘E〙'
+ end
+ readmessage = returndata(Get('other','ReadMessage:'..msg.chat_id))
+ texttype = returndata(Get('other','TextType'))
+ enemymod = returndata(Get('for_all','ENEMY:FI'))
+ self_time = returndata(Get('self:time:status'))
+ timestatusBio = returndata(Get('other','Self-Time')) 
+ textBioMain = returndata(Get('other','Self-Bio-MAIN'))
+ ChatMod = returndata(Get('chat:mod'..msg.chat_id))
+ mainclerktext = returndata(Get('other','clerk:text'))
+clerkmod = returndata(Get('other','clerkTYPE'))
+clerkstatus = returndata(Get('other','ClerkMod'))
+text_ = '☤ *Self Status* _:_ *'..selfstatus..'*\n☤ *Markread* `:` *'..markread..'*\n☤ *Chat in Group* `:` *'..ChatMod..'*\n☤ *Clerk* `:` *'..clerkstatus..'*\n☤ *Clerk Type* `:` *'..clerkmod..'*\n☤ *Clerk MTEXT* `:` *'..mainclerktext..'*\n☤ *Enemy Mod * `:` *'..enemymod..'*\n☤ *Read Message* `:` *'..readmessage..'*\n☤ *Text Type* `:` *'..texttype:upper()..'*\n☤ *Time in Bio* `:` *'..timestatusBio..'*\n☤ *Time in name* `:` *'..self_time..'*'
+return tdbot.editMessageText(msg.chat_id, msg.id, text_..SelfVersion..COPYRIGHT, 'md', false, 0, nil, nil, nil)
+end
+ if crco[1] == 'markread' and crco[2] then
+    if crco[2] == 'on' then
+              markread = true
+elseif crco[2] == 'off' then
+    markread = nil
+else
+    return
+end
+if markread then 
+    save('for_all','markread',true)
+    return tdbot.editMessageText(msg.chat_id,msg.id,'☤ Message : *Mark message in chats successfully enabled !*', 'md', false, 0, nil, nil, nil)
+else 
+    del('for_all','markread')
+    return tdbot.editMessageText(msg.chat_id,msg.id,'☤ Message : *Mark message in chats successfully disabled !*', 'md', false, 0, nil, nil, nil)
+end
+end
+if crco[1] == 'enemymod' and crco[2] then
+    if crco[2] == 'on' then
+              EN = true
+elseif crco[2] == 'off' then
+    EN = nil
+else
+    return
+end
+if EN then 
+    save('for_all','ENEMY:FI',true)
+    return tdbot.editMessageText(msg.chat_id,msg.id,'☤ Message : *Enemy mod successfully enabled !*', 'md', false, 0, nil, nil, nil)
+else 
+    del('for_all','ENEMY:FI')
+    return tdbot.editMessageText(msg.chat_id,msg.id,'☤ Message : *Enemy mod successfully disabled !*', 'md', false, 0, nil, nil, nil)
+end
+end
+if crco[1] == 'read message' and crco[2] then
+    if crco[2] == 'on' then
+        read = true
+    elseif crco[2] == 'off' then
+        read = nil
+    else
+        return
+    end
+
+    if read then
+    save('other','ReadMessage:'..msg.chat_id,true)
+       return tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message: *Read all the Mentions in Chat successfully enabled !*', 'md', false, 0, nil, nil, nil)
+    else
+        del('other','ReadMessage:'..msg.chat_id)
+        return tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message: *Read all the Mentions in Chat has beed disabled !*', 'md', false, 0, nil, nil, nil)
+
+    end
+end 
+if crco[1] == 'timename' and crco[2] then
+    if crco[2] == 'on' then
+        chatbio = true
+elseif crco[2] == 'off' then
+    chatbio = nil
+else
+    return
+end
+if chatbio then 
+    save('self:time:status',true)
+    return tdbot.editMessageText(msg.chat_id,msg.id,'☤ Message : *Time in name profile successfully enabled !*', 'md', false, 0, nil, nil, nil)
+else 
+    del('self:time:status')
+    title_ = bot.last_name 
+    if title_:match('〘%d+:%d+〙') then
+        title = title_:gsub('〘%d+:%d+〙','')
+    else
+        title = title_
+    end
+ tdbot.setName(bot.name, title, nil, nil)
+    return tdbot.editMessageText(msg.chat_id,msg.id,'☤ Message : *Time in name profile successfully disabled !*', 'md', false, 0, nil, nil, nil)
+end
+end
+if crco[1] == 'self' and crco[2] then
+    if crco[2] == 'on' then
+        self = true
+    elseif crco[2] == 'off' then
+        self = nil
+    else
+        return
+    
+    end
+    if self then 
+        del('for_all','self-off')
+        text=  '☤ Message : *Self-Project has been enabled !*'
+
+    else
+       
+        save('for_all','self-off',true)
+
+        text = '☤ Message : *Self-Project has been disabled !*'
+    end
+        tdbot.editMessageText(msg.chat_id, msg.id, text, 'md', false, 0, nil, nil, nil)
+
+end
+
+if crco[1] == 'private settings' then
+  local  function  getstatus_(crco,pri)
+
+    
+    
+            forwardMessage = getStatus(pri)
+     
+
+      function getprofilePhoto (arg,pri)
+ 
+  
+        ProfilePhotos = getStatus(pri)
+  
+
+    function getonlinestatus(arg,pri)
+ 
+            StatusOnline = getStatus(pri)
+       
+      
+
+     function getstatusinvate(arg,pri)
+       
+    
+                InvateChat = getStatus(pri)
+         
+
+     function getstatuscalls(arg,pri)
+     
+    
+            Calls = getStatus(pri)
+text = '☤ *Self-Private-Settings* ☤ \n☤ *Forward Message* `:` *'..(forwardMessage or "i can't Get Data")..'*\n☤ *Profile Photos* `:` *'..(ProfilePhotos or "i can't Get Data")..'*\n☤ *Calls* `:` *'..(Calls or "i can't Get Data")..'*\n☤ *invate Chat* `:` *'..(InvateChat or "i can't Get Data")..'*\n☤ *Last Seen* `:` *'..(StatusOnline or "i can't Get Data")..'*'
+
+tdbot.editMessageText(msg.chat_id, msg.id, text, 'md', false, 0, nil, nil, nil)
+     end
+  tdbot.getUserPrivacySettingRules('AllowCalls',getstatuscalls,nil)
+end
+tdbot.getUserPrivacySettingRules('AllowChatInvites',getstatusinvate,nil)
+end
+tdbot.getUserPrivacySettingRules('ShowStatus',getonlinestatus,nil)
+end
+tdbot.getUserPrivacySettingRules('ShowProfilePhoto',getprofilePhoto,nil)
+end
+tdbot.getUserPrivacySettingRules('ShowLinkInForwardedMessages',getstatus_,nil)
+
+end
+users = {}
+    username_  = {}
+if crco[1] == 'tagall' and crco[2] and is_supergroup(msg) then
+    tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
+
+    local  text = '☤<b> '..crco[2]..' </b>☤\n'
+    getchatMembers = function(add,crco)
+    num = crco.total_count
+    if num < 2 then
+        num_ = 1
+    elseif num > 201 then
+        num_ = 200
+    else
+        num_ = num
+    end
+for number=1,num_ do
+    table.insert(users,crco.members[number].user_id)
+end
+
+for key, value in pairs(users) do
+getusername = function(add,crco_)
+    if crco_.username  then
+    table.insert(username_,crco_.username)
+
+		 end
+        end
+tdbot.getUser(value, getusername, nil)
+      end
+    
+    for key, value in pairs(username_) do
+    
+        text = text.." @"..value.."," 
+
+    end
+     tdbot.sendText(msg.chat_id, msg.id, text, 'md', false, false, false, 0, nil, nil, nil)
+
+    end
+            tdbot.getSupergroupMembers(msg.chat_id, 'Recent', 0, 200, getchatMembers, nil)
+end
+if crco[1] == 'help' then
+    text = [[
+☤  Self-Bot  ☤  
+☤ *help core* ☤ 
+`help core settings`
+
+☤ *help group* ☤
+`help group self`
+
+☤ *help cfg* ☤
+`help for filemanager`
+
+☤ *next update* ☤
+`Show next update`
+    ]]
+    tdbot.editMessageText(msg.chat_id, msg.id,text..SelfVersion..COPYRIGHT,'md',false, 0, nil, nil, nil)
+
+end
+if crco[1] == 'help core' then
+    text = [[
+☤   Self-Bot   ☤
+☤ *self* _on/off_
+`Enable or Disable Self-Project `
+
+☤ *panel* 
+`Show Self Status`
+
+☤ *stats* 
+`Show stats of self-account`
+
+☤ *texttype* _mention/code/bold/italic/underline/strike/typekey/off_
+`Use TEXT TYPE for Message TEXT `
+
+☤ *markread* _on/off_
+`Enable or Disable MARK READ IN CHAT`
+
+☤ *readmessage* _on/off_
+`Enable or Disable READ ALL MENTIONS IN CHAT`
+
+☤ *plugs* 
+`List of Plugs`
+
+☤ *pl* _-/+  NAME_
+`Enable or Disable Plugs`
+
+☤ *saveplug* _NAME_
+`Saveing File from` @CRCOPLUGINS `in to plugs`
+
+☤ *delplug* _NAME_
+`Deleteing Plugins in DISK`
+
+☤ *addmainbio* _text_ 
+`add text to  MainBio for Time in bio`
+
+☤ *timename* _off/on_
+`Enable or Disable time in name profile`
+
+☤ *biotime* _on/off_
+`Enable or Disable start Time in bio`
+    
+☤ *getplug* _name_
+`get plug file in telegram`
+    
+☤ *session*
+`Show active session`
+    
+☤ *deactive* _id_
+`terminated session by id`
+    
+☤ *tosticker* _reply_
+`convert photo to sticker`
+    
+☤ *tophoto* _reply_
+`convert sticker to photo`
+    
+☤ *private settings*
+`Show Private Settings`
+
+☤ *clerk* _on/off_
+`Enable or Disable Clerk Mod`
+
+☤ *setclerk* reply in _gif/videonote/voicenote/text_
+`Set Clerk Return `
+
+☤ *setenemy* _username/userid/reply_
+`adding user to MOTHER FUCKERS list`
+
+☤ *delenemy* _username/userid/reply_
+`remove user from mother fuckers list`
+
+☤ *clean enemylist*
+`clean enemies list`
+
+☤ *enemylist*
+`Show MotherFuckers in list`  
+
+☤ *enemymod* _off/on_
+`Enable or Disable Enemy MOD`
+    
+☤ *share* 
+`Share Self Phone number`
+
+☤ *ass*
+`Show Ass (+18)`
+
+☤ *boobs*
+`Show Boobs (+18)`
+
+☤ *whois* _userid_
+`Show fully User info`
+
+☤ *setclerktext* _reply_
+`Text Clerk for caption`
+
+☤ *block* _username/userid/reply_
+`Block user in self account`
+
+☤ *unblock* _username/userid/reply_
+`Unblock user in self account`
+
+☤ *tophoto* _reply_
+`sticker to photo`
+
+☤ *tosticker* _reply_
+`photo to sticker`
+
+☤ *bios*
+`show bio list`
+
+☤ *delbio* _text_
+`delete bio from bios`
+
+☤ *timename* _on/off_
+`Enable or Disable time in name`
+
+☤ *say* _text_
+`echo your text `
+    ]]
+     tdbot.editMessageText(msg.chat_id, msg.id,text..SelfVersion..COPYRIGHT,'md',false, 0, nil, nil, nil)
+
+end
+if crco[1] == 'help group' then
+    text = [[
+☤   Self-Bot   ☤
+☤ *leave*
+`Left from group`
+     
+☤ *1 to* _num_
+`flood by number`
+       
+☤ *clean msgs*
+`Clean all message in chat`
+     
+☤ *setchat* _'value' 'value'_
+`add chat for asnwer`
+       
+☤ *delchat* _value_
+`delete chat from chats`
+     
+☤ *chats*
+`list of chats`
+       
+☤ *chat* _on/off_
+`Enable or Disable Chat mod `
+     
+☤ *id* _reply/mention_
+`show userid ` 
+    
+☤ *mute* _username/userid/reply_
+`Mute user in group`
+
+☤ *unmute* _username/userid/reply_
+`Unmute user in group`
+
+☤ *flood* _number_
+`Flooding in chat by forward message`
+
+☤ *inv* _username/userid/reply_
+`invate user to chat`
+
+☤ *kick* _username/userid/reply_
+`banned user from group`
+
+☤ *tagall _text_*
+`Mention Online Users With text`
+ 
+☤ *mydel*
+`Del all self message`
+    ]]
+    tdbot.editMessageText(msg.chat_id, msg.id,text..SelfVersion..COPYRIGHT,'md',false, 0, nil, nil, nil)
+
+end
+if crco[1] == 'help cfg' then
+text = [[
+☤   Self-Bot   ☤
+☤ *save* _reply_
+`Save file to database`
+ 
+☤ *get* _filename_
+`Get file in database by name`
+ 
+☤ *files*
+`list of files` 
+ 
+☤ *gifset* _cmd_
+`set you'r gif to cmd`
+ 
+☤ *gifdel* _cmd_
+`delete gif cmd`
+ 
+☤ *gifs*
+`list of gifs cmd`
+ 
+☤ *stickerset* _cmd_
+`set you'r sticker to cmd`
+ 
+☤ *stickerdel* _cmd_
+`delete sticker cmd`
+ 
+☤ *stickers*
+`list of stickers cmd`
+
+☤ *delfile* _name_
+`deleted file from database`
+]]
+tdbot.editMessageText(msg.chat_id, msg.id,text..SelfVersion..COPYRIGHT,'md',false, 0, nil, nil, nil)
+
+end
+
+if crco[1] == 'addmainbio' then
+  
+        if crco[2] and (tonumber(string.len(crco[2])) < 63 or tonumber(utf8.len(crco[2])) < 63) then
+
+        sadd('Self-Bio-MAIN',crco[2])
+        return tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : *text* => `'..crco[2]..'` *added to bio list*','md',false, 0, nil, nil, nil)
+        else 
+            return tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : please using 62 char in text ','md',false, 0, nil, nil, nil)
+
+    end
+end
+if crco[1] == 'bios' then
+     data = Get('Self-Bio-MAIN') or {}
+  
+    local text = last..' ☤ *Bios* ☤ \n'
+    for key,value in pairs(data) do
+    text = text..key.." - *〘"..value..'〙* [delete](https://t.me/share/url?url=delbio '..value..')\n'
+    end
+    if #data == 0 then
+    text = '☤ Message `:` *Empty*'
+    end
+    tdbot.editMessageText(msg.chat_id, msg.id, text, 'md', false, 0, nil, nil, nil)
+    end
+    if crco[1] == 'delbio' and crco[2] then
+        if CHECK('Self-Bio-MAIN',crco[2]) then
+        sremove('Self-Bio-MAIN',crco[2])
+         return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message `:` *Bio* `:` '..crco[2]..'〙 *Has been Deleted* !','md',false, 0, nil, nil, nil)
+        else
+         return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *Bio is not found*','md',false, 0, nil, nil, nil)
+        end
+        end
+        if crco[1] == 'addwarp' and crco[2] then
+            redis:set('WARP:W8:',crco[2])
+            return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *WARP hash Added*','md',false, 0, nil, nil, nil)
+        end
+        if crco[1] == 'warpstop' then
+            redis:set('WARP:stop:','offline')
+            return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *WARP stoped*','md',false, 0, nil, nil, nil)
+        end
+        if crco[1] == 'warpstart' then
+            redis:del('WARP:stop:')
+            return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *WARP started*','md',false, 0, nil, nil, nil)
+        end
+        
+        if crco[1] == 'warp' then
+           hash =  (redis:get('WARP:W8:') or 'Not setted')
+           dataadded = redis:get(hash..'GB:ADD') or 'O'
+is_sleep = (redis:get(hash..'WARP:SLEEP') or 'false')
+status = (redis:get('WARP:stop:') or 'online')
+            text = '*WARP info *:\n*ID* : `'..hash..'`\n*data added*: `'..dataadded..' GB`\n*is sleep :* _'..is_sleep..'_\n*status* : `'..status..'`'
+            return tdbot.editMessageText(msg.chat_id, msg.id,text,'md',false, 0, nil, nil, nil)
+        end
+            if crco[1] == 'dump' then 
+    function VarDump(CerNer,Company)
+    local text = encode_json.encode(Company)
+print(serpent.block(Company, {comment=false}))
+    return tdbot.editMessageText(msg.chat_id, msg.id, text,'html',false, 0, nil, nil, nil)
+
+     end
+    if tonumber(msg.reply_to_message_id) == 0 then
+    else
+    tdbot.getMessage(msg.chat_id, 
+    tonumber(msg.reply_to_message_id),VarDump,nil)
+    end
+    end
+if crco[1] == 'biotime' then
+    if crco[2] == 'on' then
+        biotime = true
+    elseif crco[2] == 'off' then
+        biotime = nil
+    else
+        return
+    end
+    if biotime then
+        save('other','Self-Time',true)
+        return tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : Time in bio has been enabled','md',false, 0, nil, nil, nil)
+    else
+        del('other','Self-Time')
+        return  tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : Time in bio Has been Disable','md',false, 0, nil, nil, nil)
+    end
+end
+if crco[1] == 'texttype' then
+    if crco[2] == 'code' then
+        type_mod = 'code'
+    elseif crco[2] == 'mention' then
+        type_mod = 'mention'
+    elseif crco[2] == 'underline' then
+        type_mod = 'underline'
+    elseif crco[2] == 'typekey' then
+        type_mod = 'typekey'
+    elseif crco[2] == 'strike' then
+        type_mod = 'strike'
+    elseif crco[2] == 'off' then
+   type_mod = nil
+    elseif crco[2] == 'bold' then
+        type_mod = 'bold'
+    elseif crco[2] == 'italic' then 
+        type_mod = 'italic'
+    else
+        return
+
+    end
+    if type_mod then
+        save('other','TextType',type_mod)
+        return tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : Text Type seted to '..type_mod..' type !','md',false, 0, nil, nil, nil)
+    else
+        del('other','TextType')
+        return  tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : TextType Has been Disable','md',false, 0, nil, nil, nil)
+    end
+end
+end
+end
+function pre(msg,first_update)
+    timenow = os.date("%M")
+    Time = os.date("%H:%M")
+   
+    if first_update and not Get('for_all','self-off') then
+  
+        crco__ = {}
+   if Get('other','Self-Time') and Get('Self-Bio-MAIN') and  tonumber(timenow) ~= tonumber(Get('other','timezone') or 0) then
+    local bio = Get('Self-Bio-MAIN') or {}
+    for key,value in pairs(bio) do
+            table.insert(crco__,value)
+    tdbot.setBio(crco__[math.random(#crco__)]..'〘'..Time..'〙', nil, nil)
+    
+end
+             save('other','timezone',timenow)
+
+         end
+         if  Get('self:time:status')  and tonumber(timenow) ~= tonumber(Get('other','timezone_title') or 0) then
+                title_ = bot.last_name 
+            
+                if title_:match('〘%d+:%d+〙') then
+                    title = title_:gsub('〘%d+:%d+〙','')
+                else
+                    title = title_
+                end
+             tdbot.setName(bot.name, title..'〘'..Time..'〙', nil, nil)
+        
+            save('other','timezone_title',timenow)
+
+        end
+end
+
+    if msg then
+        if msg.content['@type'] == 'messagePhoto' and is_supergroup(msg) then 
+            if msg.content.photo.sizes[3] then
+                is_id = msg.content.photo.sizes[3].photo.id
+                is_pth = msg.content.photo.sizes[3].photo["local"].path
+                            elseif msg.content.photo.sizes[2] then
+                is_id = msg.content.photo.sizes[2].photo.id
+                is_pth = msg.content.photo.sizes[2].photo["local"].path
+                            elseif msg.content.photo.sizes[1] then
+                is_id = msg.content.photo.sizes[1].photo.id
+                is_pth = msg.content.photo.sizes[1].photo["local"].path
+                            end
+                                if string.len(is_pth) == 0 then
+                                    tdbot.downloadFile(is_id, 32, nil, nil)
+                                end
+                            end
+                            if msg.content['@type'] == 'messageSticker'  and is_supergroup(msg) then
+                                if string.len(msg.content.sticker.sticker["local"].path) == 0 then
+                                tdbot.downloadFile(msg.content.sticker.sticker.id, 1, nil, nil)
+                                end
+                            end
+    if not Get('for_all','self-off') then
+      
+             if Get('for_all','markread') then
+          tdbot.viewMessages(msg.chat_id, msg.id, 1)
+        end
+    if Get('other','ReadMessage:'..msg.chat_id) then
+         tdbot.readAllChatMentions(msg.chat_id,nil,nil)
+                end
+    if is_sudo(msg.sender_user_id) then
+    if msg.content._ == "messageText" and  msg.content.text.text and tonumber(msg.edit_date) == 0 then
+        if Get('other','TextType') and  tonumber(msg.edit_date) == 0  then
+    if  Get('other','TextType')  == 'bold' then
+         tdbot.editMessageText(msg.chat_id, msg.id, '*'..msg.content.text.text..'*','md',false, 0, nil, nil, nil)
+    elseif  Get('other','TextType')  == 'mention' then
+    function GETINGUSER(CR,CO)
+        if tonumber(CO.edit_date) == 0 and CO.sender_user_id then
+        tdbot.editMessageTextMention(msg.chat_id, msg.id, msg.content.text.text,0,utf8.len(msg.content.text.text),CO.sender_user_id)
+        else 
+        tdbot.editMessageTextMention(msg.chat_id, msg.id, msg.content.text.text,0,utf8.len(msg.content.text.text),bot.id)
+        end
+        end
+     tdbot.getMessage(msg.chat_id, tonumber(msg.reply_to_message_id),GETINGUSER,nil)
+    elseif Get('other','TextType')  == 'code' then 
+    tdbot.editMessageText(msg.chat_id,msg.id,'`'..msg.content.text.text..'`','md',false, 0, nil, nil, nil)
+elseif Get('other','TextType')  == 'strike' then 
+    tdbot.StrikethroughMessage(msg.chat_id, msg.id,utf8.len(msg.content.text.text),msg.content.text.text)
+elseif Get('other','TextType')  == 'underline' then 
+    tdbot.UnderlineMessage(msg.chat_id, msg.id,utf8.len(msg.content.text.text),msg.content.text.text)
+elseif Get('other','TextType')  == 'typekey' and tonumber(utf8.len(msg.content.text.text)) < 70 and tonumber(utf8.len(msg.content.text.text)) > 2 then
+    function GETINGUSER(CR,CO)
+        if tonumber(CO.edit_date) == 0  then
+            
+            tdbot.setAlarm(0.1, TypeKey, {text =msg.content.text.text , i = 1 , type_ = true})
+
+        end
+        end
+        tdbot.getMessage(msg.chat_id, tonumber(msg.id),GETINGUSER,nil)
+
+elseif Get('other','TextType')  == 'italic' then
+         tdbot.editMessageText(msg.chat_id,msg.id,'_'..msg.content.text.text..'_','md',false, 0, nil, nil, nil)
+        end
+   
+end
+end
+end
+end
+end
+end
+return {
+       patterns = pat,
+                runing = run ,
+                cmd = false,
+                lower = false,
+            run = pre 
+}
 
