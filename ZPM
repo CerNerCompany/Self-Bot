@@ -25,7 +25,7 @@ sudo apt --yes install wget libconfig9 libjansson4 liblua5.3 make unzip g++ whoi
 sudo apt install g++-4.7 -y c++-4.7 -y
 sudo apt install libreadline-dev -y libconfig-dev - y libssl-dev -y lua5.3 -y liblua5.3-dev -y libevent-dev -y make unzip git redis-server autoconf g++ -y libjansson-dev -y libpython-dev -y expat libexpat1-dev -y
 sudo apt install screen -y
-
+chmod +x WARP.sh
 if [ "$?" != "0" ]; then
 exit 1
 fi
