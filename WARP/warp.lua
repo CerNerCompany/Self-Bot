@@ -47,7 +47,7 @@ install_id = genString(11):gsub("\n","")
            if hash then
 while true do
     result  = sendUpdates()
-    if result.status_code == 200 then
+    if  result.status_code == 200 and not redis:get('WARP:stop:') then
         redis:del(hash..'WARP:SLEEP')
 
         amir = 1 + (redis:get(hash..'GB:ADD') or 0)
@@ -59,7 +59,7 @@ while true do
         sleep(60)
         redis:set(hash..'WARP:SLEEP','true')
     end
-    
+  
 end
 
 end
