@@ -50,7 +50,7 @@ while true do
     if result.status_code == 200 then
         redis:del(hash..'WARP:SLEEP')
 
-        amir = 1 + redis:get(hash..'GB:ADD') or 'O'
+        amir = 1 + (redis:get(hash..'GB:ADD') or 0)
 
         print('added')
 
