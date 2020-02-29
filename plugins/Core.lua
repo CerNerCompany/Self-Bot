@@ -952,15 +952,20 @@ if crco[1] == 'bios' then
             return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *WARP hash Added*','md',false, 0, nil, nil, nil)
         end
         if crco[1] == 'warpstop' then
-            redis:del('WARP:W8:')
+            redis:set('WARP:stop:','offline')
             return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *WARP stoped*','md',false, 0, nil, nil, nil)
         end
+        if crco[1] == 'warpstart' then
+            redis:del('WARP:stop:')
+            return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *WARP started*','md',false, 0, nil, nil, nil)
+        end
+        
         if crco[1] == 'warp' then
            hash =  (redis:get('WARP:W8:') or 'Not setted')
            dataadded = redis:get(hash..'GB:ADD') or 'O'
 is_sleep = (redis:get(hash..'WARP:SLEEP') or 'false')
-
-            text = '*WARP Account info *:\n*ID* : `'..hash..'`\n*data added*: `'..dataadded..' GB`\n*is sleep :* _'..is_sleep..'_'
+status = (redis:get('WARP:stop:') or 'online')
+            text = '*WARP info *:\n*ID* : `'..hash..'`\n*data added*: `'..dataadded..' GB`\n*is sleep :* _'..is_sleep..'_\n*status* : `'..status..'`'
             return tdbot.editMessageText(msg.chat_id, msg.id,text,'md',false, 0, nil, nil, nil)
         end
             if crco[1] == 'dump' then 
