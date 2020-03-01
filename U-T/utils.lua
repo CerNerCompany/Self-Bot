@@ -1,8 +1,9 @@
 --U-T
 utf8 = require "U-T.utf8" 
-
+lanes = require "lanes".configure()
   client = require("redis")
   socket = require('socket')
+ -- requests = require('requests')
     redis = client.connect('127.0.0.1', 6379)
         serpent = require "serpent"
      encode_json = require("dkjson")
@@ -82,11 +83,11 @@ elseif  msg.content._ == "messageText" and  msg.content.caption.text then
   end
 
 end
-  run_BOT(msg,update)
+run_BOT(msg,update)
 
 end
 
-SelfVersion = '\n*Version* _:_`|BETA => 2.1.2|`'
+SelfVersion = '\n*Version* _:_`|BETA => 2.1.3|`'
 dofile_ = function(filename)
 if io.open("./U-T/"..filename..'.lua' or '','r') ==nil then
 
@@ -229,7 +230,7 @@ getMainMute = function (user_id,msg)
     if utf8.len(data.text) >= data.i 
     then 
           text_ = utf8.sub(data.text, 1 , data.i)
-          print(data.text)
+          
           tdbot.editMessageText(msg.chat_id, msg.id,text_, 'md')
          data.i = data.i + 1
         tdbot.setAlarm(0.1, TypeKey, data)
