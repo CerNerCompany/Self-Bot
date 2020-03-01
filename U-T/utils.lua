@@ -1,6 +1,5 @@
 --U-T
 utf8 = require "U-T.utf8" 
-lanes = require "lanes".configure()
   client = require("redis")
   socket = require('socket')
  -- requests = require('requests')
