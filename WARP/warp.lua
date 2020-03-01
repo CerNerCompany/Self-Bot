@@ -8,8 +8,6 @@ function genString(number)
   return arg_
 end
 serpent = require "serpent"
-timesToLoop = 10
-retryTimes = 5
 function vardump(PRE)
   print(serpent.block(PRE, {comment=false}))
   end
@@ -50,16 +48,18 @@ while true do
     if  result.status_code == 200 and not redis:get('WARP:stop:') then
         redis:del(hash..'WARP:SLEEP')
 
-        amir = 1 + (redis:get(hash..'GB:ADD') or 0)
-
-        print('added')
-
+        amir = (redis:get(hash..'GB:ADD') or 0) + 1
         redis:set(hash..'GB:ADD',amir)
+
+        print('added', amir)
+
     else 
         sleep(60)
         redis:set(hash..'WARP:SLEEP','true')
     end
-  
-end
+
+
+
+  end
 
 end
