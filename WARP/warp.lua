@@ -55,6 +55,8 @@ while true do
 
     else 
         sleep(60)
+      print('sleep')
+        dofile('./WARP/warp.lua')
         redis:set(hash..'WARP:SLEEP','true')
     end
 
