@@ -44,23 +44,24 @@ install_id = genString(11):gsub("\n","")
             end
            if hash then
 while true do
+  if   not redis:get('WARP:stop:') then
     result  = sendUpdates()
-    if  result.status_code == 200 and not redis:get('WARP:stop:') then
+    if  result.status_code == 200 then
         redis:del(hash..'WARP:SLEEP')
-
+     
         amir = (redis:get(hash..'GB:ADD') or 0) + 1
         redis:set(hash..'GB:ADD',amir)
 
         print('added', amir)
-
+        dofile('./WARP/warp.lua')
     else 
         sleep(60)
-      print('sleep')
-        dofile('./WARP/warp.lua')
+        print('sleep')
+        
         redis:set(hash..'WARP:SLEEP','true')
     end
 
-
+  end
 
   end
 
