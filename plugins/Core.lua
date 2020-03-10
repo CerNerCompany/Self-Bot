@@ -222,31 +222,16 @@ if crco[1] == 'leave' then
     tdbot.leaveChat(msg.chat_id,getMainLEFT,nil)
 end
 if crco[1] == 'next update' then
-  --[[  text = [[
+    text = [[
 ☤ Self-project ☤
 
 *Next update* to 2.2
 
 1 - added plug `Crow` {youtube  , photos , downloader , security mod , uploader ,media editor ,username checker, ... }
+]]
+    tdbot.editMessageText(msg.chat_id, msg.id, text..COPYRIGHT, 'md', false, 0, nil, nil, nil)
+end
 
-    ]]
- --   tdbot.editMessageText(msg.chat_id, msg.id, text..COPYRIGHT, 'md', false, 0, nil, nil, nil)
---]]
-function am(test)
-    amir = 1
-while true do 
-    amir = amir + 1
- --https.request("https://t.me/khodeamir")
- --  tdbot.editMessageText(msg.chat_id, msg.id,amir, 'md', false, 0, nil, nil, nil)
-
-print('hi '..amir)
-if amir == 30 then
-    break 
-end
-end
-end
-lanes.gen('',am)('amir')
-end
 
 if crco[1] == 'say' and crco[2] then 
      str = crco[2]
