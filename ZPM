@@ -129,8 +129,8 @@ if [ -f "$HOME/$BotH/CRCO/tdlua.so.zip" ]; then
 if [ ! -f "/usr/lib/x86_64-linux-gnu/lua/5.3/tdlua.so" ] ; then
 echo -e "\e[1m\e[97m==> Installing TDlua .."
 
-unzip ./$HOME/$BotH/CRCO/tdlua.so.zip >> /dev/null 2>&1
-sudo mv /$HOME/$BotH/CRCO/tdlua.so /usr/lib/x86_64-linux-gnu/lua/5.3/ >> /dev/null 2>&1 & loading
+unzip $HOME/$BotH/CRCO/tdlua.so.zip >> /dev/null 2>&1
+sudo mv ./tdlua.so /usr/lib/x86_64-linux-gnu/lua/5.3/ >> /dev/null 2>&1 & loading
  
 echo -e "\e[1m\e[97m==> TDLUA successfully installed "
 fi
