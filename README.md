@@ -28,6 +28,10 @@
 ./ZPM reset -- Reset Self
 
 
+./ZPM killself —kill self process
+
+./ZPM search NAMEprocess — search and kill
+
 ```
 
 
