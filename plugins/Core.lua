@@ -668,7 +668,7 @@ tdbot.getUser(value, getusername, nil)
         text = text.." @"..value.."," 
 
     end
-     tdbot.sendText(msg.chat_id, msg.id, text, 'md', false, false, false, 0, nil, nil, nil)
+     tdbot.sendText(msg.chat_id, msg.id, text, 'html', false, false, false, 0, nil, nil, nil)
 
     end
             tdbot.getSupergroupMembers(msg.chat_id, 'Recent', 0, 200, getchatMembers, nil)
