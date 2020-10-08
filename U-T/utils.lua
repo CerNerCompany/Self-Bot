@@ -86,7 +86,7 @@ run_BOT(msg,update)
 
 end
 
-SelfVersion = '\n*Version* _:_`|BETA => 2.1.3|`'
+SelfVersion = '\n*Version* _:_`|BETA => 2.1.4|`'
 dofile_ = function(filename)
 if io.open("./U-T/"..filename..'.lua' or '','r') ==nil then
 
@@ -223,6 +223,20 @@ getMainMute = function (user_id,msg)
 --
   end
   end
+  function ty(data , org)
+ 
+
+    if utf8.len(data.text) >= data.i 
+    then 
+          text_ = utf8.sub(data.text,data.i)
+          
+       tdbot.editMessageText(msg.chat_id, msg.id,text_, 'md')
+       
+         data.i = data.i + 1
+     print(data.i,text_)       
+         tdbot.setAlarm(0.1, ty, data)
+    end
+end
   function TypeKey(data , org)
  
 
