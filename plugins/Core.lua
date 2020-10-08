@@ -5,26 +5,27 @@ pat = { "^(ping)$",
         "^(tophoto)$",
             "^(leave)$",
             "^(boobs)$",
-            "^(warpstop)$",
-            "^(warpstart)$",
-
+   
 
         "^(deactive) (.*)$",
-        "^(addwarp) (.*)$",
+      
 
         "^(ass)$",
         "^(save)$",
         "^(clean msgs)$",
-        "^(warp)$",
         "^(help group)$",
         "^(help cfg)$",
         "^(help core)$",
         "^(mute)$",
         "^(mute) (.*)$",
+        "^(bb) (.*)$",
+
         "^(delbio) (.*)$",
         "^(bios)$",
         "^(chat) (.*)$",
         "^(id) (.*)$",
+        "^(😐)$",
+
  "^(next update)$",
         "^(delall)$",
         "^(delall) (.*)$",
@@ -234,15 +235,57 @@ end
 
 
 if crco[1] == 'say' and crco[2] then 
-     str = crco[2]
+    function GETINGUSER(CR,CO)
+        if tonumber(CO.edit_date) == 0 and CO.sender_user_id then
+            str = crco[2]
   
 
-         if crco[2] and (tonumber(string.len(crco[2])) < 71 or tonumber(utf8.len(crco[2])) < 71)  and tonumber(utf8.len(crco[2])) > 1then
-      tdbot.setAlarm(0.1, TypeKey, {text = str, i = 1})
-         else
-             tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : please using 70 char in text ','md',false, 0, nil, nil, nil)
-
+            if crco[2] and (tonumber(string.len(crco[2])) < 71 or tonumber(utf8.len(crco[2])) < 71)  and tonumber(utf8.len(crco[2])) > 1then
+         tdbot.setAlarm(0.1, TypeKey, {text = str, i = 1})
+            else
+                tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : please using 70 char in text ','md',false, 0, nil, nil, nil)
+   
+   end
+        end
+    end
+     tdbot.getMessage(msg.chat_id, tonumber(msg.id),GETINGUSER,nil)
+  
 end
+if crco[1] == '😐'  then 
+    function GETINGUSER(CR,CO)
+        if tonumber(CO.edit_date) == 0 and CO.sender_user_id then
+            str = '😐😐😐😐😐😐😐😐😐'
+            tdbot.setAlarm(0.1, TypeKey, {text = str, i = 1})
+
+           tdbot.setAlarm(0.1, ty, {text = str, i = 1})
+       --  tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
+
+        
+        end
+    end
+     tdbot.getMessage(msg.chat_id, tonumber(msg.id),GETINGUSER,nil)
+  
+end
+if crco[1] == 'bb' and crco[2] then 
+    function GETINGUSER(CR,CO)
+        if tonumber(CO.edit_date) == 0 and CO.sender_user_id then
+            str = crco[2]
+  
+
+            if crco[2] and (tonumber(string.len(crco[2])) < 71 or tonumber(utf8.len(crco[2])) < 71)  and tonumber(utf8.len(crco[2])) > 1then
+            tdbot.setAlarm(0.1, TypeKey, {text = str, i = 1})
+
+            tdbot.setAlarm(0.1, ty, {text = str, i = 1})
+            tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
+
+            else
+                tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : please using 70 char in text ','md',false, 0, nil, nil, nil)
+   
+   end
+        end
+    end
+     tdbot.getMessage(msg.chat_id, tonumber(msg.id),GETINGUSER,nil)
+  
 end
  if crco[1] == 'mute' and tonumber(msg.reply_to_message_id) > 0  then
     GetMainMessage=   function(arg,CR)
@@ -700,18 +743,6 @@ if crco[1] == 'help core' then
 ☤ *panel* 
 `Show Self Status`
 
-☤ *warp* 
-`Show warp Status`
-
-☤ *addwarp* _ID_ 
-`set warp id`
-
-☤ *warpstop* 
-`stop warp process`
-
-☤ *warpstart* 
-`start warp process`
-
 ☤ *stats* 
 `Show stats of self-account`
 
@@ -944,27 +975,6 @@ if crco[1] == 'bios' then
         else
          return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *Bio is not found*','md',false, 0, nil, nil, nil)
         end
-        end
-        if crco[1] == 'addwarp' and crco[2] then
-            redis:set('WARP:W8:',crco[2])
-            return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *WARP hash Added*','md',false, 0, nil, nil, nil)
-        end
-        if crco[1] == 'warpstop' then
-            redis:set('WARP:stop:','offline')
-            return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *WARP stoped*','md',false, 0, nil, nil, nil)
-        end
-        if crco[1] == 'warpstart' then
-            redis:del('WARP:stop:')
-            return tdbot.editMessageText(msg.chat_id, msg.id,'☤ Message : *WARP started*','md',false, 0, nil, nil, nil)
-        end
-        
-        if crco[1] == 'warp' then
-           hash =  (redis:get('WARP:W8:') or 'Not setted')
-           dataadded = redis:get(hash..'GB:ADD') or 'O'
-is_sleep = (redis:get(hash..'WARP:SLEEP') or 'false')
-status = (redis:get('WARP:stop:') or 'online')
-            text = '*WARP info *:\n*ID* : `'..hash..'`\n*data added*: `'..dataadded..' GB`\n*is sleep :* _'..is_sleep..'_\n*status* : `'..status..'`'
-            return tdbot.editMessageText(msg.chat_id, msg.id,text,'md',false, 0, nil, nil, nil)
         end
             if crco[1] == 'dump' then 
     function VarDump(CerNer,Company)
