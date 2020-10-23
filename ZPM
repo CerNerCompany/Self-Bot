@@ -132,8 +132,6 @@ echo -ne "\n\e[1m\e[97mInstalling luarocks .."
 luarocksinstall >> /dev/null 2>&1 & loading
 echo -ne "\n\e[1m\e[97mInstalling Packages from luarocks .."
 luarocksPACK >> /dev/null 2>&1 & loading
-echo -ne "\n\e[1m\e[97mImport Packages  .."
-luarocksimportintPACKS >> /dev/null 2>&1 & loading
 fi
 if [ -d "$HOME/$BotH" ];then
 if [ -f "$HOME/$BotH/CRCO/tdlua.so.zip" ]; then
