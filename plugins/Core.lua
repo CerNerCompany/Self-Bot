@@ -8,8 +8,8 @@ pat = { "^(ping)$",
    
 
         "^(deactive) (.*)$",
-      
-
+    
+        "^(animation) (.*)$",
         "^(ass)$",
         "^(save)$",
         "^(clean msgs)$",
@@ -18,13 +18,13 @@ pat = { "^(ping)$",
         "^(help core)$",
         "^(mute)$",
         "^(mute) (.*)$",
-        "^(bb) (.*)$",
+        "^(rep) (.*)$",
+        "^(read all message)$",
 
         "^(delbio) (.*)$",
         "^(bios)$",
         "^(chat) (.*)$",
         "^(id) (.*)$",
-        "^(😐)$",
 
  "^(next update)$",
         "^(delall)$",
@@ -101,8 +101,8 @@ if crco[1] == 'tophoto' and tonumber(msg.reply_to_message_id) > 0 then
     
 
         tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
-
-        tdbot.sendPhoto(msg.chat_id,msg.id, co.content.sticker.sticker["local"].path,'*By Self-Project*', 'md',0, 0, 0, false, true, nil, nil, nil)
+  
+     tdbot.sendPhoto(msg.chat_id,msg.id, co.content.sticker.sticker["local"].path,'*By Self-Project*', 'md',0, 0, 0, false, true, nil, nil, nil)
 
 
 end
@@ -134,6 +134,9 @@ lastname = '〘'..crco_.last_name..'〙' or ''
     if crco_.profile_photo then
     tdbot.downloadFile(crco_.profile_photo.big.id, 1, nil, nil)
     end
+    repeat
+        pt = crco_.profile_photo.big["local"].path
+    until #pt ~= 0
     common_count = '〘'..co.group_in_common_count..'〙'
  if co.can_be_called then
     acsscall = '〘Blocked〙'
@@ -199,7 +202,7 @@ joined_at = os.date('%c',value.log_in_date)
     end
     )
 end
-if crco[1] == 'deactive' and crco[2] then
+ if crco[1] == 'deactive' and crco[2] then
     tdbot.terminateSession(crco[2] ,function(a,co)
         if co and co._ == 'error' then
             text = "Message : <b>Access Denied</b>\nError : <b>"..co.message.."</b>"
@@ -228,7 +231,7 @@ if crco[1] == 'next update' then
 
 *Next update* to 2.2
 
-1 - added plug `Crow` {youtube  , photos , downloader , security mod , uploader ,media editor ,username checker, ... }
+1 - added plug `Crow` {youtube  , photos , downloader , security mod , uploader ,media editor , ... }
 ]]
     tdbot.editMessageText(msg.chat_id, msg.id, text..COPYRIGHT, 'md', false, 0, nil, nil, nil)
 end
@@ -251,22 +254,8 @@ if crco[1] == 'say' and crco[2] then
      tdbot.getMessage(msg.chat_id, tonumber(msg.id),GETINGUSER,nil)
   
 end
-if crco[1] == '😐'  then 
-    function GETINGUSER(CR,CO)
-        if tonumber(CO.edit_date) == 0 and CO.sender_user_id then
-            str = '😐😐😐😐😐😐😐😐😐'
-            tdbot.setAlarm(0.1, TypeKey, {text = str, i = 1})
 
-           tdbot.setAlarm(0.1, ty, {text = str, i = 1})
-       --  tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
-
-        
-        end
-    end
-     tdbot.getMessage(msg.chat_id, tonumber(msg.id),GETINGUSER,nil)
-  
-end
-if crco[1] == 'bb' and crco[2] then 
+if crco[1] == 'rep' and crco[2] then 
     function GETINGUSER(CR,CO)
         if tonumber(CO.edit_date) == 0 and CO.sender_user_id then
             str = crco[2]
@@ -533,7 +522,9 @@ if crco[1] == 'panel' then
  mainclerktext = returndata(Get('other','clerk:text'))
 clerkmod = returndata(Get('other','clerkTYPE'))
 clerkstatus = returndata(Get('other','ClerkMod'))
-text_ = '☤ *Self Status* _:_ *'..selfstatus..'*\n☤ *Markread* `:` *'..markread..'*\n☤ *Chat in Group* `:` *'..ChatMod..'*\n☤ *Clerk* `:` *'..clerkstatus..'*\n☤ *Clerk Type* `:` *'..clerkmod..'*\n☤ *Clerk MTEXT* `:` *'..mainclerktext..'*\n☤ *Enemy Mod * `:` *'..enemymod..'*\n☤ *Read Message* `:` *'..readmessage..'*\n☤ *Text Type* `:` *'..texttype:upper()..'*\n☤ *Time in Bio* `:` *'..timestatusBio..'*\n☤ *Time in name* `:` *'..self_time..'*'
+animation = returndata(Get('other','Animation'))
+laststart = '0' -- returndata(Get('other','laststart'))
+text_ = '☤ *Self Status* _:_ *'..selfstatus..'*\n☤ *Last start in* `:` *'..laststart..'*\n☤ *Markread* `:` *'..markread..'*\n☤ *Chat in Group* `:` *'..ChatMod..'*\n☤ *Clerk* `:` *'..clerkstatus..'*\n☤ *Clerk Type* `:` *'..clerkmod..'*\n☤ *Clerk MTEXT* `:` *'..mainclerktext..'*\n☤ *Enemy Mod * `:` *'..enemymod..'*\n☤ *Read Message* `:` *'..readmessage..'*\n☤ *Text Type* `:` *'..texttype:upper()..'*\n☤ *Time in Bio* `:` *'..timestatusBio..'*\n☤ *Time in name* `:` *'..self_time..'*\n☤ *Animation* `:` *'..animation..'*'
 return tdbot.editMessageText(msg.chat_id, msg.id, text_..SelfVersion..COPYRIGHT, 'md', false, 0, nil, nil, nil)
 end
  if crco[1] == 'markread' and crco[2] then
@@ -752,7 +743,7 @@ if crco[1] == 'help core' then
 ☤ *markread* _on/off_
 `Enable or Disable MARK READ IN CHAT`
 
-☤ *readmessage* _on/off_
+☤ *read message* _on/off_
 `Enable or Disable READ ALL MENTIONS IN CHAT`
 
 ☤ *plugs* 
@@ -779,7 +770,7 @@ if crco[1] == 'help core' then
 ☤ *getplug* _name_
 `get plug file in telegram`
     
-☤ *session*
+☤ *sessions*
 `Show active session`
     
 ☤ *deactive* _id_
@@ -853,6 +844,15 @@ if crco[1] == 'help core' then
 
 ☤ *say* _text_
 `echo your text `
+
+☤ *rep* _text_
+`echo your text `
+
+☤ *animation* _on/off_
+`Enable or Disable Animation`
+
+
+
     ]]
      tdbot.editMessageText(msg.chat_id, msg.id,text..SelfVersion..COPYRIGHT,'md',false, 0, nil, nil, nil)
 
@@ -989,6 +989,22 @@ print(serpent.block(Company, {comment=false}))
     tonumber(msg.reply_to_message_id),VarDump,nil)
     end
     end
+    if crco[1] == 'animation' then
+        if crco[2] == 'on' then
+            Animation = true
+        elseif crco[2] == 'off' then
+            Animation = nil
+        else
+            return
+        end
+        if Animation then
+            save('other','Animation',true)
+            return tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : Animation has been enabled','md',false, 0, nil, nil, nil)
+        else
+            del('other','Animation')
+            return  tdbot.editMessageText(msg.chat_id, msg.id, '☤ Message : Animation Has been Disable','md',false, 0, nil, nil, nil)
+        end
+    end
 if crco[1] == 'biotime' then
     if crco[2] == 'on' then
         biotime = true
@@ -1081,22 +1097,35 @@ end
                 is_pth = msg.content.photo.sizes[1].photo["local"].path
                             end
                                 if string.len(is_pth) == 0 then
-                                    tdbot.downloadFile(is_id, 32, nil, nil)
+                                   tdbot.downloadFile(is_id, 32, nil, nil)
                                 end
                             end
                             if msg.content['@type'] == 'messageSticker'  and is_supergroup(msg) then
                                 if string.len(msg.content.sticker.sticker["local"].path) == 0 then
-                                tdbot.downloadFile(msg.content.sticker.sticker.id, 1, nil, nil)
+                               tdbot.downloadFile(msg.content.sticker.sticker.id, 1, nil, nil)
                                 end
                             end
     if not Get('for_all','self-off') then
       
              if Get('for_all','markread') then
-          tdbot.viewMessages(msg.chat_id, msg.id, 1)
+          tdbot.viewMessages(msg.chat_id, {[1] =msg.id}, true)
         end
     if Get('other','ReadMessage:'..msg.chat_id) then
          tdbot.readAllChatMentions(msg.chat_id,nil,nil)
                 end
+                if Get('other','Animation') and msg.content._ == "messageText" and  msg.content.text.text == '😐'  and   is_sudo(msg.sender_user_id)                     then
+                function GETINGUSER(CR,CO)
+                    if tonumber(CO.edit_date) == 0 and CO.sender_user_id then
+                        str = '😐😐😐😐😐😐😐😐😐'
+                        tdbot.setAlarm(0.1, TypeKey, {text = str, i = 1})
+            
+                       tdbot.setAlarm(0.1, ty, {text = str, i = 1})
+            
+                    
+                    end
+                end
+                 tdbot.getMessage(msg.chat_id, tonumber(msg.id),GETINGUSER,nil)
+            end
     if is_sudo(msg.sender_user_id) then
     if msg.content._ == "messageText" and  msg.content.text.text and tonumber(msg.edit_date) == 0 then
         if Get('other','TextType') and  tonumber(msg.edit_date) == 0  then
