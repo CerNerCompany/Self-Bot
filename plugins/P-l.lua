@@ -98,9 +98,9 @@ DIS = function(NAME)
                     
 	            end
 	        end
-	                 if  status == '`〘D〙`'then
+	                 if status == '`〘D〙`'then
 	                  v = v_:match("(.*)%.lua")
-	                                     text = text.. '*'..v..'* '..status..' [〘E〙](https://t.me/share/url?url=pl + '..v..') [〘Receive〙](https://t.me/share/url?url=getplug '..v..')\n'
+	                                     text = text.. '*'..v..'* '..status..' [〘E〙](https://t.me/share/url?url=pl%20%2B%20'..v..') [〘Receive〙](https://t.me/share/url?url=getplug '..v..')\n'
                                 print(text)
                                         elseif  status == '`〘E〙`' then
                 v = v_:match ("(.*)%.lua")
@@ -162,9 +162,11 @@ end
            end
         end
             end
+        
             return { 
                 patterns = pat,
                 cmd = false,
+                
                 lower = false,
          runing = Pre_ ,
          }
