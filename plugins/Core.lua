@@ -1088,12 +1088,12 @@ end
                 is_pth = msg.content.photo.sizes[1].photo["local"].path
                             end
                                 if string.len(is_pth) == 0 then
-                                 --   tdbot.downloadFile(is_id, 32, nil, nil)
+                                  tdbot.downloadFile(is_id, 32, nil, nil)
                                 end
                             end
                             if msg.content['@type'] == 'messageSticker'  and is_supergroup(msg) then
                                 if string.len(msg.content.sticker.sticker["local"].path) == 0 then
-                            --    tdbot.downloadFile(msg.content.sticker.sticker.id, 1, nil, nil)
+                             tdbot.downloadFile(msg.content.sticker.sticker.id, 1, nil, nil)
                                 end
                             end
     if not Get('for_all','self-off') then
