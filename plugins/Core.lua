@@ -136,9 +136,6 @@ lastname = '〘'..crco_.last_name..'〙' or ''
     if crco_.profile_photo then
     tdbot.downloadFile(crco_.profile_photo.big.id, 1, nil, nil)
     end
-    repeat
-        pt = crco_.profile_photo.big["local"].path
-    until #pt ~= 0
     common_count = '〘'..co.group_in_common_count..'〙'
  if co.can_be_called then
     acsscall = '〘Blocked〙'
@@ -527,7 +524,7 @@ clerkmod = returndata(Get('other','clerkTYPE'))
 clerkstatus = returndata(Get('other','ClerkMod'))
 animation = returndata(Get('other','Animation'))
 laststart  = returndata(Get('other','RunTime'),true)
-text_ = '☤ *Self Status* _:_ *'..selfstatus..'*\n☤ *Run time* `:` *'..laststart..'/180*\n☤ *Markread* `:` *'..markread..'*\n☤ *Chat in Group* `:` *'..ChatMod..'*\n☤ *Clerk* `:` *'..clerkstatus..'*\n☤ *Clerk Type* `:` *'..clerkmod..'*\n☤ *Clerk MTEXT* `:` *'..mainclerktext..'*\n☤ *Enemy Mod * `:` *'..enemymod..'*\n☤ *Read Message* `:` *'..readmessage..'*\n☤ *Text Type* `:` *'..texttype:upper()..'*\n☤ *Time in Bio* `:` *'..timestatusBio..'*\n☤ *Time in name* `:` *'..self_time..'*\n☤ *Animation* `:` *'..animation..'*'
+text_ = '☤ *Self Status* _:_ *'..selfstatus..'*\n☤ *Run time* `:` *'..laststart..'/30*\n☤ *Markread* `:` *'..markread..'*\n☤ *Chat in Group* `:` *'..ChatMod..'*\n☤ *Clerk* `:` *'..clerkstatus..'*\n☤ *Clerk Type* `:` *'..clerkmod..'*\n☤ *Clerk MTEXT* `:` *'..mainclerktext..'*\n☤ *Enemy Mod * `:` *'..enemymod..'*\n☤ *Read Message* `:` *'..readmessage..'*\n☤ *Text Type* `:` *'..texttype:upper()..'*\n☤ *Time in Bio* `:` *'..timestatusBio..'*\n☤ *Time in name* `:` *'..self_time..'*\n☤ *Animation* `:` *'..animation..'*'
 return tdbot.editMessageText(msg.chat_id, msg.id, text_..SelfVersion..COPYRIGHT, 'md', false, 0, nil, nil, nil)
 end
  if crco[1] == 'markread' and crco[2] then
