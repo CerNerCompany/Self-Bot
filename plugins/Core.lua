@@ -10,6 +10,8 @@ pat = { "^(ping)$",
         "^(deactive) (.*)$",
     
         "^(animation) (.*)$",
+      
+
         "^(ass)$",
         "^(save)$",
         "^(clean msgs)$",
@@ -25,7 +27,7 @@ pat = { "^(ping)$",
         "^(bios)$",
         "^(chat) (.*)$",
         "^(id) (.*)$",
-
+      
  "^(next update)$",
         "^(delall)$",
         "^(delall) (.*)$",
@@ -90,7 +92,7 @@ if crco[1] == 'tosticker' and tonumber(msg.reply_to_message_id) > 0 then
                             
                               
                         
-tdbot.sendSticker(msg.chat_id, (msg.reply_to_message_id or msg.id), is_pth, false, true, nil, nil, nil)
+                    tdbot.sendSticker(msg.chat_id, (msg.reply_to_message_id or msg.id), is_pth, false, true, nil, nil, nil)
                         end            
     
 end
@@ -202,6 +204,7 @@ joined_at = os.date('%c',value.log_in_date)
     end
     )
 end
+
  if crco[1] == 'deactive' and crco[2] then
     tdbot.terminateSession(crco[2] ,function(a,co)
         if co and co._ == 'error' then
@@ -231,7 +234,7 @@ if crco[1] == 'next update' then
 
 *Next update* to 2.2
 
-1 - added plug `Crow` {youtube  , photos , downloader , security mod , uploader ,media editor , ... }
+1 - added plug `Crow` {youtube  , photos , downloader , security mod , uploader ,media editor ,username checker, ... }
 ]]
     tdbot.editMessageText(msg.chat_id, msg.id, text..COPYRIGHT, 'md', false, 0, nil, nil, nil)
 end
@@ -523,8 +526,8 @@ if crco[1] == 'panel' then
 clerkmod = returndata(Get('other','clerkTYPE'))
 clerkstatus = returndata(Get('other','ClerkMod'))
 animation = returndata(Get('other','Animation'))
-laststart = '0' -- returndata(Get('other','laststart'))
-text_ = '☤ *Self Status* _:_ *'..selfstatus..'*\n☤ *Last start in* `:` *'..laststart..'*\n☤ *Markread* `:` *'..markread..'*\n☤ *Chat in Group* `:` *'..ChatMod..'*\n☤ *Clerk* `:` *'..clerkstatus..'*\n☤ *Clerk Type* `:` *'..clerkmod..'*\n☤ *Clerk MTEXT* `:` *'..mainclerktext..'*\n☤ *Enemy Mod * `:` *'..enemymod..'*\n☤ *Read Message* `:` *'..readmessage..'*\n☤ *Text Type* `:` *'..texttype:upper()..'*\n☤ *Time in Bio* `:` *'..timestatusBio..'*\n☤ *Time in name* `:` *'..self_time..'*\n☤ *Animation* `:` *'..animation..'*'
+laststart  = returndata(Get('other','RunTime'),true)
+text_ = '☤ *Self Status* _:_ *'..selfstatus..'*\n☤ *Run time* `:` *'..laststart..'/30*\n☤ *Markread* `:` *'..markread..'*\n☤ *Chat in Group* `:` *'..ChatMod..'*\n☤ *Clerk* `:` *'..clerkstatus..'*\n☤ *Clerk Type* `:` *'..clerkmod..'*\n☤ *Clerk MTEXT* `:` *'..mainclerktext..'*\n☤ *Enemy Mod * `:` *'..enemymod..'*\n☤ *Read Message* `:` *'..readmessage..'*\n☤ *Text Type* `:` *'..texttype:upper()..'*\n☤ *Time in Bio* `:` *'..timestatusBio..'*\n☤ *Time in name* `:` *'..self_time..'*\n☤ *Animation* `:` *'..animation..'*'
 return tdbot.editMessageText(msg.chat_id, msg.id, text_..SelfVersion..COPYRIGHT, 'md', false, 0, nil, nil, nil)
 end
  if crco[1] == 'markread' and crco[2] then
@@ -743,7 +746,7 @@ if crco[1] == 'help core' then
 ☤ *markread* _on/off_
 `Enable or Disable MARK READ IN CHAT`
 
-☤ *read message* _on/off_
+☤ *readmessage* _on/off_
 `Enable or Disable READ ALL MENTIONS IN CHAT`
 
 ☤ *plugs* 
@@ -844,15 +847,6 @@ if crco[1] == 'help core' then
 
 ☤ *say* _text_
 `echo your text `
-
-☤ *rep* _text_
-`echo your text `
-
-☤ *animation* _on/off_
-`Enable or Disable Animation`
-
-
-
     ]]
      tdbot.editMessageText(msg.chat_id, msg.id,text..SelfVersion..COPYRIGHT,'md',false, 0, nil, nil, nil)
 
@@ -1097,12 +1091,12 @@ end
                 is_pth = msg.content.photo.sizes[1].photo["local"].path
                             end
                                 if string.len(is_pth) == 0 then
-                                   tdbot.downloadFile(is_id, 32, nil, nil)
+                                 --   tdbot.downloadFile(is_id, 32, nil, nil)
                                 end
                             end
                             if msg.content['@type'] == 'messageSticker'  and is_supergroup(msg) then
                                 if string.len(msg.content.sticker.sticker["local"].path) == 0 then
-                               tdbot.downloadFile(msg.content.sticker.sticker.id, 1, nil, nil)
+                            --    tdbot.downloadFile(msg.content.sticker.sticker.id, 1, nil, nil)
                                 end
                             end
     if not Get('for_all','self-off') then
@@ -1120,6 +1114,7 @@ end
                         tdbot.setAlarm(0.1, TypeKey, {text = str, i = 1})
             
                        tdbot.setAlarm(0.1, ty, {text = str, i = 1})
+                   --  tdbot.deleteMessages(msg.chat_id,{[1] =msg.id})
             
                     
                     end
