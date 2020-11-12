@@ -154,9 +154,9 @@ timemof= (os.clock() - x)
 timemof_ = string.format("%.f", timemof)
  if timemof_ then
   save("other","RunTime",timemof_)
-  if Get('other','RunTime') and tonumber(returndata(Get('other','RunTime'),true)) > 29 then
+  if Get('other','RunTime') and tonumber(returndata(Get('other','RunTime'),true)) > 179 then
     print('exitet')
-    os.exit(1)
+    os.exit(400)
   end
 end
  tdbot.getMe( getINFO,nil)
