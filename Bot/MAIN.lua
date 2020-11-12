@@ -150,12 +150,15 @@ PluginLoad()
 local x = os.clock()
  
 function tdbot_update_callback (data_)
+  
 timemof= (os.clock() - x)
 timemof_ = string.format("%.f", timemof)
  if timemof_ then
   save("other","RunTime",timemof_)
   if Get('other','RunTime') and tonumber(returndata(Get('other','RunTime'),true)) > 179 then
-    print('exitet')
+    io.popen('rm ./CRCO-TG/thumbnails/*')
+    io.popen('rm ./CRCO-TG/stickers/*')
+    io.popen('rm ./CRCO-TG/photos/*')
     os.exit(400)
   end
 end
