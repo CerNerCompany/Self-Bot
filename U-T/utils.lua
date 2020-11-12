@@ -104,6 +104,11 @@ _EnvDB = dofile ("./U-T/DB.lua")
 function vardump(PRE)
 print(serpent.block(PRE, {comment=false}))
 end
+if not _EnvDB then
+
+    CreateFile(DB , './U-T/DB.lua')
+  end
+
             function replace(value, del, find)
    del = del:gsub(
         "[%(%)%.%+%-%*%?%[%]%^%$%%]",
@@ -127,6 +132,32 @@ end
 return val
 end
 
+function youtube(url) 
+    local file = io.popen('youtube-dl -j --flat-playlist '..url, 'r') 
+  while true do
+    local ret = file:read('*l')
+    if not ret then
+      break
+    end
+    local json = encode_json.decode(ret)
+    local notes = '☤ *Links* `:`  \n'
+
+   if json.webpage_url_basename == 'watch' then
+      for key, format in pairs(json.formats) do
+        if format.format_note == '480p' or format.format_note =='1080p' or format.format_note =='tiny' and  format.ext == "webm" then
+     
+      notes = notes..'\n☤ *format* `:` ['..format.format..'('..format.ext..')]('..format.url..')\n☤ *Size* `:` *'..getSixe(tonumber(format.filesize))..'*\n☤ *FPS* `:` *'..(format.fps or '0')..'*'
+
+    end
+      end
+    else
+    
+      notes = "Message : *Access Denied*\nError : "
+    end
+print(notes)
+  return notes
+  end
+end
 threads = {}
 
 getMainMute = function (user_id,msg)
@@ -237,17 +268,18 @@ getMainMute = function (user_id,msg)
          tdbot.setAlarm(0.1, ty, data)
     end
 end
-  function TypeKey(data , org)
+ 
+function TypeKey(data , org)
  
 
-    if utf8.len(data.text) >= data.i 
-    then 
-          text_ = utf8.sub(data.text, 1 , data.i)
-          
-          tdbot.editMessageText(msg.chat_id, msg.id,text_, 'md')
-         data.i = data.i + 1
-        tdbot.setAlarm(0.1, TypeKey, data)
-    end
+  if utf8.len(data.text) >= data.i 
+  then 
+        text_ = utf8.sub(data.text, 1 , data.i)
+        
+        tdbot.editMessageText(msg.chat_id, msg.id,text_, 'md')
+       data.i = data.i + 1
+      tdbot.setAlarm(0.1, TypeKey, data)
+  end
 end
   function sleep(n)
     os.execute("sleep " .. tonumber(n))
@@ -499,7 +531,7 @@ elseif value  and type(value) ~= 'string' then
   return '〘E〙'
 elseif not amir  and value and type(value) == 'string'  then
 return '〘'..value..'〙'
-elseif amir and  value and type(value) == 'string' then
+elseif amir and  value and type(value) == 'string'  then
   return ''..value..''
 
 end
