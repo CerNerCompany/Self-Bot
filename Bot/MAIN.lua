@@ -127,6 +127,7 @@ if not _EnvDB then
 end
 
    for _, files in pairs(_EnvDB.data.plist) do
+   
        print ("-> Loaded Plugin : ", files)
    local ok, err =  pcall(function()
    local PL_LOAD = loadfile("./plugins/"..files..'.lua')()
@@ -134,15 +135,30 @@ end
    end)
    if not ok then
         print('\27[31mError loading plugins '..files..'\27[39m',err)
+
    end
- end
+ 
+  end
+  
+
 --
 end
 
 PluginLoad()
 
-function tdbot_update_callback (data_)
+
+local x = os.clock()
  
+function tdbot_update_callback (data_)
+timemof= (os.clock() - x)
+timemof_ = string.format("%.f", timemof)
+ if timemof_ then
+  save("other","RunTime",timemof_)
+  if Get('other','RunTime') and tonumber(returndata(Get('other','RunTime'),true)) > 29 then
+    print('exitet')
+    os.exit(1)
+  end
+end
  tdbot.getMe( getINFO,nil)
  tdbot.getUserFullInfo(bot.id,getInfo_,nil)
  getMainMessage(data_,nil,data_)
