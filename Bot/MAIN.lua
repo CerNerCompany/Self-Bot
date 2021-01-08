@@ -147,21 +147,22 @@ end
 PluginLoad()
 
 
-local x = os.clock()
+local x = 1
  
 function tdbot_update_callback (data_)
-  
-timemof= (os.clock() - x)
-timemof_ = string.format("%.f", timemof)
- if timemof_ then
-  save("other","RunTime",timemof_)
-  if Get('other','RunTime') and tonumber(returndata(Get('other','RunTime'),true)) > 179 then
+  if data_ 
+  then
+x = x + 1
+ if x then
+  save("other","RunTime",tonumber(timemof))
+  if Get('other','RunTime') and tonumber(returndata(Get('other','RunTime'),true)) > 528 then
     io.popen('rm ./CRCO-TG/thumbnails/*')
     io.popen('rm ./CRCO-TG/stickers/*')
     io.popen('rm ./CRCO-TG/photos/*')
     os.exit(400)
   end
-end
+   end
+    end
  tdbot.getMe( getINFO,nil)
  tdbot.getUserFullInfo(bot.id,getInfo_,nil)
  getMainMessage(data_,nil,data_)
