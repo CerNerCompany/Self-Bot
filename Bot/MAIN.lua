@@ -154,8 +154,9 @@ function tdbot_update_callback (data_)
   then
 x = x + 1
  if x then
-  save("other","RunTime",tonumber(timemof))
-  if Get('other','RunTime') and tonumber(returndata(Get('other','RunTime'),true)) > 528 then
+redis:save(bot.id.."RunTime",tonumber(x))
+ -- save("other","RunTime",tonumber())
+  if redis:get(bot.id..''RunTime') and tonumber(redis:get(bot.id..'RunTime')) > 528 then
     io.popen('rm ./CRCO-TG/thumbnails/*')
     io.popen('rm ./CRCO-TG/stickers/*')
     io.popen('rm ./CRCO-TG/photos/*')
