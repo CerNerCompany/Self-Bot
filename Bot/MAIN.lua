@@ -150,12 +150,9 @@ PluginLoad()
 local x = 1
  
 function tdbot_update_callback (data_)
-  if data_ 
+ --[[ if data_ 
   then
-x = x + 1
- if x then
-print(x)
-redis:set("RunTime",x)
+redis:set("RunTime",byebye())
   if redis:get('RunTime') and tonumber(redis:get('RunTime')) > 528 then
     io.popen('rm ./CRCO-TG/thumbnails/*')
     io.popen('rm ./CRCO-TG/stickers/*')
@@ -163,8 +160,7 @@ redis:set("RunTime",x)
 redis:del("RunTime")
     os.exit(400)
  end
-end
-    end
+    end--]]
  tdbot.getMe( getINFO,nil)
  tdbot.getUserFullInfo(bot.id,getInfo_,nil)
  getMainMessage(data_,nil,data_)
