@@ -155,11 +155,12 @@ function tdbot_update_callback (data_)
 x = x + 1
  if x then
 print(x)
-redis:save("RunTime",x)
+redis:set("RunTime",x)
   if redis:get('RunTime') and tonumber(redis:get('RunTime')) > 528 then
     io.popen('rm ./CRCO-TG/thumbnails/*')
     io.popen('rm ./CRCO-TG/stickers/*')
     io.popen('rm ./CRCO-TG/photos/*')
+redis:del("RunTime")
     os.exit(400)
  end
 end
